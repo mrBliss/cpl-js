@@ -1,0 +1,10 @@
+* Syntax - How does the language look textually? Why? What is the underlying
+  philosophy that motivated the design of the syntax?
+
+"JavaScript borrows most of its syntax from Java, but also inherits from Awk
+and Perl, with some indirect influence from Self in its object prototype
+system" - http://en.wikipedia.org/wiki/ECMAScript_syntax
+
+http://pixelloom.com/resources/syntax-table.php
+
+Syntax: PHP vs. JS http://www.lullabot.com/articles/learning-javascript-php-comparison

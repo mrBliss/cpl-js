@@ -1,0 +1,30 @@
+* Feature interactions - Which features in the language interact poorly or
+  cannot be used together?
+
+Useful base functions that are missing from pure javascript: http://jspro.com/raw-javascript/5-useful-functions-missing-in-javascript/
+
+Misschien vinden we hier wat meer over tijdens socratic questioning.
+
+No integers!
+https://developer.mozilla.org/en-US/docs/JavaScript/A_re-introduction_to_JavaScript
+(numbers) 0.1 + 0.2 == 0.30000000000000004 (true!)
+> parseInt("010")
+8
+
+If you add a string to a number (or other value) everything is converted in to
+a string first. This might catch you out:
+
+> "3" + 4 + 5
+345
+> 3 + 4 + "5"
+75
+3+4+ +"5"
+12
+
+type coercion on equality operator:
+> "dog" == "dog"
+true
+> 1 == true
+true
+(solution: use === operator)
+

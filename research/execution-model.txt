@@ -1,0 +1,12 @@
+Underlying execution model - How are the statements in the language executed?
+Is there a straightforward reading or is there a complex execution model?
+Things to consider include the dispatch model for object-oriented language,
+the order of evaluation for functional languages, or the computational model
+underlying logic- and constraint-programming languages.
+
+* Pretty typical, OO-like
+* Discuss prototype chain for dispatching
+* Mention JIT and browsers?
+* Function arguments evaluated from left to right
+
+garbage collected

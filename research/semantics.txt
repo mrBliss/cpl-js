@@ -1,0 +1,97 @@
+Semantics - What do the language constructs mean? How do language constructs
+from one language compare with those of the other languages? How would
+constructs be emulated, encoded, implemented in a language that does not have
+them?
+
+Thomas
+------------------------------------------------------------------------------
+
+* Prototype based inheritance
+
+
+types: primitive types and object types
+
+primitive types: numbers, strings, booleans, null, undefined
+object types: exist out of properties, arrays and functions are special objects
+
+classes: Object, Array, Function, Date, RegExp, Error
+
+
+
+types: mutable and immutable
+
+mutable: Objects (so Date and RegExp too) and Arrays
+immutable: numbers, booleans, null, undefined, and strings (actually immutable arrays)
+
+type conversions (matrix)
+
+NaN (NaN != NaN), infinity
+
+dynamic typing
+
+lexical scoping: function and global scope
+
+strings delimited with ' or ", so '.."..' and "..'..", why? Embedding JS in
+HTML (also supports both delimiters) and vice versa
+
+
+truthiness: false, undefined, null, 0, -0, NaN and "" are falsy, all others truthy
+
+
+null means the absence of a value (i.e. nil, null from Java)
+
+undefined means that the value is not initialized, i.e. the value of missing parameters, undefined methods, ...
+In ECMAScript 3, predefined was a global value, which could be changed, unlike null, a language keyword
+
+"You might consider undefined to represent a system-level, unexpected, or error-like absence of value and null to represent program-level, normal, or expected absence of value. If you need to assign one of these values to a variable or property or pass one of these values to a function, null is almost always the right choice." JavaScript: The Definitive Guide
+
+
+
+Global objects
+
+
+Dynamism
+
+
+
+http://webscannotes.com/2012/06/19/javascript-semantics-for-computer-scientists-part-1-variables-and-scope/
+http://webscannotes.com/2012/06/27/javascript-semantics-for-computer-scientists-part-2-objects/
+http://webscannotes.com/2012/07/11/javascript-semantics-for-computer-scientists-part-3-classes/
+http://webscannotes.com/2012/07/18/javascript-semantics-for-computer-scientists-part-4-misc/
+
+
+
+------------------------------------------------------------------------------
+Glenn
+------------------------------------------------------------------------------
+
+
+Variables and scope: http://webscannotes.com/2012/06/19/javascript-semantics-for-computer-scientists-part-1-variables-and-scope/
+
+Objects: http://webscannotes.com/2012/06/27/javascript-semantics-for-computer-scientists-part-2-objects/
+
+Classes (JS has none! prototype based) http://webscannotes.com/2012/07/11/javascript-semantics-for-computer-scientists-part-3-classes/
+
+Functions and arguments: http://webscannotes.com/2012/07/18/javascript-semantics-for-computer-scientists-part-4-misc
+
+Implementing functional programming in Java: http://www.ibm.com/developerworks/java/library/j-fp/index.html
+
+arguments variable: http://www.sitepoint.com/arguments-a-javascript-oddity/
+
+"Everything" is an object! strings, numbers, arrays... JavaScript objects are
+simply collections of name-value pairs. As such, they are similar to:
+
+* Dictionaries in Python
+* Hashes in Perl and Ruby
+* Hash tables in C and C++
+* HashMaps in Java
+* Associative arrays in PHP
+
+Fake operator overloading in javascript: http://www.2ality.com/2011/12/fake-operator-overloading.html
+
+An important difference from other languages like Java is that in JavaScript,
+blocks do not have scope; only functions have scope. So if a variable is
+defined using var in a compound statement (for example inside an if control
+structure), it will be visible to the entire function.
+
+                                                              

@@ -1,0 +1,38 @@
+Pragmatics - How are the constructs implemented? How efficient are they? What
+design choices have been made and why? What combinations of features introduce
+overhead?
+
+Thomas
+------------------------------------------------------------------------------
+
+* Implementation of Arrays
+* Implementation of Objects
+* All numbers are implemented as floats, there are no integers (mention JIT optimizations?)
+* Strings are arrays of UTF-16 characters (like Java)
+  No characters, only 1-element strings
+
+
+------------------------------------------------------------------------------
+Glenn
+------------------------------------------------------------------------------
+
+run-time environment: JavaScript typically relies on a run-time environment
+(e.g. in a web browser) to provide objects and methods by which scripts can
+interact with "the outside world".
+
+Different implementations (for different browsers/products) exist. Example: V8
+javascript engine (used in google chrome, but can also independent,
+server-side, javascript projects such as Node.js). This engine is written for
+C and is highly optimized. Unlike other engines, it compiles javascript to
+native machine code instead of interpreting it.
+https://developers.google.com/v8/intro
+
+Limit on array length: 4,294,967,296 items
+
+Javascript browser limits http://www.sitepoint.com/javascript-execution-browser-limits/
+
+public, private, protected: http://jspro.com/raw-javascript/modular-design-patterns-in-javascript/
+
+Custom events in javascript: http://jspro.com/raw-javascript/how-to-create-custom-events-in-javascript/
+
+                                                                                                                                            

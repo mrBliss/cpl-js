@@ -1,0 +1,14 @@
+Limitations - What limitations do the language features have? How do
+programmers typically get around these limitations? What are the weaknesses of
+the language in general?
+
+
+'bad' parts, see JavaScript: The Good Parts
+
+global scope when forgetting `var`
+
+E.g. scoping in a for loop (variable vs value)
+
+`with`, `eval`
+
+no modules
