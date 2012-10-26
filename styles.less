@@ -1,0 +1,75 @@
+@basic: #cccc99;
+@dark: #666633;
+@light: #fff;
+@highlight: #990033;
+
+.rounded-corners (@radius: 5px) {
+  -webkit-border-radius: @radius;
+  -moz-border-radius: @radius;
+  -ms-border-radius: @radius;
+  -o-border-radius: @radius;
+  border-radius: @radius;
+}
+
+body {
+    font-family: "Crimson Text", Georgia, serif;
+}
+strong {
+    color: @highlight;
+}
+
+div#header {
+}
+
+div#body {
+}
+
+div.qa {
+    border: 1px solid @dark;
+    .rounded-corners(10px);
+    margin: 10px;
+    padding: 0;
+}
+
+div.question {
+    font-style: italic;
+    font-weight: bold;
+    font-size: 110%;
+    background: @basic;
+    margin: 0;
+    padding: 0.5em;
+}
+
+div.question:before {
+    content: "Q: ";
+}
+
+div.answer {
+    background: @light;
+    padding: 0.5em;
+    p:first-child:before {
+        content: "A: ";
+    }
+}
+
+pre, code {
+    font: "Inconsolata", Monaco, Consolas, monospace;
+}
+
+pre {
+    border: 1px solid #ccc;
+    background: #eee;
+    margin: 0.5em;
+    padding: 0.5em;
+}
+
+div#footer {
+    border-top: 1px solid #ccc;
+    font-size: 90%;
+    width: 75%;
+    left: 12.5%;
+    right: 12.5%;
+    position: absolute;
+    bottom: 0;
+    text-align: center;
+}
