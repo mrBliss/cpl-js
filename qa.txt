@@ -1,0 +1,74 @@
+Q: Which programming language are we talking about today?
+A: JavaScript, the language of the Internet.
+
+Q: Why do you call it the /language of the Internet/?
+A: JavaScript is the primary programming language than can be used in a web
+   browser. Whenever a site wants some client-side interactivity, JS is
+   /the/ tool in the box for this task.
+
+   Every web browser supports the execution of JavaScript. JavaScript is used
+   by roughly 75% of all Internet websites [1].
+
+   [1]: http://dev.opera.com/articles/view/mama-key-findings/
+
+Q: What do you mean by /client-side/?
+A: Visiting a website involves two parties (or more), the visitor, i.e. the
+   client, and the visited website, i.e. the server.
+
+   First of all, the client requests a web page from the server. The server
+   then generates or retrieves the page to be sent to the client. The
+   generation of this page will be performed by a program, which, of course,
+   is written in a certain programming language. Programming languages used to
+   write the program on the server, commonly called `the web server', are
+   called server-side languages.
+
+   The second part of the interaction takes place in the browser of the
+   client. After receiving and rendering the web page, the web page would
+   remain completely static, were it not for client-side languages. Programs
+   written in a client-side language are sent along with the page to the
+   client and are executed in the browser when the page is loaded. They
+   provide a means to change the web page on the fly or to interact with the
+   user without requiring a new page to be loaded.
+
+-- From here on, the answers are summarised, the questions should also be reordered
+
+Q: Which other client-side languages are there?
+A: list the others (incl. Flash, Java, SilverLight), but mention that JS is
+   the most used.
+
+Q: Why is JS the most popular?
+A: Built into the browser, others require plugins, etc.
+
+Q: You mentioned Java, glancing at the name, one can assume they are related.
+   Is JS perhaps the scripting variant of Java?
+A: Popular at the time, marketing, etc. See wikipedia
+
+Q: Isn't there any similarity between JS and Java other than the confusingly
+   connected names?
+A: Syntax, ...
+   http://en.wikipedia.org/wiki/JavaScript#JavaScript_and_Java
+
+Q: So if Java is not the main inspiration for JS, is it some other language,
+   or was JS a _completely new language_? (Rephrase last three words)
+A: If one ignores the syntax and the object-oriented nature, JS is awfully
+   similar to functional languages in the Lisp tradition, like for instance
+   Scheme. As a matter of, Brendan Eich, the creator of JavaScript, says that
+   he was lured by Netscape promising him to make a Scheme for the browser
+   [2]. A short time before, Brendan Eich had developed in an interest in the
+   famous [http://mitpress.mit.edu/sicp/][SICP] book, which presents the
+   tremendous capabilities of a simple functional language, Scheme.
+
+   The main influence of Scheme was the presence of first-class functions in
+   JavaScript. Another similarity with Scheme is the small size of the
+   language, a handful of built-in types, ...
+
+   function-keyword is unwieldy...
+
+   Mention Self for prototype based inheritance, see [2] for other things to mention.
+
+   [2] https://brendaneich.com/2008/04/popularity/
+
+http://javascript.crockford.com/javascript.html
+
+Q: JS is a scripting language, what does it mean for a language to be a scripting language?
+A: Lightweight interpreted language, see wikipedia.
