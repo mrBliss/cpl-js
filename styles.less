@@ -1,7 +1,13 @@
-@basic: #cccc99;
-@dark: #666633;
-@light: #fff;
+@basic1: #e4d6a7;
+@basic2: #d1bc78;
+@dark1: #5f5e39;
+@dark2: #494821;
+@light1: #fcfaf3;
+@light2: #f0ece0;
 @highlight: #990033;
+@border: #ccc;
+@codeBg: #eee;
+@codeBorder: #ccc;
 
 .rounded-corners (@radius: 5px) {
   -webkit-border-radius: @radius;
@@ -10,34 +16,66 @@
   -o-border-radius: @radius;
   border-radius: @radius;
 }
+.gradient(@from) {
+    .gradient2(@from, darken(@from, 10%));
+}
+.gradient2(@from, @to) {
+    background: @from;
+    background: linear-gradient(top, @from, @to);
+    background: -o-linear-gradient(top, @from, @to);
+    background: -moz-linear-gradient(top, @from, @to);
+    background: -webkit-linear-gradient(top, @from, @to);
+    background: -ms-linear-gradient(top, @from, @to);
+}
 
+.shadow(@color, @distance: 5px) {
+    -moz-box-shadow:    inset 0 0 @distance @color;
+    -webkit-box-shadow: inset 0 0 @distance @color;
+    box-shadow:         inset 0 0 @distance @color;
+}
 body {
     font-family: "Crimson Text", Georgia, serif;
+    background: lighten(@basic1, 10%);
 }
 strong {
     color: @highlight;
 }
 
 div#header {
+    width: 100%;
+    margin: 0 auto;
+    position: relative;
+    text-align: center;
+    h1 {
+        margin-bottom: 0;
+    }
+    h2 {
+        margin-top: 0;
+        font-size: 200%;
+    }
 }
 
 div#body {
 }
 
 div.qa {
-    border: 1px solid @dark;
-    .rounded-corners(10px);
+    border: 1px solid @dark1;
     margin: 10px;
     padding: 0;
+    // .rounded-corners(10px);
 }
 
 div.question {
     font-style: italic;
     font-weight: bold;
     font-size: 110%;
-    background: @basic;
+    .gradient(@basic1);
+    background-clip: padding-box;
     margin: 0;
     padding: 0.5em;
+    &:hover {
+        .gradient(lighten(@basic1, 5%));
+    }
 }
 
 div.question:before {
@@ -45,10 +83,13 @@ div.question:before {
 }
 
 div.answer {
-    background: @light;
+    .gradient2(@light1, @light2);
     padding: 0.5em;
     p:first-child:before {
         content: "A: ";
+    }
+    &:hover {
+        .gradient2(lighten(@light1, 2%), lighten(@light2, 2%));
     }
 }
 
@@ -57,14 +98,18 @@ pre, code {
 }
 
 pre {
-    border: 1px solid #ccc;
-    background: #eee;
+    border: 1px solid @codeBorder;
+    background: @codeBg;
+    .shadow(darken(@codeBg, 10%));
     margin: 0.5em;
     padding: 0.5em;
+    &:hover {
+        background: lighten(@codeBg, 1%);
+    }
 }
 
 div#footer {
-    border-top: 1px solid #ccc;
+    border-top: 1px solid @border;
     font-size: 90%;
     width: 75%;
     left: 12.5%;
