@@ -6,11 +6,6 @@ A: JavaScript is the primary programming language than can be used in a web
    browser. Whenever a site wants some client-side interactivity, JS is
    /the/ tool in the box for this task.
 
-   Every web browser supports the execution of JavaScript. JavaScript is used
-   by roughly 75% of all Internet websites [1].
-
-   [1]: http://dev.opera.com/articles/view/mama-key-findings/
-
 Q: What do you mean by /client-side/?
 A: Visiting a website involves two parties (or more), the visitor, i.e. the
    client, and the visited website, i.e. the server.
@@ -30,29 +25,45 @@ A: Visiting a website involves two parties (or more), the visitor, i.e. the
    provide a means to change the web page on the fly or to interact with the
    user without requiring a new page to be loaded.
 
--- From here on, the answers are summarised, the questions should also be reordered
+Q: Which other client-side languages are there? 
+   [Is JavaScript the only language that can do that?]
+A: There are several client side languages that can do quite the same. Examples 
+   are Flash, Java, SilverLight, PerlScript, VBScript, Microsoft's JScrip),
+   but JavaScript is the most used.
+   Every web browser supports the execution of JavaScript. JavaScript is used
+   by roughly 75% of all Internet websites [1].
 
-Q: Which other client-side languages are there?
-A: list the others (incl. Flash, Java, SilverLight), but mention that JS is
-   the most used.
+   [1]: http://dev.opera.com/articles/view/mama-key-findings/
+
+   (HTML, DHTML and CSS are also client side languages, but only used for mark-up)
 
 Q: Why is JS the most popular?
-A: Built into the browser, others require plugins, etc.
+A: JavaScript doesn't require a plugin to work. Others do, like Flash or Java. 
+   Also, the JavaScript syntax looks very familiar to Object Oriented Programmers
 
 Q: You mentioned Java, glancing at the name, one can assume they are related.
    Is JS perhaps the scripting variant of Java?
-A: Popular at the time, marketing, etc. See wikipedia
+A: JavaScript was originally developed under the name Mocha, but was later
+   officially renamed to LiveScript, then to JavaScript and finally to ECMAScript. 
+   The change to JavaScript had to do with the new support for Java technology (of
+   SUN Microsystems) in the new Netscape browser version 2.0B3.
+   This change caused a lot of confusion, but was a slick markerting choice to give
+   JavaScript the attention it needed.
 
 Q: Isn't there any similarity between JS and Java other than the confusingly
    connected names?
-A: Syntax, ...
-   http://en.wikipedia.org/wiki/JavaScript#JavaScript_and_Java
+A: There are certainly a couple of characteristics both languages have in common. 
+   Both are Object Oriented Programming languages. Many of their programming structures
+   are similar. JavaScript has a much smaller and simpler set of commands 
+   than Java.
+   Both languages also have a C-like syntax. JavaScript's syntax was developed
+   with Java's syntax in mind.
 
 Q: So if Java is not the main inspiration for JS, is it some other language,
    or was JS a _completely new language_? (Rephrase last three words)
 A: If one ignores the syntax and the object-oriented nature, JS is awfully
    similar to functional languages in the Lisp tradition, like for instance
-   Scheme. As a matter of, Brendan Eich, the creator of JavaScript, says that
+   Scheme. As a matter of fact, Brendan Eich, the creator of JavaScript, says that
    he was lured by Netscape promising him to make a Scheme for the browser
    [2]. A short time before, Brendan Eich had developed in an interest in the
    famous [http://mitpress.mit.edu/sicp/][SICP] book, which presents the
@@ -71,4 +82,6 @@ A: If one ignores the syntax and the object-oriented nature, JS is awfully
 http://javascript.crockford.com/javascript.html
 
 Q: JS is a scripting language, what does it mean for a language to be a scripting language?
-A: Lightweight interpreted language, see wikipedia.
+A: A scripting programming language is actually a lightweight language that is mostly
+   used for writing little programs to execute repetitive tasks. It's a high-level
+   language that is implemented by an interpreter.
