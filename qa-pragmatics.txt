@@ -1,0 +1,42 @@
+---------------
+PRAGMATICS
+---------------
+
+Q: How is JavaScript implemented?
+A: JavaScript has many different implementations. Just looking at the browsers, each one has its own implementation of JavaScript.
+    Chrome uses the V8 JavaScript engine(Node.js also uses this engine), Firefox uses Rhino (and a whole range of ...Monkey engines such as SpiderMonkey), Safari uses
+    Nitro (formerly known as SquirrelFish), Opera uses Carakan (former Futhark) and last (but quite possibly least)
+    Internet Explorer uses an engine called Chakra (versions prior to IE9 used an engine called JScript). These are just
+    the browser engines. Besides the browser engines, there are also a few other engines in use
+    such as Nashorn (used in JDK), QtScript (used in Nokia products) and Narcissus (a JavaScript engine written in JavaScript, for educational and development uses).
+    
+Q: That's a lot of engines. What do they have in common?
+A: This plethora of implementations makes it hard to discuss *the* implementation of JavaScript.
+   What all the engines do have in common, is that most (if not all) of them interpret the JavaScript code using JIT (Just-In-Time)
+   compilation.
+
+Q: What does this mean?
+A: This means that the compiler is run *after* the program has started and program code is
+    compiled (converted to machine code) *on the fly* (at runtime, dynamically).
+    This is in contrast to static compilation, in which source code is translated into machine code once (at compile time).
+    This has the advantage that the whole of the program can be analyzed and optimizations can be made.
+    A downside to this approach is that machine code is not portable.
+    
+    The other extreme of static compilation is 'interpreted' code. Code is never compiled and is interpreted as-is at runtime.
+    This means the code remains portable across platform. However, this has the disadvantage that performance is lower, because
+    no optimizations can be made.
+    Using JIT compilation, code is compiled in chunks right before it is used (hence the term 'just-in-time').
+    This way, the best of both worlds is combined. Code remains portable while still being able to do (machine-specific) optimizations.
+
+Q: What are the main advantages of JIT?
+A: A common goal of all JIT techniques is to reach or surpass the performance of static compilation while maintaining the advantages of interpretation.
+   JIT compilation generally out-performs code interpretation by far (because of compiler-level optimizations). However, it may not be immediately clear
+   how JIT compilation can be faster than static compilation. After all, a static compiler can analyze the entire program and optimize it in its entirety
+   (and has all the time to do so!). However, here are some reasons a JIT compiler has over a static compiler:
+        -The JIT compiler can optimize for the targeted CPU and OS. For example, use SSE2 instructions when they are available. To obtain this effect
+         with a static compiler, one must either compile multiple versions (one with, one without SSE2) of the program, or include multiple versions of portions
+         of the code in the compiled program (if SSE2... else...).
+        -The system can collect information about how the program is currently running in the environment, and optimize code accordingly.
+        -Improvements in compiler technology affect existing programs. A better C compiler will not improve performance of C programs already deployed.
+         However, when a better JavaScript compiler is released, it will improve the performance of existing programs.
+        -
