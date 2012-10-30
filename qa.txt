@@ -100,6 +100,6 @@ Q: JS is a scripting language, what does it mean for a language to be a scriptin
 A: A scripting programming language is actually a lightweight language that is mostly
    used for writing little programs to execute repetitive tasks. It's a high-level
    language that is implemented by an interpreter. Note: JavaScript is not always interpreted.
-   Some implementations, such as the V8 JavaScript engine, first compile the JavaScript to native machine code.
+   Some implementations, such as the V8 JavaScript engine (present in your Chrome browser), first compile the JavaScript to native machine code.
    
- 
+
