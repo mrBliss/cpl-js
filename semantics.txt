@@ -1,0 +1,232 @@
+SEMANTICS
+=========
+
+
+Q: I've heard that JavaScript is an object-oriented language, could you expand
+   on that?
+
+A: Indeed, JavaScript is object-oriented. Typically, in object-oriented
+   languages, everything is an object (e.g. Python, Scala, Ruby, Eiffel, ...)
+   In JavaScript this is not the case, there are both objects and primitives.
+   The primitives in JS are numbers, strings, booleans, and the special types
+   null and undefined. The objects include Array, Function, Date, RegExp,
+   Error, ... This design decision, by many people considered a mistake, was
+   carried over from Java.
+
+   TODO: show how to make objects, explain properties and functions (mention JSON?)
+   
+Q: Object-oriented programming includes more than "everything is an object".
+   What about polymorphism, inheritance, etc.?
+
+A: Of course, OOP is broader than "everything is an object". Most definitions
+   of object-oriented programming include features such as modularity,
+   encapsulation, polymorphism, inheritance, ...
+
+   JavaScript has supports most of them, but differs from other classical OO
+   languages in the implementation of these features. Take for instance
+   inheritance. Classical OO languages mostly feature a class-based
+   inheritance mechanism, whereas JavaScript has prototype-based inheritance.
+
+   Q: What entails prototype-based inheritance?
+
+   A: TODO 
+   
+   Another example of JavaScript's /exotic/ way of doing things is
+   encapsulation. Most classical OO languages support visibility modifiers to
+   control the accessibility of fields and methods by other classes. In
+   JavaScript, there are no such modifiers, but encapsulation is still
+   achievable, via the use of closures.
+
+   Example:
+
+   ```Java:
+   class A {
+       private int counter = 0;
+       public void inc() {
+           counter++;
+       }
+   }
+   ..
+   A a = new A();
+   a.inc(); // OK
+   a.counter; // Error: not visibile!
+   ..
+   ```
+   ```JavaScript:
+   var a = (function () {
+       var counter = 0;
+       return {
+           inc: function() {
+               counter++;
+           },
+       };
+   })();
+   a.inc(); // OK
+   a.counter; // Error: not visible! 
+   ```     
+           
+   Q: What is a closure?
+
+   A: TODO
+
+   Q: What are the advantages of implementing encapsulation via closures?
+
+   A: Actually, one could call it /emulating/ encapsulation via closures.
+      Because of the absence of encapsulation, JavaScript programmers are
+      required to implement encapsulation manually via closures. So one could
+      call it a disadvantage of JavaScript, although some people argue against
+      encapsulation.
+
+      With closures, the programmer has more control over encapsulation, but
+      has to do more work to achieve it.
+      
+
+   Polymorphism in JavaScript is achieved via inheritance.
+
+   Example:
+   ```JavaScript
+   // Superclass Animal
+   var Animal = function(name) { this.name = name; };
+   // Default implementation of makeNoise
+   Animal.prototype.makeNoise = function() { return "Silence"; };
+
+   // Subclass Dog
+   var Dog = function(name) { this.name = name; };
+   Dog.prototype = new Animal();
+   // Override makeNoise
+   Dog.prototype.makeNoise = function() { return "Bark"; };
+
+   // Subclass Turtle
+   var Turtle = function(name) { this.name = name; };
+   // Don't override makeNoise
+   Turtle.prototype = new Animal();
+    
+   var animals = [new Dog("Pluto"), new Turtle("Jeffrey")];
+    
+   for (var i = 0; i < animals.length; i++) {
+       print(animals[i].makeNoise());
+   }
+   // Bark
+   // Silence
+   ```       
+   
+   Q: You mentioned that one can /override/ a method in JavaScript, is also
+      possible to overload a method in JavaScript?
+
+   A: To be clear, a method (or function) overloads another method if it has
+      the same name, but differs in the number of arguments or the types of
+      the expected arguments. The right method to call is chosen statically,
+      at compile-time. Overloading is a feature typically present in
+      statically typed languages. With JavaScript being a dynamically typed
+      language, the compile-time resolution that determines which method to
+      call is ruled out, as the types are not known in advance.
+
+      Overloading based on the number of arguments is possible in dynamically
+      typed languages, but not in JavaScript. The reason being that JavaScript
+      doesn't check whether a function is called with the correct number of
+      arguments. JavaScript will happily allow you to call a function
+      expecting two arguments with 0, 1, 2, 3, ... arguments. Missing
+      arguments will be `undefined`. JavaScript also allows you to access the
+      excess arguments. The `arguments` object is a local variable accessible
+      within all functions. The `arguments` object is similar to an Array, but
+      not quite the same. The elements of `arguments` can be accessed, and it
+      has the `length`-property, the other methods available for `Array`s
+      cannot be used on the `arguments` object. One can convert the
+      `arguments` object to an actual array, by calling `Array`'s
+      `slice`-method on it, like so: `var args =
+      Array.prototype.slice.call(arguments);`. FOOTNOTE: The `slice`-method of
+      `Array` copies the elements into a new array, it optionally takes a
+      start- and end-indices.
+
+      Source: https://developer.mozilla.org/en-US/docs/JavaScript/Reference/Functions_and_function_scope/arguments
+
+      Q: What's the point of this `arguments` object? And why isn't it a
+         proper `Array`?
+
+      A: The `arguments` object allows the programmer to define methods
+         expecting a variable number of arguments.
+
+         Example:
+         ```JavaScript
+         // Sums all its arguments. The argument list is empty, because we'll
+         // use the arguments object.
+         function addAll() {
+             var args = Array.prototype.slice.call(arguments);
+             var total = 0;
+             // args.shift() removes the first element from the array, and
+             // returns that element.
+             while (args.length > 0) total += args.shift();
+             return total;
+         }
+         ```
+
+         Even when expecting a fixed number of arguments, the programmer can
+         benefit from access to the `arguments` object. For instance when
+         implementing a decorator.
+
+         ```JavaScript
+         function decorate(toDecorate, decorator) {
+             return function() {
+                 // Both the decorator and the function to decorate can be
+                 // called with the same arguments.
+                 decorator.apply(null, arguments);
+                 return toDecorate.apply(null, arguments);
+             };
+         };
+
+         function argsPrinter() {
+             var args = Array.prototype.slice.call(arguments);
+             print("Arguments: " + args.join(", "));
+         };
+
+         function add(x, y) { return x + y; };
+
+         decorate(add, argsPrinter)(1, 2);
+         // Arguments: 1, 2
+         // => 3
+         ```
+         
+         
+      JavaScript's loose call convention, and the presence of the `arguments` object
+      allows the programmer to emulate overloading by doing the resolution at
+      run-time.
+
+      Example:
+      ```Java
+      void overloaded() { return "No args"; }
+      void overloaded(int x) { return "A number"; }
+      void overloaded(String x) { return "A string"; }
+      void overloaded(int x, String y) { return "A number and a string"; }
+      ```
+      
+      ```JavaScript
+      function overloaded() {
+          // One could also use an if-then-else construction
+          switch (arguments.length) {
+          case 0: return "No args"; break;
+          case 1: switch (typeof(arguments[0])) {
+                  case 'number': return "A number"; break;
+                  case 'string': return "A string"; break;
+                  }
+                  break;
+          case 2:
+          if (typeof(arguments[0]) == 'number' && typeof(arguments[1]) == 'string')
+              return "A number and a string";
+          }
+      }
+      // Identical for the Java program
+      overloaded();
+      No args
+      overloaded(1);
+      A number
+      overloaded("foo");
+      A string
+      overloaded(1, "foo");
+      A number and a string
+      ```
+
+      These `return`-statements could of course be replaced with different
+      blocks of code, specific for each case.
+
+
+TODO caller contexts, this
