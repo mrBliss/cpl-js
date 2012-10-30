@@ -104,13 +104,18 @@ A: If one ignores the syntax and the object-oriented nature, JS is awfully
 
    The main influence of Scheme was the presence of first-class functions in
    JavaScript. Another similarity with Scheme is the small size of the
-   language, a handful of built-in types, ...
+   language, a handful of built-in types, the single namespace, closures (link to other question (http://jibbering.com/faq/notes/closures/))...
 
-   function-keyword is unwieldy...
+   Although JavaScript is an Object Oriented language, Self has influenced javaScript for the use of prototype based inheritance. see [3] for other things to mention.
+	Q: Prototype based inheritance?
+	A: In Java, classes represents a collection of object which share the same state space. Objects are manifestations of this class. Objects in a prototype-based language
+           are clones of prototypes. The reason that ended up in Javascript/ECMA script is basically that 15 years ago, there were much less powerful computers 
+	   and much less sophisticated browsers. Choosing the prototype-based method meant the interpreter could be very simple while preserving the desirable properties of object orientation.
 
-   Mention Self for prototype based inheritance, see [2] for other things to mention.
 
-   [2] https://brendaneich.com/2008/04/popularity/
+   [3] https://brendaneich.com/2008/04/popularity/
+   [4] http://www.crockford.com/javascript/little.html (comparison scheme and JavaScript)
+   [5] http://http://en.wikipedia.org/wiki/Prototype-based_programming
 
 http://javascript.crockford.com/javascript.html
 
@@ -118,6 +123,7 @@ Q: JS is a scripting language, what does it mean for a language to be a scriptin
 A: A scripting programming language is actually a lightweight language that is mostly
    used for writing little programs to execute repetitive tasks. It's a high-level
    language that is implemented by an interpreter. Note: JavaScript is not always interpreted.
-   Some implementations, such as the V8 JavaScript engine (present in your Chrome browser), first compile the JavaScript to native machine code.
+   Some implementations, such as the V8 JavaScript engine, first compile the JavaScript to native machine code.
    
-
+ 
+   function-keyword is unwieldy... --> in other question, syntax maybe?
