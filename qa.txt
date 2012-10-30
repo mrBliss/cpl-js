@@ -28,7 +28,7 @@ A: Visiting a website involves two parties (or more), the visitor, i.e. the
 Q: Which other client-side languages are there? 
    [Is JavaScript the only language that can do that?]
 A: There are several client side languages that can do quite the same. Examples 
-   are Flash, Java, SilverLight, PerlScript, VBScript, Microsoft's JScrip),
+   are Flash, Java, SilverLight, PerlScript, VBScript, Microsoft's JScript),
    but JavaScript is the most widely used.
    Every web browser supports the execution of JavaScript. JavaScript is used
    by roughly 75% of all Internet websites [1].
@@ -37,15 +37,33 @@ A: There are several client side languages that can do quite the same. Examples
 
    (HTML, DHTML and CSS are also client side languages, but only used for mark-up)
 
+
 Q: Why is JS the most popular?
 A: JavaScript doesn't require a plugin to work. Others do, like Flash or Java. 
-   Also, the JavaScript syntax looks very familiar to Object Oriented Programmers
+   Also, the JavaScript syntax looks very familiar to Object Oriented Programmers. 
+<ul>
+	<li>The implementation of JavaScript is also very easy: put the code in the HTML document and refer to it as a JavaScript script;
+	<li>The execution of JavaScript can happen offline;
+	<li>It can help to make websites more dynamic;
+	<li>It can fix CSS layour issues;
+	<li>Easy manipulation of DOM elements.
+   [2]: http://dev.opera.com/articles/view/javascript-uses/
+
+	Q: What are those DOM elements?
+	A: The Document Object Model is a platform interface which enables content, structure and style of documents to be dynamic.
+
+Q: So everyone can use JavaScript?
+A: The user must have a browser that supports the use of JavaScript. Almost every
+   recent browser support this, except for some: Amaya, Dillo, Links, Lynx, Mosaic, NetSurf... 
+   If the browser supports JavaScript, still some issues could prevent the use of JavaScript, e.g. 
+   security measures might ignore the <script> tags.
    
 Q: Is Javascript only used for client-side applications?
 A: No, a number of server-side _projects/frameworks_ have been developed
    that allow developers to (also) write server-side code in JavaScript. An early example of this
    is the Netscape Enterprise Server (released in 1994, soon after the release of JS for browsers).
-   A more recent example of server-side JavaScript is Node.js, it is currently widely used in real-word applications.
+   A more recent example of server-side JavaScript is Node.js, it is currently widely used in real-word
+   applications.
 
 Q: You mentioned Java, glancing at the name, one can assume they are related.
    Is JS perhaps the scripting variant of Java?
