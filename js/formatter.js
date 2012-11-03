@@ -42,7 +42,7 @@ $(document).ready(function () {
         var codeMirror = CodeMirror(function(editor) {
             var $pre = $(pre);
             var $div = $('<div class="editor" id="' + id + '"></div>');
-            var $tabs = $('<ul class="tabs"><li><a href="#">Reset</a></li><li><a href="#">Evaluate</a></li></ul>');
+            var $tabs = $('<ul class="tabs"><li><a href="#reset">Reset</a></li><li><a href="#eval">Evaluate</a></li></ul>');
             $div.append($tabs);
             $div.append(editor);
             $pre.replaceWith($div);
@@ -58,13 +58,16 @@ $(document).ready(function () {
                 var val = codeMirror.getValue();
                 codeMirror.setValue(val + "\n" + evalJS(val));
             });
-            return false;
         }, {
             value: pre.innerHTML,
             mode: "javascript",
             indentUnit: 4,
             lineNumbers: true,
-            matchBrackets: true
+            matchBrackets: true,
+            extraKeys: {
+                "Ctrl-R": function () { $("div#" + id + " a[href='#reset']").click(); },
+                "Ctrl-E": function () { $("div#" + id + " a[href='#eval']").click(); }
+            }
         });
     });
 });
