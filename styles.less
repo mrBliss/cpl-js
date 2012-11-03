@@ -1,13 +1,225 @@
-@basic1: #e4d6a7;
-@basic2: #d1bc78;
-@dark1: #5f5e39;
-@dark2: #494821;
-@light1: #fcfaf3;
-@light2: #f0ece0;
-@highlight: #990033;
-@border: #ccc;
-@codeBg: #eee;
-@codeBorder: #ccc;
+
+@bg: #ffffff;
+@linkBg: #EEEEF0;
+@text: #222525;
+@highlight1: #222222;
+@highlight2: #06799F;
+@border: #CCCCCC;
+@codeBg: darken(@bg, 1%);
+
+
+body {
+    font-family: "Crimson Text", Georgia, serif;
+    font-size: 110%;
+    line-height: 1.25em;
+    color: @text;
+    background: @bg;
+    width: 80%;
+    max-width: 50em;
+    margin: 0 auto;
+}
+
+a {
+    &:link {
+        color: @highlight1;
+    }
+    &:hover {
+        color: lighten(@text, 15%);
+    }
+    &:visited {
+        color: lighten(@text, 25%);
+    }
+}
+
+
+
+div#scroller {
+    position: fixed;
+    top: 30%;
+    right: 0.5em;
+    max-width: 8%;
+    font-size: 0.9em;
+}
+
+div#header {
+    font-variant: small-caps;
+    h1, h2 {
+        text-align: center;
+        letter-spacing: 0.1em;
+        font-weight: normal;
+        line-height: 1.25em;
+        text-shadow: 1px 1px 1px darken(@bg, 30%);
+    }
+    h1 {
+        font-size: 3em;
+    }
+    h2 {
+        font-size: 2em;
+    }
+    margin-bottom: 2em;
+}
+div#credits {
+    font-style: italic;
+    color: lighten(@text, 15%);
+}
+div#info {
+    margin-top: 1em;
+    div.leftCol {
+        float: left;
+        padding-right: 3em;
+        border-right: 1px dashed lighten(@text, 60%);
+    }
+    div.rightCol {
+        float: left;
+        padding-left: 3em;
+    }
+}
+div#toc {
+    font-size: 0.9em;
+    ol {
+        list-style-type: upper-roman;
+        li {
+            font-weight: bold;
+        }
+        ol {
+            margin-top: -0.5em;
+            list-style-type: decimal;
+            li {
+                font-weight: normal;
+            }
+            a:hover {
+                background: lighten(@linkBg, 5%);
+            }
+        }
+    }
+}
+
+.spacer {
+    display: block;
+    margin-bottom: 2em;
+    clear: both;
+}
+
+h3 {
+    padding: 0.5em 1em 0.2em 1em;
+    font-size: 2em;
+    border-bottom: 3px solid @text;
+}
+h4 {
+    padding: 0.5em 1em 0.2em 1.3em;
+    font-size: 1.5em;
+    border-bottom: 1px dotted @text;
+}
+
+strong {
+    color: @highlight2;
+}
+
+.shadow(@color, @distance: 5px) {
+    -moz-box-shadow:    inset 0 0 @distance @color;
+    -webkit-box-shadow: inset 0 0 @distance @color;
+    box-shadow:         inset 0 0 @distance @color;
+}
+
+
+.qa-before(@letter) {
+    content: @letter;
+    font-style: normal;
+    font-size: 1.5em;
+    float: left;
+    display: block;
+    margin-right: 0.3em;
+}
+
+div.question {
+    background: url("img/az_subtle.png") repeat;
+    border-left: 2px solid darken(@bg, 10%);
+    padding: 0.5em;
+    font-style: italic;
+    font-size: 1.5em;
+    line-height: 1.8em;
+    margin-bottom: 0;
+    &:before {
+        .qa-before("Q: ");
+    }
+}
+
+
+div.answer {
+    margin-top: 0;
+    padding: 2em;
+    clear: left;
+    border-left: 2px solid darken(@bg, 10%);
+    &:before {
+        .qa-before("A: ");
+        font-size: 2.25em;
+        line-height: 1.6em;
+    }
+    div.question, div.answer {
+        margin-left: 25px;
+    }
+    p {
+        font-size: 1.1em;
+        line-height: 1.3em;
+    }
+}
+
+
+
+pre, code, div.editor, div.CodeMirror {
+    font-family: "Inconsolata", Monaco, Consolas, monospace;
+}
+code {
+    color: #003838;
+    font-size: 0.7em;
+    border: 1px solid @border;
+    padding: 0.1em;
+}
+// Fallback for CodeMirror
+pre {
+    white-space: pre-wrap;
+    font-size: 0.8em;
+    border-left: 1em solid darken(@border, 10%);
+    background: @codeBg;
+    background: url("img/billie_holiday.png") repeat;
+    margin: 2em;
+    padding: 0.8em;
+    &:hover {
+        border-left: 1em solid @border;
+    }
+}
+div.editor {
+    ul.tabs {
+        right: 0;
+        float: right;
+        list-style-type: none;
+        text-align: center;
+        margin-bottom: -1px;
+        li {
+            font-size: 0.8em;
+            line-height: 1em;
+            padding: 0.2em;
+            margin-left: -1px;
+            display: inline-block;
+            border: 1px solid @border;
+            border-top-left-radius: 4px;
+            border-top-right-radius: 4px;
+            .gradient2(darken(@bg, 3%), darken(@bg, 9%));
+            &:hover {
+                .gradient2(darken(@bg, 1%), darken(@bg, 6%));
+            }
+            a {
+                text-decoration: none;
+            }
+        }
+    }
+    div.CodeMirror {
+        clear: right;
+        border: 1px solid @border;
+        font-size: 0.8em;
+    }
+}
+
 
 .rounded-corners (@radius: 5px) {
   -webkit-border-radius: @radius;
@@ -21,100 +233,9 @@
 }
 .gradient2(@from, @to) {
     background: @from;
-    background: linear-gradient(top, @from, @to);
-    background: -o-linear-gradient(top, @from, @to);
-    background: -moz-linear-gradient(top, @from, @to);
-    background: -webkit-linear-gradient(top, @from, @to);
-    background: -ms-linear-gradient(top, @from, @to);
-}
-
-.shadow(@color, @distance: 5px) {
-    -moz-box-shadow:    inset 0 0 @distance @color;
-    -webkit-box-shadow: inset 0 0 @distance @color;
-    box-shadow:         inset 0 0 @distance @color;
-}
-body {
-    font-family: "Crimson Text", Georgia, serif;
-    background: lighten(@basic1, 10%);
-}
-strong {
-    color: @highlight;
-}
-
-div#header {
-    width: 100%;
-    margin: 0 auto;
-    position: relative;
-    text-align: center;
-    h1 {
-        margin-bottom: 0;
-    }
-    h2 {
-        margin-top: 0;
-        font-size: 200%;
-    }
-}
-
-div#body {
-}
-
-div.qa {
-    border: 1px solid @dark1;
-    margin: 10px;
-    padding: 0;
-    // .rounded-corners(10px);
-}
-
-div.question {
-    font-style: italic;
-    font-weight: bold;
-    font-size: 110%;
-    .gradient(@basic1);
-    background-clip: padding-box;
-    margin: 0;
-    padding: 0.5em;
-    &:hover {
-        .gradient(lighten(@basic1, 5%));
-    }
-}
-
-div.question:before {
-    content: "Q: ";
-}
-
-div.answer {
-    .gradient2(@light1, @light2);
-    padding: 0.5em;
-    p:first-child:before {
-        content: "A: ";
-    }
-    &:hover {
-        .gradient2(lighten(@light1, 2%), lighten(@light2, 2%));
-    }
-}
-
-pre, code {
-    font: "Inconsolata", Monaco, Consolas, monospace;
-}
-
-pre {
-    border: 1px solid @codeBorder;
-    background: @codeBg;
-    .shadow(darken(@codeBg, 10%));
-    margin: 0.5em;
-    padding: 0.5em;
-    &:hover {
-        background: lighten(@codeBg, 1%);
-    }
-}
-
-div#footer {
-    border-top: 1px solid @border;
-    font-size: 90%;
-    width: 75%;
-    left: 12.5%;
-    right: 12.5%;
-    position: absolute;
-    bottom: 0;
-    text-align: center;
+    background: linear-gradient(@from, @to);
+    background: -o-linear-gradient(@from, @to);
+    background: -moz-linear-gradient( @from, @to);
+    background: -webkit-linear-gradient( @from, @to);
+    background: -ms-linear-gradient( @from, @to);
 }

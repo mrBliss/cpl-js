@@ -1,46 +1,103 @@
 <!DOCTYPE HTML>
 
- <html>
+<html>
   <head>
     <meta charset="UTF-8">
     <title>CPL Assignment 1: JavaScript</title>
-    <!-- <link rel="stylesheet" href="styles.css" type="text/css" media="screen" /> -->
-    <link rel="stylesheet/less" href="styles.less" type="text/css" media="screen" />
-    <script src="js/less-1.3.1.min.js" type="text/javascript"></script>
     <link href="http://fonts.googleapis.com/css?family=Inconsolata:400,700|Crimson+Text:400,400italic,700,700italic" rel="stylesheet" type="text/css">
+    <link rel="stylesheet/less" href="styles.less" type="text/css" media="screen" />
+    <link rel="stylesheet" href="codemirror.css" type="text/css" media="screen" />
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+    <script type="text/javascript" src="js/less-1.3.1.min.js"></script>
+    <script type="text/javascript" src="js/codemirror.js"></script>
+    <script type="text/javascript" src="js/javascript.js"></script>
+    <script type="text/javascript" src="js/clike.js"></script>
+    <script type="text/javascript" src="js/parse-js.js"></script>
+    <script type="text/javascript" src="js/process.js"></script>
+    <script type="text/javascript" src="js/formatter.js"></script>
   </head>
 
-  <body>
-    <div id="header">
-      <h1>CPL Assignment 1:</h1>
-      <h2>JavaScript</h2>
+  <body name="top">
+    <div id="scroller">
+      <a href="#top">&uarr; To top</a>
+    </div>
+    <div id="info">
+      <div class="leftCol">
+        <div id="header">
+          <h1>CPL<br>Assignment 1</h1>
+          <h2>JavaScript</h2>
+        </div>
+        <div id="credits">© 2012 Glenn Croes, Philippe De Croock, Thomas Winant</div>
+      </div>
+      <div id="toc" class="rightCol">
+        <ol>
+          <li><a href="#semantics">Semantics</a>
+            <ol>
+              <li><a href="#object-oriented-programming">Object-oriented programming</a></li>
+              <li><a href="#object">Objects</a></li>
+              <li><a href="#prototype-based-programming">Prototype-based programming</a></li>
+              <li><a href="#bla">Bla</a></li>
+            </ol>
+          </li>
+          <li><a href="#pragmatics">Pragmatics</a>
+            <ol>
+              <li><a href="#foo">Foo</a></li>
+              <li><a href="#bar">Bar</a></li>
+            </ol>
+          </li>
+          <li><a href="#history">History</a>
+            <ol>
+              <li><a href="#bla">Bla</a></li>
+              <li><a href="#di">Di</a></li>
+              <li><a href="#bla">Bla</a></li>
+            </ol>
+          </li>
+        </ol>
+      </div>
+    </div>
+    <span class="spacer"></span>
+    <h3 name="semantics">I. Semantics</h3>
+    <h4 name="object-oriented-programming">I.1. Object-Oriented Programming</h4>
+    <div class="question">I've heard that JavaScript is an object-oriented language, could you expand on that?</div>
+    <div class="answer">
+      <p>Indeed, JavaScript is object-oriented. Typically, in object-oriented languages, everything is an object (e.g. Python, Scala, Ruby, Eiffel, ...) In JavaScript this is not the case, there are both objects and primitives. The primitives in JS are numbers, strings, booleans, and the special types null and undefined. The objects include <code>Array</code>, <code>Function</code>, <code>Date</code>, <code>RegExp</code>, <code>Error</code>, ... This design decision, by many people considered a mistake, was carried over from Java.</p>
+      <p>Objects in JavaScript are in fact containers of properties, where each property has a name and a value. By assigning a function to a property's value, one can add a method to the object. This demonstrates the importance of the presence of first-class functions. Objects in JavaScript can be compared with untyped hashmaps from strings to values from any kind. Then name of a property can be any string, but the quotes can be dropped if the name of the property is a valid JavaScript identifier. The quotes are required when the property name is a reserved keyword, an empty string, or other strings not constituting valid JavaScript identifiers.</p>
+
+      <pre>var emptyObject = {};
+var person = {
+    name: "Erin",
+    age: 28,
+    "place-of-birth": "Gibraltar", // hyphens are not allowed in JavaScript identifiers
+    walk: function () { return "Do bi do ... walking, walking, walking"; }
+};</pre>
+
+      <p>Property lookup is done via the <code>.</code> notation. When the property name is not a valid JavaScript identifier, one has to use the bracket notation. Looking up a property of which the value is a function, just returns that function. To actually invoke it, terminate the expression with <code>()</code>.</p>
+
+      <pre>person.name; // "Erin"
+person["place-of-birth"]; // "Gibraltar"
+person.walk; // [Function]
+person.walk(); // "Do bi do ... walking, walking, walking"</pre>
+
+      <p>This notation of objects is compact, easy to parse and parse, and has become a popular general data-interchange format, called JSON (JavaScript Object Notation).</p>
+
     </div>
 
-    <div id="body">
-      <div class="qa">
-        <div class="question">Bla di bla?</div>
-        <div class="answer">
-          <p>Bla <strong>di</strong> bla di bla</p>
-          <pre>foo = 3</pre>
-          <p>Bla di bla</p>
-        </div>
-      </div>
-      <div class="qa">
-        <div class="question">Bla di bla?</div>
-        <div class="answer">
-          <p>Bla di bla di bla</p>
-          <div class="qa">
-            <div class="question">Bla di bla?</div>
-            <div class="answer">
-              <p>Bla di bla di bla</p>
-            </div>
-          </div>
-        </div>
+    <div class="question">Object-oriented programming includes more than "everything is an object". What about polymorphism, inheritance, ... ?</div>
+    <div class="answer">
+      <p>Of course, OOP is broader than "everything is an object". Most definitions of object-oriented programming include features such as modularity, encapsulation, polymorphism, inheritance, ...</p>
+
+      <p>JavaScript has support most of them, but differs from other classical OO languages in the implementation of these features. Take for instance inheritance. Classical OO languages mostly feature a class-based inheritance mechanism, whereas JavaScript has prototype-based inheritance. JavaScript often has a different way of doing things compared to other languages, this will be a recurring theme.</p>
+
+      <h4 name="prototype-based-programming">I.3. Prototype-based programming</h4>
+      <div class="question">What entails prototype-based inheritance?</div>
+      <div class="answer">
+        <p>A better term would be prototype-based programming, as inheritance is just one non-mandatory ingredient of this style of object-oriented programming. Prototype-based programming can easily be explained by comparing it with class-based programming.</p>
+
+        <p>In class-based programming, one defines classes. Each class consists of fields and methods. To use a class, one creates a new object of the class, which will have the fields and methods defined in the class. Let's make an analogy: the class is the blueprint of the car, and the objects are cars built from the blueprint. Now let's throw inheritance in the mix. One can define a class that inherits from another class. This new class will contain all the fields and methods of the parent class, but can add fields and methods, and can also override fields and methods.</p>
+
+        <p>In prototype-based programming, one defines objects. Each object will consist of fields and methods, or in JavaScript's case, properties. The whole concept of classes is removed from the equation. Instead of defining a blueprint to build new cars with, one just builds a car. But does this mean that we have to build every car from scratch, i.e. (re)define the fields and methods for every objects we want to use? No, to make a new object with the same fields and methods as another object, we /clone/ the old object to get a new one. In other terms: we define a new object with the old object as prototype. Inheritance is also done via cloning, but after the cloning, the new object is extended with new fields and/or methods, and existing fields and/or methods can also be overriden. This new object can, in turn, be used as a prototype for other objects.</p>
       </div>
     </div>
 
-    <div id="footer">
-      <p>© 2012 Glenn Croes, Philippe De Croock, Thomas Winant</p>
-    </div>
   </body>
 </html>
