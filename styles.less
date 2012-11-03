@@ -74,6 +74,10 @@ div#info {
         padding-left: 3em;
     }
 }
+li.unnumbered {
+    list-style-type: none;
+    padding-top: 0.2em;
+}
 div#toc {
     font-size: 0.9em;
     ol {
@@ -224,6 +228,32 @@ div.editor {
     }
 }
 
+div#bibliography {
+    // http://www.library.cornell.edu/resrch/citmanage/apa
+    font-size: 0.9em;
+    ol {
+        width: 90%;
+        list-style-type: none;
+        li {
+            margin-bottom: 1em;
+            .hanging-indent(2.5em);
+            counter-increment: theIndex;
+            &:before {
+                content: "["counter(theIndex)"] ";
+            }
+
+        }
+    }
+    .book {
+        .title {font-style: italic}
+    }
+    .encyc {
+        .encyc {font-style: italic}
+    }
+    .website {
+        .title {font-style: italic}
+    }
+}
 
 .rounded-corners (@radius: 5px) {
   -webkit-border-radius: @radius;
@@ -242,4 +272,8 @@ div.editor {
     background: -moz-linear-gradient( @from, @to);
     background: -webkit-linear-gradient( @from, @to);
     background: -ms-linear-gradient( @from, @to);
+}
+.hanging-indent(@indent) {
+    padding-left: @indent;
+    text-indent: -@indent;
 }
