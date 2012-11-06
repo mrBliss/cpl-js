@@ -8,3 +8,12 @@ system" - http://en.wikipedia.org/wiki/ECMAScript_syntax
 http://pixelloom.com/resources/syntax-table.php
 
 Syntax: PHP vs. JS http://www.lullabot.com/articles/learning-javascript-php-comparison
+
+function-keyword is unwieldy... --> in other question, syntax maybe?
+
+
+Q: So, what are the most important things you can tell me about the syntax of JavaScript
+A: The syntax looks a lot like the syntax of Java, as we told you earlier.
+
+Q: How does it look like?
+A: http://www.slideshare.net/jnunemaker/history-features-and-syntax

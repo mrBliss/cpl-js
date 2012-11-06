@@ -126,4 +126,4 @@ A: A scripting programming language is actually a lightweight language that is m
    Some implementations, such as the V8 JavaScript engine, first compile the JavaScript to native machine code.
    
  
-   function-keyword is unwieldy... --> in other question, syntax maybe?
+   
