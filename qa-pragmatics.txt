@@ -65,8 +65,7 @@ A: A JavaScript engine usually consists of the following parts:
 			to understand how the garbage collector works (same goes for the other components).
 
 Q: JIT compilation was already discussed. How is garbage collection performed?
-A: The way garbage collection is performed, dependens on the engine. As an example, we'll look at the V8 engine. V8 uses a stop-the-world, 
-   generational, accurate,garbage collector. This means that V8:
+A: Garbage collection is performed on objects that are no longer referenced. The specific way garbage collection is performed, depends on the engine. As an example, we'll look at the V8 engine. V8 uses a stop-the-world, generational, accurate,garbage collector. This means that V8:
 		-stops program execution when performing a garbage collection cycle.
 		-processes only part of the object heap in most garbage collection cycles. This minimizes the impact of stopping the
 			application.
