@@ -1,0 +1,30 @@
+{
+  "name": "generator",
+  "version": "0.0.1",
+  "description": "Generates HTML from txt files",
+  "main": "./lib/main.js",
+  "directories": {
+    "bin": "./bin",
+    "test": "./test"
+  },
+  "scripts": {
+    "test": "./bin/nodeunit"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/mrBliss/cpl-js.git"
+  },
+  "keywords": [
+    "generator",
+    "markdown",
+    "markup",
+    "bibliography",
+    "HTML"
+  ],
+  "author": "Thomas Winant <thomas.winant@student.kuleuven.be>",
+  "license": "GPL-3",
+  "devDependencies": {
+    "nodeunit": "0.7.4"
+  },
+  "engines": "node >= 0.4.0"
+}

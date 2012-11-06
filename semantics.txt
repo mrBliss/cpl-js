@@ -1,5 +1,6 @@
-SEMANTICS
-=========
+# Semantics #
+
+## Object-oriented programming ##
 
 
 Q: I've heard that JavaScript is an object-oriented language, could you expand
@@ -12,6 +13,8 @@ A: Indeed, JavaScript is object-oriented. Typically, in object-oriented
    null and undefined. The objects include Array, Function, Date, RegExp,
    Error, ... This design decision, by many people considered a mistake, was
    carried over from Java.
+
+   ### Objects ###
 
    Objects in JavaScript are in fact containers of properties, where each
    property has a name and a value. By assigning a function to a property's
@@ -50,6 +53,7 @@ A: Indeed, JavaScript is object-oriented. Typically, in object-oriented
    Object Notation).
    TODO expand on JSON
 
+
 Q: Object-oriented programming includes more than "everything is an object".
    What about polymorphism, inheritance, etc.?
 
@@ -63,6 +67,8 @@ A: Of course, OOP is broader than "everything is an object". Most definitions
    inheritance mechanism, whereas JavaScript has prototype-based inheritance.
    JavaScript often has a different way of doing things compared to other
    languages, this will be a recurring theme.
+
+   ### Prototype-based programming ###
 
    Q: What entails prototype-based inheritance?
 
@@ -144,135 +150,136 @@ A: Of course, OOP is broader than "everything is an object". Most definitions
             * The newly created object is automatically returned at the end of
               the function call.
 
+         Here's another example of inheritance in JavaScript.
 
-      Here's another example of inheritance in JavaScript.
-
-      ```JavaScript
-      // Create a new object that inherits from obj
-      function inherit(obj) {
-          function f() {}; // Dummy constructor
-          // The new object's prototype is obj
-          f.prototype = obj;
-          // Make the new object
-          return new f();
-      }
-      // Create a new object from scratch
-      var a = {x: "a's x"};
-      // Create a new object by cloning an existing object
-      var b = inherit(a);
-      // Change the value of b's x property
-      b.x = "b's x";
-      // This change only affects b
-      a.x; // "a's x"
-      b.x; // "b's x"
-      ```
+         ```JavaScript
+         // Create a new object that inherits from obj
+         function inherit(obj) {
+             function f() {}; // Dummy constructor
+             // The new object's prototype is obj
+             f.prototype = obj;
+             // Make the new object
+             return new f();
+         }
+         // Create a new object from scratch
+         var a = {x: "a's x"};
+         // Create a new object by cloning an existing object
+         var b = inherit(a);
+         // Change the value of b's x property
+         b.x = "b's x";
+         // This change only affects b
+         a.x; // "a's x"
+         b.x; // "b's x"
+         ```
 
       Q: What are the pros and cons of prototype-based programming?
 
-      Prototype-based programming gives the programmer more flexibility and
-      freedom to define and redefine the fields and methods of objects
-      dynamically. Instead of focusing on building a brittle taxonomy of
-      classes, as in class-based programming, the focus lies on making a set
-      of objects with the desired behaviour, reusing them via cloning, and
-      modifying their behaviour when it's required. When building a taxonomy,
-      it is often the case that some class at the bottom of the chain
-      inherited some unwanted fields or methods, as it is not always possible
-      to classify everything in a consistent taxonomy. Prototype-based
-      programming gives you the freedom to clone and override the fields and
-      methods of other objects at will.
+      A: Prototype-based programming gives the programmer more flexibility and
+         freedom to define and redefine the fields and methods of objects
+         dynamically. Instead of focusing on building a brittle taxonomy of
+         classes, as in class-based programming, the focus lies on making a set
+         of objects with the desired behaviour, reusing them via cloning, and
+         modifying their behaviour when it's required. When building a taxonomy,
+         it is often the case that some class at the bottom of the chain
+         inherited some unwanted fields or methods, as it is not always possible
+         to classify everything in a consistent taxonomy. Prototype-based
+         programming gives you the freedom to clone and override the fields and
+         methods of other objects at will.
 
-      For example, you have a bunch of `Cat` objects, but you want one of the
-      cats, named Dexter, to make a different meow-sound. You can simply
-      change the `meow` method of Dexter, a single `Cat` object, without
-      affecting the others, or having to define a new subclass of `Cat`.
+         For example, you have a bunch of `Cat` objects, but you want one of the
+         cats, named Dexter, to make a different meow-sound. You can simply
+         change the `meow` method of Dexter, a single `Cat` object, without
+         affecting the others, or having to define a new subclass of `Cat`.
 
-      Having so much control over which fields and methods to /inherit/ allows
-      the programmer to do things not possible in class-based languages
-      without language support, for instance traits can easily be emulated
-      using prototype-based programming. Even classes can be and often are
-      emulated.
+         Having so much control over which fields and methods to /inherit/ allows
+         the programmer to do things not possible in class-based languages
+         without language support, for instance traits can easily be emulated
+         using prototype-based programming. Even classes can be and often are
+         emulated.
 
-      Let's show you how to emulate classes using prototypes:
+         Let's show you how to emulate classes using prototypes:
 
-      ```JavaScript
-      function Car(make) {
-          this.make = make;
-      };
-      Car.prototype.drive = function() {
-          println("Vroom");
-      };
-      // Constructor for the subclass SportsCar
-      function SportsCar(make) {
-          this.make = make;
-      };
-      // The prototype of SportsCar is a regular Car
-      SportsCar.prototype = new Car();
-      // We change the constructor, because we inherited Car's constructor
-      SportsCar.prototype.constructor = SportsCar;
-      SportsCar.prototype.driveFast = function() {
-          this.drive(); this.drive();
-      };
+         ```JavaScript
+         function Car(make) {
+             this.make = make;
+         };
+         Car.prototype.drive = function() {
+             println("Vroom");
+         };
+         // Constructor for the subclass SportsCar
+         function SportsCar(make) {
+             this.make = make;
+         };
+         // The prototype of SportsCar is a regular Car
+         SportsCar.prototype = new Car();
+         // We change the constructor, because we inherited Car's constructor
+         SportsCar.prototype.constructor = SportsCar;
+         SportsCar.prototype.driveFast = function() {
+             this.drive(); this.drive();
+         };
 
-      // Instantiate a new SportsCar
-      var mySportsCar = new SportsCar("BMW");
-      mySportsCar.driveFast();
-      // Vroom
-      // Vroom
-      ```
+         // Instantiate a new SportsCar
+         var mySportsCar = new SportsCar("BMW");
+         mySportsCar.driveFast();
+         // Vroom
+         // Vroom
+         ```
 
-      The steps to create a subclass are often put together in a single
-      function, allowing easy class-based inheritance.
+         The steps to create a subclass are often put together in a single
+         function, allowing easy class-based inheritance.
 
-      Traits are also easy to emulate, although we don't have access to the
-      super objects anymore. Abstract members can also be emulated, but will
-      not be checked at compile-time for presence.
+         Traits are also easy to emulate, although we don't have access to the
+         super objects anymore. Abstract members can also be emulated, but will
+         not be checked at compile-time for presence.
 
-      ```JavaScript
-      // The Trait we define
-      var HasTires = {
-          tiresOk: true,
-          puncture: function() {
-              this.tiresOk = false;
-          }
-      };
-      // Add the properties of the trait to the prototype of obj
-      var mixin = function(obj, trait) {
-          for (var prop in trait) {
-              obj.prototype[prop] = trait[prop];
-          }
-      };
-      // We'll continue with the SportsCar defined above
-      mixin(SportsCar, HasTires);
-      // The already defined mySportsCar now has the functionality defined in
-      //  the HasTires trait
-      mySportsCar.puncture();
-      mySportsCar.tiresOk; // false
-      ```
+         ```JavaScript
+         // The Trait we define
+         var HasTires = {
+             tiresOk: true,
+             puncture: function() {
+                 this.tiresOk = false;
+             }
+         };
+         // Add the properties of the trait to the prototype of obj
+         var mixin = function(obj, trait) {
+             for (var prop in trait) {
+                 obj.prototype[prop] = trait[prop];
+             }
+         };
+         // We'll continue with the SportsCar defined above
+         mixin(SportsCar, HasTires);
+         // The already defined mySportsCar now has the functionality defined in
+         //  the HasTires trait
+         mySportsCar.puncture();
+         mySportsCar.tiresOk; // false
+         ```
 
-      Of course, freedom comes with a price. One of the disadvantages are the
-      slower field and method accesses/dispatches and to a lesser extend the
-      memory overhead. Objects cloned from others object don't clone the
-      fields and methods. It would be wasteful to clone this reusable data.
-      Instead, the cloned object keeps track of its prototype. Whenever an
-      inherited field or method of the new object, i.e. a field or method
-      defined in the prototype (or a prototype of the prototype), is accessed,
-      the new object delegates the call to the prototype. This delegation will
-      go on until a definition is found in one of the ancestor prototypes. The
-      longer this /chain/ of prototypes, the costlier a field access or method
-      call.
+         Of course, freedom comes with a price. One of the disadvantages are the
+         slower field and method accesses/dispatches and to a lesser extend the
+         memory overhead. Objects cloned from others object don't clone the
+         fields and methods. It would be wasteful to clone this reusable data.
+         Instead, the cloned object keeps track of its prototype. Whenever an
+         inherited field or method of the new object, i.e. a field or method
+         defined in the prototype (or a prototype of the prototype), is accessed,
+         the new object delegates the call to the prototype. This delegation will
+         go on until a definition is found in one of the ancestor prototypes. The
+         longer this /chain/ of prototypes, the costlier a field access or method
+         call.
 
-      Another disadvantage is that it becomes harder to figure out which
-      fields and methods an object has, and where they were defined. When
-      using classes, knowing the class of an object is enough to know which
-      fields and methods an object has (this, of course, includes looking at
-      superclasses). In JavaScript, properties can be added and removed from
-      objects at run-time.
+         Another disadvantage is that it becomes harder to figure out which
+         fields and methods an object has, and where they were defined. When
+         using classes, knowing the class of an object is enough to know which
+         fields and methods an object has (this, of course, includes looking
+         at superclasses). A class functions as the type of the object, but in
+         JavaScript, properties can be added and removed from objects at
+         run-time.
 
-      http://en.wikipedia.org/wiki/Prototype-based_programming
+         http://en.wikipedia.org/wiki/Prototype-based_programming
 
 
    TODO mention caller contexts p284, this
 
+   ### Encapsulation ###
 
    Another example of JavaScript's /exotic/ way of doing things is
    encapsulation. Most classical OO languages support visibility modifiers to
@@ -282,7 +289,7 @@ A: Of course, OOP is broader than "everything is an object". Most definitions
 
    Example:
 
-   ```Java:
+   ```Java
    class A {
        private int counter = 0;
        public void inc() {
@@ -292,10 +299,10 @@ A: Of course, OOP is broader than "everything is an object". Most definitions
    ..
    A a = new A();
    a.inc(); // OK
-   a.counter; // Error: not visibile!
+   a.counter; // Error: not visible!
    ..
    ```
-   ```JavaScript:
+   ```JavaScript
    var a = (function () {
        var counter = 0;
        return {
@@ -308,8 +315,9 @@ A: Of course, OOP is broader than "everything is an object". Most definitions
    a.counter; // Error: not visible!
    ```
 
-   Q: What is a closure?
+   ### Closures ###
 
+   Q: What is a closure?
    A: TODO p 310
 
    Q: What are the advantages of implementing encapsulation via closures?
@@ -324,9 +332,13 @@ A: Of course, OOP is broader than "everything is an object". Most definitions
       has to do more work to achieve it.
 
 
+
+   ### Polymorphism ###
+
    Polymorphism in JavaScript is achieved via inheritance.
 
    Example:
+
    ```JavaScript
    // Superclass Animal
    var Animal = function(name) { this.name = name; };
@@ -364,16 +376,18 @@ A: Of course, OOP is broader than "everything is an object". Most definitions
       language, the compile-time resolution that determines which method to
       call is ruled out, as the types are not known in advance.
 
-      Overloading based on the number of arguments is possible in dynamically
-      typed languages, but not in JavaScript. The reason being that JavaScript
-      doesn't check whether a function is called with the correct number of
-      arguments. JavaScript will happily allow you to call a function
-      expecting two arguments with 0, 1, 2, 3, ... arguments. Missing
-      arguments will be `undefined`. JavaScript also allows you to access the
-      excess arguments. The `arguments` object is a local variable accessible
-      within all functions. The `arguments` object is similar to an Array, but
-      not quite the same. The elements of `arguments` can be accessed, and it
-      has the `length`-property, the other methods available for `Array`s
+      ### Function arguments ###
+
+      Overloading based on arity is possible in dynamically typed languages,
+      but not in JavaScript. The reason being that JavaScript doesn't check
+      whether a function is called with the correct number of arguments.
+      JavaScript will happily allow you to call a function expecting two
+      arguments with 0, 1, 2, 3, ... arguments. Missing arguments will be
+      `undefined`. JavaScript also allows you to access the excess arguments
+      via the `arguments` object. The `arguments` object is a local variable
+      accessible within all functions. It is similar to an Array, but not
+      quite the same. The elements of `arguments` can be accessed, and it has
+      the `length`-property, but the other methods available for `Array`s
       cannot be used on the `arguments` object. One can convert the
       `arguments` object to an actual array, by calling `Array`'s
       `slice`-method on it, like so: `var args =
@@ -383,6 +397,8 @@ A: Of course, OOP is broader than "everything is an object". Most definitions
 
       Source: https://developer.mozilla.org/en-US/docs/JavaScript/Reference/Functions_and_function_scope/arguments
 
+      TODO default parameters (compare with CL?)
+
       Q: What's the point of this `arguments` object? And why isn't it a
          proper `Array`?
 
@@ -390,6 +406,7 @@ A: Of course, OOP is broader than "everything is an object". Most definitions
          expecting a variable number of arguments.
 
          Example:
+
          ```JavaScript
          // Sums all its arguments. The argument list is empty, because we'll
          // use the arguments object.
@@ -435,6 +452,7 @@ A: Of course, OOP is broader than "everything is an object". Most definitions
       run-time.
 
       Example:
+
       ```Java
       void overloaded() { return "No args"; }
       void overloaded(int x) { return "A number"; }
@@ -471,8 +489,13 @@ A: Of course, OOP is broader than "everything is an object". Most definitions
       blocks of code, specific for each case.
 
 
+
+   ### Modularity ###
+
    TODO Modularity in JavaScript p 306
 
-   TODO something about p 328
 
-   TODO functional programming p 331
+
+## Functional programming ##
+
+TODO functional programming p 331

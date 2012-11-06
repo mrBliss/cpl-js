@@ -15,4 +15,5 @@ Difference between JScript and JavaScript - http://javascript.about.com/od/refer
 http://www.howtocreate.co.uk/jshistory.html
 
 The world’s most misunderstood language: http://javascript.crockford.com/javascript.html
-                                                                         
+
+https://brendaneich.com/2010/07/a-brief-history-of-javascript/

@@ -42,7 +42,10 @@ $(document).ready(function () {
         var codeMirror = CodeMirror(function(editor) {
             var $pre = $(pre);
             var $div = $('<div class="editor" id="' + id + '"></div>');
-            var $tabs = $('<ul class="tabs"><li><a href="#reset">Reset</a></li><li><a href="#eval">Evaluate</a></li></ul>');
+            var $tabs = $('<ul class="tabs">'
+                          + '<li>' + (pre.className || 'JavaScript') + '</li>'
+                          + '<li><a href="#reset">Reset</a></li>'
+                          + '<li><a href="#eval">Evaluate</a></li></ul>');
             $div.append($tabs);
             $div.append(editor);
             $pre.replaceWith($div);
@@ -60,7 +63,9 @@ $(document).ready(function () {
             });
         }, {
             value: pre.innerHTML,
-            mode: "javascript",
+            mode: (pre.className
+                   ? (pre.className == 'Java' ? 'text/x-java' : pre.className)
+                   : "javascript"),
             indentUnit: 4,
             lineNumbers: true,
             matchBrackets: true,

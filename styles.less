@@ -110,9 +110,14 @@ h3 {
     border-bottom: 3px solid @text;
 }
 h4 {
-    padding: 0.5em 1em 0.2em 1.3em;
+    padding: 0.5em 1em 0.3em 1.3em;
     font-size: 1.5em;
     border-bottom: 1px dotted @text;
+}
+h5 {
+    font-size: 1.1em;
+    font-style: italic;
+    margin-bottom: 0.3em;
 }
 
 strong {
@@ -170,14 +175,21 @@ div.answer {
 
 
 
-pre, code, div.editor, div.CodeMirror {
+pre, div.editor, div.CodeMirror {
     font-family: "Inconsolata", Monaco, Consolas, monospace;
 }
+code, div.editor ul.tabs {
+    font-family: Consolas, Menlo, Monaco, "Liberation Mono", Courier, monospace;
+}
 code {
-    color: #003838;
     font-size: 0.7em;
     border: 1px solid @border;
-    padding: 0.1em;
+    padding: 0.2em;
+    padding-bottom: 0;
+    background: @linkBg;
+    &:hover {
+        background: darken(@linkBg, 2%);
+    }
 }
 // Fallback for CodeMirror
 pre {
@@ -193,26 +205,34 @@ pre {
     }
 }
 div.editor {
+    margin-top: -1em;
+    margin-bottom: 1em;
     ul.tabs {
-        right: 0;
-        float: right;
+        display: inline;
+        left: 0;
+        float: left;
         list-style-type: none;
         text-align: center;
         margin-bottom: -1px;
+        padding-left: 1px;
         li {
-            font-size: 0.8em;
-            line-height: 1em;
-            padding: 0.2em;
+            font-size: 0.75em;
+            line-height: 1.1em;
+            padding: 0.3em;
             margin-left: -1px;
             display: inline-block;
             border: 1px solid @border;
+            .gradient2(darken(@bg, 3%), darken(@bg, 9%));
             &:first-child  {
                 border-top-left-radius: 5px;
+                font-style: italic;
+                padding-left: 1em;
+                padding-right: 1em;
+                .gradient2(@bg, darken(@bg, 3%));
             }
             &:last-child {
                 border-top-right-radius: 5px;
             }
-            .gradient2(darken(@bg, 3%), darken(@bg, 9%));
             &:hover {
                 .gradient2(darken(@bg, 1%), darken(@bg, 6%));
             }
@@ -222,7 +242,9 @@ div.editor {
         }
     }
     div.CodeMirror {
-        clear: right;
+        border-bottom-left-radius: 5px;
+        border-bottom-right-radius: 5px;
+        clear: both;
         border: 1px solid @border;
         font-size: 0.8em;
     }
