@@ -12,31 +12,85 @@ A: JavaScript has many different implementations. Just looking at the browsers, 
     
 Q: That's a lot of engines. What do they have in common?
 A: This plethora of implementations makes it hard to discuss *the* implementation of JavaScript.
-   What all the engines do have in common, is that most (if not all) of them interpret the JavaScript code using JIT (Just-In-Time)
-   compilation.
+   Most engines do have quite a few components in common. Most (if not all) of them execute JavaScript code using JIT (Just-In-Time)
+   compilation. Let's delve a bit into the concept of JIT compilation before continuing the discussion on the most common parts of a
+   JavaScript engine.
 
-Q: What does this mean?
-A: This means that the compiler is run *after* the program has started and program code is
+Q: Ok, what is this JIT compilation?
+A: JIT compilation means that the compiler is run *after* the program has started and program code is
     compiled (converted to machine code) *on the fly* (at runtime, dynamically).
+    
     This is in contrast to static compilation, in which source code is translated into machine code once (at compile time).
-    This has the advantage that the whole of the program can be analyzed and optimizations can be made.
+    Static compilers have the advantage that the whole of the program can be analyzed and optimizations can be made.
     A downside to this approach is that machine code is not portable.
     
     The other extreme of static compilation is 'interpreted' code. Code is never compiled and is interpreted as-is at runtime.
-    This means the code remains portable across platform. However, this has the disadvantage that performance is lower, because
-    no optimizations can be made.
-    Using JIT compilation, code is compiled in chunks right before it is used (hence the term 'just-in-time').
-    This way, the best of both worlds is combined. Code remains portable while still being able to do (machine-specific) optimizations.
+    This means the code remains portable across platforms. However, this has the disadvantage that performance is lower, because
+    every instruction is interpreted seperately and no optimizations are made.
 
-Q: What are the main advantages of JIT?
-A: A common goal of all JIT techniques is to reach or surpass the performance of static compilation while maintaining the advantages of interpretation.
-   JIT compilation generally out-performs code interpretation by far (because of compiler-level optimizations). However, it may not be immediately clear
-   how JIT compilation can be faster than static compilation. After all, a static compiler can analyze the entire program and optimize it in its entirety
-   (and has all the time to do so!). However, here are some reasons a JIT compiler has over a static compiler:
-        -The JIT compiler can optimize for the targeted CPU and OS. For example, use SSE2 instructions when they are available. To obtain this effect
-         with a static compiler, one must either compile multiple versions (one with, one without SSE2) of the program, or include multiple versions of portions
-         of the code in the compiled program (if SSE2... else...).
-        -The system can collect information about how the program is currently running in the environment, and optimize code accordingly.
-        -Improvements in compiler technology affect existing programs. A better C compiler will not improve performance of C programs already deployed.
-         However, when a better JavaScript compiler is released, it will improve the performance of existing programs.
-        -
+    Using JIT compilation, code is compiled in chunks right before it is used, hence the term 'just-in-time'.
+    A JIT compiler will check for commonly repeated actions (such as loops, function calls, or type checking). It then tries to optimize
+    the native code that resulted from these common actions. It attempts to infer types. Although the type of variables can be changed
+    dynamically, it only happens very rarely in practice. For example, the compiler might figure out in advance that 'a=b+c;' is either a
+    string concatenation, or an integer addition.
+    
+    Another optimization it may do is function inlining. This means that function
+    calls are replaced by their resulting native code. This way the overhead of calling the function is eliminated. A similar optimization
+    named 'Loop unrolling' can also be applied. Loops with known bounds can be unrolled (exactly as function can be inlined). This way,
+    the overhead of checking the loop conditions is removed.
+    
+    By using JIT compilation, a midway between interpreted code and compiled code is found. Code remains portable while still being able to do 
+    (machine-specific) optimizations and thus not sacrificing on performance.
+
+Q: What are the main advantages of JIT compilation?
+A: A common goal of all JIT techniques is to reach or surpass the performance of static compilation while maintaining the advantages of interpretation. JIT compilation generally out-performs code interpretation by far (because of compiler-level optimizations). However, it may not be immediately clear how JIT compilation can be faster than static compilation. After all, a static compiler can analyze the entire program and optimize it in its entirety (and has all the time to do so!). However, here are some reasons a JIT compiler has over a static compiler:
+        -The JIT compiler can optimize for the targeted CPU and OS. For example, use SSE2 instructions when they are available. To obtain this 
+	effect with a static compiler, one must either compile multiple versions (one with, one without SSE2) of the program, or include 		multiple versions of portions of the code in the compiled program (if SSE2... else...).
+        
+	-The system can collect information about how the program is currently running in the environment, and optimize code accordingly.
+	 
+        -Improvements in compiler technology affect existing programs. A better C compiler will not improve performance of C programs already 		deployed. However, when a better JavaScript compiler is released, it will improve the performance of existing programs.
+
+Q: Got it. Now back to the engine. What are its most important components?
+A: A JavaScript engine usually consists of the following parts:
+		-A base compiler: parses the JavaScript and generates (not highly optimized) native code.
+		-An object model: in JavaScript, objects are represented as associative arrays/dicts. However,
+				some engines choose to implement this differently behind the scenes. For example,
+				V8 employs an internal type system called hidden classes (https://developers.google.com/v8/design).
+		-A runtime profiler: monitors the system being run and identifies "hot" code. This is code that can/should be optimized.
+		-An optimizing compiler: recompiles and optimizes the "hot" code.
+		-Some engines support deoptimization: if the assumptions made about optimized code prove to be too optimistic, the 				optimized code can be 'degenerated'. This is refered to as a 'bail-out'.		
+		-A garbage collector: manages memory allocation, reclaims memory that is no longer being used. Ideally, the programmer
+			should not need to worry about memory management. However, to write performant and clean programs, it is important
+			to understand how the garbage collector works (same goes for the other components).
+
+Q: JIT compilation was already discussed. How is garbage collection performed?
+A: The way garbage collection is performed, dependens on the engine. As an example, we'll look at the V8 engine. V8 uses a stop-the-world, 
+   generational, accurate,garbage collector. This means that V8:
+		-stops program execution when performing a garbage collection cycle.
+		-processes only part of the object heap in most garbage collection cycles. This minimizes the impact of stopping the
+			application.
+		-always knows exactly where all objects and pointers are in memory. This avoids falsely identifying objects as pointers which 
+			can result in memory leaks.
+   In V8, the object heap is segmented into two parts: new space where objects are created, and old space to which objects surviving a garbage collection cycle are promoted. If an object is moved in a garbage collection cycle, V8 updates all pointers to the object. (why?)
+
+Q: Can garbage collection be forced?
+A: It's not possible to explicitly force garbage collection in JavaScript. Some programmers try to force this anyway
+   by the use of the 'delete' keyword. 'delete' was originally intended to remove values from a map. Avoid using 'delete'
+   to try and force memory de-allocation. JavaScript engines tend to optimize objects behind the scenes and changing the structure
+   of an object manually can force de-optimization of an object. Another misconception among programmers is that setting an object reference
+   to 'null' means the object is deleted from memory (it is 'nulled out'). This is not true. Only the reference is set to null, the object 
+   still lives in memory until it is garbage collected. If the reference you set to null was the last reference, it will be garbage collected,
+   otherwise it will remain in memory. The only way to manage memory efficiently in JavaScript is to scope your variables properly.
+   Once variables fall out of scope, they will be garbage collection. So it is key to scope your variables as locally as possible.
+   Also, try to avoid global variables. They are NEVER garbage collected and will exist for the entire lifetime of your application (or, in
+   case of web browsers, as long as the page is open).
+
+Bibliography:
+
+Wikipedia - Just In Time compilation: http://en.wikipedia.org/wiki/Just-in-time_compilation
+Brendan Eich on the TraceMonkey JIT compiler: https://brendaneich.com/2008/08/tracemonkey-javascript-lightspeed/
+John Resig on TraceMonkey: http://ejohn.org/blog/tracemonkey/
+Wikipedia - List of ECMAScript engines: http://en.wikipedia.org/wiki/List_of_ECMAScript_engines
+Writing fast, memory efficient Javascript: http://coding.smashingmagazine.com/2012/11/05/writing-fast-memory-efficient-javascript/
+Google V8 design: https://developers.google.com/v8/design
