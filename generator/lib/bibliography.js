@@ -1,3 +1,5 @@
+var fs = require('fs');
+
 var formatAuthors = function(authors) {
     return authors.map(function(author) {
         return author[0] + ', '
@@ -19,10 +21,10 @@ Book.prototype.toHTML = function() {
     // We need pattern-matching
     var fmtEdition = null;
     switch (this.edition) {
-        case 1: fmtEdition = '1st'; break;
-        case 2: fmtEdition = '2nd'; break;
-        case 3: fmtEdition = '3rd'; break;
-        default: fmtEdition = this.edition + 'th';
+    case 1: fmtEdition = '1st'; break;
+    case 2: fmtEdition = '2nd'; break;
+    case 3: fmtEdition = '3rd'; break;
+    default: fmtEdition = this.edition + 'th';
     };
     return '<li class="book">'
         + '<span class="author">' + fmtAuthors + '</span> '
@@ -43,7 +45,7 @@ var Wikipedia = function(name, fields) {
 };
 Wikipedia.prototype.toHTML = function() {
     return '<li class="encyc"><span class="title">'
-    + this.title + '</span>. In <span class="encyc">Wikipedia</span>.'
+        + this.title + '</span>. In <span class="encyc">Wikipedia</span>.'
         + ' Retrieved ' + this.retrieved + ', from <a href="' +
         this.url + '">' + this.url + '</a></li>';
 };
@@ -83,29 +85,33 @@ Blog.prototype.toHTML = function() {
         + '<a href="' + this.url + '">' + this.url + '</a></li>';
 };
 
-// Ugly, but easy
-eval(require('fs').readFileSync('./bibliography.js', 'utf8'));
+exports.makeBibliography = function() {
+    // Ugly, but easy
+    eval(fs.readFileSync('../bibliography.js', 'utf8'));
 
-console.log('<ul>');
-console.log(entries.sort(function(a, b) {
-    if (a.authors && b.authors) {
-        return (a.authors < b.authors)
-            ? -1
-            : (a.authors > b.authors)
-            ? 1
-            : 0;
-    } else if (a.authors) {
-        return -1;
-    } else if (b.authors) {
-        return 1;
-    } else {
-        return (a.title < b.title)
-            ? -1
-            : (a.title > b.title)
-            ? 1
-            : 0;
-    }
-}).map(function(book) {
-    return book.toHTML();
-}).join('\n'));
-console.log('</ul>');
+    var html = '<ol>\n';
+    html += (entries.sort(function(a, b) {
+        if (a.authors && b.authors) {
+            return (a.authors < b.authors)
+                ? -1
+                : (a.authors > b.authors)
+                ? 1
+                : 0;
+        } else if (a.authors) {
+            return -1;
+        } else if (b.authors) {
+            return 1;
+        } else {
+            return (a.title < b.title)
+                ? -1
+                : (a.title > b.title)
+                ? 1
+                : 0;
+        }
+    }).map(function(book) {
+        return book.toHTML();
+    }).join('\n'));
+
+    html += '</ol>';
+    return html;
+};
