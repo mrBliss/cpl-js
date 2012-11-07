@@ -9,6 +9,12 @@
 // * <foot>Foo bar</foot> -- "For bar" will be a footnote
 //
 // Not done by `markup`, but also available:
+// * > Block quoting
+//   can continue over multiple lines
+//
+//   >[Source][url] You can also add the source of the quote.
+//   > Provide a link definition for it.
+//
 // * #[lbl] -- a reference to the title with label `lbl`
 // * [text][lbl] -- a link with `text` as text to click on. The url to
 // go to is determined by an accompanying link definition.

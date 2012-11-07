@@ -21,6 +21,7 @@ if (parsed) {
     var markedUp = ast.transform(markup);
     var withRefs = markedUp.transform(toc.fillInReferences(refs));
     var withLinks = withRefs.transform(toc.fillInLinks(links));
+    withRefs.traverse(toc.fillInBlockQuoteLinks(links));
     var html = withLinks.toHTML();
     var template = fs.readFileSync('../template.html', 'utf8');
     fs.writeFile('../index.html', template

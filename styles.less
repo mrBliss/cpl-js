@@ -132,6 +132,9 @@ h4, h5, h6 {
         font-size: 1.3em;
     }
 }
+h4 + div.question, h5 + div.question, h6 + div.question, div.editor + div.question {
+    margin-top: 1em;
+}
 strong {
     color: @highlight2;
 }
@@ -168,6 +171,9 @@ div.question {
     &:before {
         .qa-before("Q: ");
     }
+    emph {
+        font-style: normal;
+    }
 }
 
 
@@ -189,8 +195,6 @@ div.answer {
         line-height: 1.3em;
     }
 }
-
-
 
 pre, div.editor, div.CodeMirror {
     font-family: "Inconsolata", Monaco, Consolas, monospace;
@@ -223,7 +227,7 @@ pre {
 }
 div.editor {
     margin-top: -1em;
-    margin-bottom: 1em;
+    margin-bottom: 2em;
     ul.tabs {
         display: inline;
         left: 0;
@@ -267,10 +271,36 @@ div.editor {
     }
 }
 
+blockquote {
+    .quotmark(@symbol, @side) {
+        content: @symbol;
+        font-style: normal;
+        font-size: 4em;
+        line-height: 1em;
+        float: @side;
+        display: block;
+        margin-right: 0.3em;
+    }
+    &:before {
+        .quotmark("“", left);
+    }
+    &:after {
+        .quotmark("”", right);
+    }
+    font-style: italic;
+    background: darken(@bg, 5%);
+    padding: 0.8em;
+    border-left: 5px solid @border;
+    border-right: 5px solid @border;
+    border-top: 1px dotted @border;
+    border-bottom: 1px dotted @border;
+    span.cite {
+        margin-left: 2em;
+    }
+}
+
 span.footnote {
     display: none;
-    // font-size: 0.75em;
-    // font-style: italic;
 }
 a.footnote {
     background: @linkBg;

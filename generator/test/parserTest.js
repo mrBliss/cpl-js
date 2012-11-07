@@ -174,7 +174,39 @@ exports.testLinkDef = function(test) {
     doesntParse(test, parser.LinkDef, '[foobar]:  \n');
     doesntParse(test, parser.LinkDef, '[foobar]:  bla\n');
     test.done();
-}
+};
+
+exports.testBlockQuote = function(test) {
+    parses(test, parser.BlockQuote,
+           '> Bla di bla\n',
+           {indent: 0,
+            text: 'Bla di bla'});
+    parses(test, parser.BlockQuote,
+           '> Bla di bla\nfoo bar\nbeta gamma\n',
+           {indent: 0,
+            text: 'Bla di bla foo bar beta gamma'});
+    parses(test, parser.BlockQuote,
+           '   > Bla di bla\n   foo bar\n   beta gamma\n',
+           {indent: 3,
+            text: 'Bla di bla foo bar beta gamma'});
+    parses(test, parser.BlockQuote,
+           '   > Bla di bla\n     foo bar\n     beta gamma\n',
+           {indent: 3,
+            text: 'Bla di bla foo bar beta gamma'});
+    parses(test, parser.BlockQuote,
+           '>[Bla][labl] Bla di bla\n',
+           {indent: 0,
+            text: 'Bla di bla',
+            cite: 'Bla',
+            link: 'labl'});
+    doesntParse(test, parser.BlockQuote, '>Bla di bla\n');
+    doesntParse(test, parser.BlockQuote, '> Bla di bla');
+    doesntParse(test, parser.BlockQuote, '>[ Bla di bla\n');
+    doesntParse(test, parser.BlockQuote, '>[Bla] Bla di bla\n');
+    doesntParse(test, parser.BlockQuote, '>[Bla][bla Bla di bla\n');
+    test.done();
+};
+
 
 exports.testQuestion = function(test) {
     parses(test, parser.Question, 'Q: Bladibla\n',

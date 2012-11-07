@@ -59,7 +59,8 @@ exports.toHTML = function(toc) {
             html += '</li>\n';
         }
         var anchor = t[1].toLowerCase()
-                .replace(/[^a-z0-9-]|\s/g, '-');
+                .replace(/[^a-z0-9-]|\s/g, '-')
+                .replace(/-+/, '-');
         html += '<li><a href="#' + anchor +'">' + t[1] + '</a>';
         prevLevel = level;
     };
@@ -124,5 +125,18 @@ exports.fillInLinks = function(links) {
             }
             return '';
         });
+    };
+};
+
+exports.fillInBlockQuoteLinks = function(links) {
+    return function(elem) {
+        if (elem.link) {
+            var url = links[elem.link];
+            if (!url) {
+                console.log('WARNING: unresolved link: ' + elem.link);
+            } else {
+                elem.url = url;
+            }
+        }
     };
 };

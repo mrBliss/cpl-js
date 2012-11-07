@@ -21,6 +21,14 @@ function LinkDef(label, url) {
     this.label = label;
     this.url = url;
 }
+function BlockQuote(indent, text, cite, link) {
+    this.indent = indent;
+    this.text = text;
+    if (cite && link) {
+        this.cite = cite;
+        this.link = link;
+    }
+}
 function Question(indent, text) {
     this.indent = indent;
     this.text = text;
@@ -89,7 +97,8 @@ Page.prototype.constructor = Page;
 Title.prototype.anchor = function() {
     if (!this._anchor) {
         this._anchor = this.text.toLowerCase()
-            .replace(/[^a-z0-9-]|\s/g, '-');
+            .replace(/[^a-z0-9-]|\s/g, '-')
+            .replace(/-+/, '-');
     }
     return this._anchor;
 };
@@ -123,7 +132,19 @@ List.prototype.toHTML = function() {
 LinkDef.prototype.toHTML = function() {
     // No HTML representation
     return '';
-}
+};
+
+BlockQuote.prototype.toHTML = function() {
+    return '<blockquote' + (this.url
+                            ? ' cite="' + this.url + '">'
+                            : '>')
+        + this.text
+        + (this.url
+           ? '<span class="cite">&mdash;<a href="' + this.url + '">'
+           + this.cite + '</a></span>'
+           : '')
+        + '</blockquote>';
+};
 
 Question.prototype.toHTML = function() {
     return '<div class="question">' + this.text + '</div>';
@@ -172,7 +193,12 @@ List.prototype.transform = function(t) {
 
 LinkDef.prototype.transform = function(t) {
     return this;
-}
+};
+
+BlockQuote.prototype.transform = function(t) {
+    this.text = t(this.text);
+    return this;
+};
 
 Question.prototype.transform = function(t) {
     this.text = t(this.text);
@@ -221,6 +247,10 @@ LinkDef.prototype.traverse = function(f) {
     f(this);
 };
 
+BlockQuote.prototype.traverse = function(f) {
+    f(this);
+};
+
 Question.prototype.traverse = function(f) {
     f(this);
 };
@@ -252,6 +282,7 @@ exports.Title = Title;
 exports.CodeBlock = CodeBlock;
 exports.List = List;
 exports.LinkDef = LinkDef;
+exports.BlockQuote = BlockQuote;
 exports.Question = Question;
 exports.Answer = Answer;
 exports.QA = QA;

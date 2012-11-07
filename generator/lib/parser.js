@@ -62,7 +62,6 @@ var ButNewLine = but(NewLine);
 var TillEOL = joined(rep1(ButNewLine));
 var WholeLine = joined(seq(TillEOL, NewLine));
 var WS = rep1(ch(' '));
-// var Paragraph = trimRight(joined(rep1(ws(WholeLine))));
 var Paragraph = action(
     indented(trimRight(joined(rep1(ws(WholeLine))))),
     function(arr) {
@@ -71,22 +70,18 @@ var Paragraph = action(
 
 var BlankLine = ignored(ws(NewLine));
 var BlankLines = ignored(rep1(BlankLine));
+
+var Bracketed = between('[', joined(rep1(but(ch(']')))), ']');
+
 var Title = action(
     indented(seq(
         count(rep1(ch('#'))),
         ws(trimRight(joined(rep1(but(ch('#')))))),
         ignored(rep1(ch('#'))),
-        opt(between('[', joined(rep1(but(ch(']')))), ']')),
+        opt(Bracketed),
         ignored(NewLine))),
     function(arr) {
         return new el.Title(arr[0], arr[1][0], arr[1][1], arr[1][2]);
-    });
-var LinkDef = action(
-    seq(ws(between('[', joined(rep1(but(ch(']')))), ']')),
-        ch(':'),
-        ws(joined(seq(token("http"), TillEOL, ignored(NewLine))))),
-    function(arr) {
-        return new el.LinkDef(arr[0], arr[2]);
     });
 
 var CodeBlock = action(
@@ -130,6 +125,25 @@ var List = action(indented(rep1(ListItem)),
                       return new el.List(arr[0], arr[1]);
                   });
 
+var LinkDef = action(
+    seq(ws(Bracketed),
+        ch(':'),
+        ws(joined(seq(token("http"), TillEOL, ignored(NewLine))))),
+    function(arr) {
+        return new el.LinkDef(arr[0], arr[2]);
+    });
+
+var BlockQuote = action(
+    indented(seq(ch('>'),
+                 choice(seq(Bracketed, Bracketed),
+                        WS),
+                 trimRight(joined(rep1(ws(WholeLine)))))),
+    function(arr) {
+        return new el.BlockQuote(arr[0], arr[1][2],
+                                 arr[1][1][0], arr[1][1][1]);
+    });
+
+
 var Question = action(
     seq(count(rep0(ch(' '))),
         ignored('Q: '),
@@ -150,6 +164,7 @@ var Answer = action(
                                    return QA(p);
                                },
                                LinkDef,
+                               BlockQuote,
                                Paragraph)),
                    function(arr) {
                        return filter(arr, function(x) {
@@ -201,6 +216,7 @@ exports = {
     ListItem: ListItem,
     List: List,
     LinkDef: LinkDef,
+    BlockQuote: BlockQuote,
     Question: Question,
     Answer: Answer,
     QA: QA,
