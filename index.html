@@ -46,14 +46,21 @@
 <li><a href="#indirect-invocation">Indirect invocation</a></li>
 </ol>
 </li>
-<li><a href="#encapsulation">Encapsulation</a></li>
+<li><a href="#encapsulation">Encapsulation</a>
+<ol>
+<li><a href="#function-global-scope">Function & global scope</a></li>
+<li><a href="#variable-hoisting">Variable hoisting</a></li>
+<li><a href="#lexical-dynamic-scope">Lexical & dynamic scope</a></li>
 <li><a href="#closures">Closures</a></li>
+</ol>
+</li>
 <li><a href="#polymorphism">Polymorphism</a></li>
 <li><a href="#function-arguments">Function arguments</a></li>
 <li><a href="#modularity">Modularity</a></li>
 </ol>
 </li>
 <li><a href="#functional-programming">Functional programming</a></li>
+<li><a href="#monkey-patching">Monkey-patching</a></li>
 </ol>
 </li>
 
@@ -276,15 +283,119 @@ a.counter; // Error: not visible!
 })();
 a.inc(); // OK
 a.counter; // Error: not visible!</pre>
-<h5><a name="closures"></a>I.1.5. Closures</h5>
-<p>Q: What is a closure? A: TODO p 310</p>
+<div class="question">What is a closure?</div>
+<div class="answer">
+<p>Before explaining what a closure is, you have to know some things about JavaScript&rsquo;s scoping rules</p>
+<h6><a name="function-global-scope"></a>I.1.4.1. Function & global scope</h6>
+<p>JavaScript&rsquo;s scoping rules differ from common languages like C and Java. In C and Java, curly braces (<code>{&hellip;}</code>) delimit different scopes. The body of a function, a while-loop, a for-loop, a class (in the case of Java), all have a separate scope (known as <emph>block scope</emph>). In JavaScript, there are only two kinds of scope: the global scope and function scope.</p>
+<p>Let&rsquo;s see some examples of these differing scoping rules</p>
+<pre class="Java">for (int i = 0; i < 10; i++) {
+    // ...
+}
+System.out.println(i); // Error: i is undefined here,
+// it is only accessible within the scope of the for-loop
+
+int a = 10;
+{
+    // A new scope
+    a = 3;
+}
+System.out.println(a); // 10</pre>
+<pre>for (var i = 0; i < 10; i++) {
+    // ...
+}
+println(i); // 10
+
+var a = 10;
+{
+    // No new scope
+    a = 3;
+}
+println(a); // 3</pre>
+<p>By default all variables will be defined in the global scope, i.e. they will be global variables. This sends cold shivers down many a programmer&rsquo;s spine. The only way to delimit the scope of variable definitions is by wrapping them in a function.</p>
+<pre>var x = 3;
+(function() {
+    var x = 10;
+    // x = 10
+})(); // This function is invoked immediately after definition
+println(x); // 3</pre>
+<h6><a name="variable-hoisting"></a>I.1.4.2. Variable hoisting</h6>
+<p>In this intermezzo, another peculiarity of JavaScript&rsquo;s scoping rules is introduced, <emph>variable hoisting</emph>.</p>
+<pre>var f = function() {
+    return y;
+};
+// ...
+var y = 3;
+f(); // 3</pre>
+<p>In the example above, we define the function <code>f</code> which returns the value of the undefined variable <code>y</code> when called. A bit later in the program, but still in the same scope (global or function), we define the variable <code>y</code>. Finally, we invoke <code>f</code>, which returns <code>3</code>. Shouldn&rsquo;t the definition of <code>f</code> fail with an error message complaining about the undefined variable <code>y</code>? What actually happens, is that all variable declarations in the current scope are moved to the beginning of the scope. Only the declarations, not the initialisations.</p>
+<p>What happens under the hood is the following:</p>
+<pre>var f, y;
+f = function() {
+    return y;
+};
+// ...
+y = 3;
+f(); // 3</pre>
+<p>In this case, some people might consider variable hoisting to be advantageous, but that&rsquo;s not always the case, see the following example:</p>
+<pre>var x = 0;
+function f() {
+    println("A: " + x);
+    var x = 1;
+    println("B: " + x);
+}
+f();
+// A: undefined
+// B: 1</pre>
+<p>Most programmers would expect the first <code>println</code>-statement to print out <code>A: 0</code>. What actually happens is the following:</p>
+<pre>var x = 0;
+function f() {
+    var x; // x is now declared, but uninitialised, i.e. `undefined`
+    println("A: " + x);
+    x = 1;
+    println("B: " + x);
+}
+f();</pre>
+<p>This phenomenon is called <emph>variable hoisting</emph>. The variable declarations are hoisted to the top of the scope, but the initialisations are left in place.</p>
+<div class="question">Why does JavaScript do this?</div>
+<div class="answer">
+<p>This is just one of JavaScript&rsquo;s many quirks. It&rsquo;s sometimes difficult to imagine what Brendan Eich must have been thinking when designing JavaScript&hellip;</p></div>
+<h6><a name="lexical-dynamic-scope"></a>I.1.4.3. Lexical & dynamic scope</h6>
+<p>We assume you&rsquo;re already familiar with lexical and dynamic scoping, so we&rsquo;ll quickly glance over it.</p>
+<p>In the case of lexical scoping, functions are invoked in the scope that was active during the definition of the function. In the case of dynamic scoping, functions are invoked in the scope active during the invocation of the function. Let&rsquo;s show difference with an example.</p>
+<pre>var f = (function() {
+    var z = 'lexical';
+    return function() {
+        return z;
+    };
+})();
+
+var z = 'dynamic';
+f(); // 'lexical' when lexically scoped,
+     // 'dynamic' in the other case</pre>
+<p>JavaScript is lexically scoped, as is Scheme, one of JavaScript&rsquo;s biggest influences TODO ref scheme. The return value of <code>f</code> in the example above will be &lsquo;lexical&rsquo;.</p>
+<p>Q: Why</p>
+<h6><a name="closures"></a>I.1.4.4. Closures</h6>
+<p>Let&rsquo;s have another look of the example that we showed you to demonstrate encapsulation.</p>
+<pre>var a = (function () {
+    var counter = 0;
+    return {
+        inc: function() {
+            counter++;
+        },
+    };
+})();
+a.inc(); // OK
+a.counter; // Error: not visible!</pre>
+<p>As JavaScript is lexically scoped, functions have to capture the scope that was active during their definition. Essentially, what happens is that all variables defined in a scope outside the defined function but referenced from within the scope of the function, known as <emph>free variables</emph>, have to be captured. In the example above, the function defined on line 4 references a variable <code>counter</code> (line 5), that was defined in another scope (line 2). The free variables are <emph>closed</emph>-over, they are <emph>captured</emph> by the closure. One can think of a closure as a pair of a function, i.e. code, and its environment, i.e. data.</p>
+<p>Encapsulation can be achieved by defining the variables meant to be private in a function (scope) A, and defining a new function B within A, that references these variables. The closure of function B will capture these private variables. By holding onto function B, but discarding function (scope) A, only B will be able to access these private variable,<span class="footnote">Unless function B leaks them via its properties.</span> effectively achieving encapsulation.</p></div>
 <div class="question">What are the advantages of implementing encapsulation via closures?</div>
 <div class="answer">
-<p>Actually, one could call it <emph>emulating</emph> encapsulation via closures. Because of the absence of encapsulation, JavaScript programmers are required to implement encapsulation manually via closures. So one could call it a disadvantage of JavaScript, although some people argue against encapsulation.</p>
-<p>With closures, the programmer has more control over encapsulation, but has to do more work to achieve it.</p></div>
-<h5><a name="polymorphism"></a>I.1.6. Polymorphism</h5>
-<p>Polymorphism in JavaScript is achieved via inheritance.</p>
-<p>Example:</p>
+<p>Actually, one could call it <emph>emulating</emph> encapsulation via closures. Because of the absence of built-in encapsulation via visibility-modifiers, JavaScript programmers are required to implement encapsulation manually via closures. So one could call it a disadvantage of JavaScript, although some people argue against encapsulation.</p>
+<p>With closures, the programmer has more control over encapsulation, but has to do more work to achieve it.</p>
+</div>
+<h5><a name="polymorphism"></a>I.1.5. Polymorphism</h5>
+<p>Polymorphism in JavaScript is achieved through inheritance or duck typing.</p>
+<p>Example of polymorphism through inheritance:</p>
 <pre>// Superclass Animal
 var Animal = function(name) { this.name = name; };
 // Default implementation of makeNoise
@@ -308,12 +419,35 @@ for (var i = 0; i < animals.length; i++) {
 }
 // Bark
 // Silence</pre>
-<div class="question">You mentioned that one can <emph>override</emph> a method in JavaScript, is also possible to overload a method in JavaScript?</div>
+<p>Example of polymorphism through duck-typing:</p>
+<pre>var Dog = function(name) {
+    this.name = name;
+    this.makeNoise = function() { return "Bark"; };
+};
+
+var Turtle = function(name) {
+    this.name = name;
+    this.makeNoise = function() { return "Silence";};
+};
+
+var animals = [new Dog("Pluto"), new Turtle("Jeffrey")];
+
+for (var i = 0; i < animals.length; i++) {
+    println(animals[i].makeNoise());
+}
+// Bark
+// Silence</pre>
+<blockquote cite="http://en.wikipedia.org/wiki/Duck_typing">Duck-typing is a style of dynamic typing in which an object&rsquo;s methods and properties determine the valid semantics, rather than its inheritance from a particular class or implementation of a specific interface.<span class="cite">&mdash;<a href="http://en.wikipedia.org/wiki/Duck_typing">Wikipedia on Duck typing</a></span></blockquote>
+<p>In the example above, all objects have the required <code>makeNoise</code> function as a property, thus satisfy the required <emph>semantics</emph>.</p>
+<div class="question">Which of the two is preferable, polymorphism through inheritance, or through duck typing?</div>
+<div class="answer">
+<p>To obtain polymorphism through inheritance, you have to set up the inheritance relation, including boilerplate code (constructors, method prototypes, &hellip;). This requires more work from the programmer. The advantage of this approach is that the methods can be inherited from prototypes of objects, requiring less memory than storing a method for each object.</p>
+<p>Not having to set up the inheritance relation, is one of advantages duck typing. It&rsquo;s sufficient to add the appropriate methods to the objects that will participate in this application of polymorphism.</p></div>
+<div class="question">You mentioned that one can <emph>override</emph> a method in JavaScript, is it also possible to <emph>overload</emph> a method in JavaScript?</div>
 <div class="answer">
 <p>To be clear, a method (or function) overloads another method if it has the same name, but differs in the number of arguments or the types of the expected arguments. The right method to call is chosen statically, at compile-time. Overloading is a feature typically present in statically typed languages. With JavaScript being a dynamically typed language, the compile-time resolution that determines which method to call is ruled out, as the types are not known in advance.</p>
-<h5><a name="function-arguments"></a>I.1.7. Function arguments</h5>
+<h5><a name="function-arguments"></a>I.1.6. Function arguments</h5>
 <p>Overloading based on arity is possible in dynamically typed languages, but not in JavaScript. The reason being that JavaScript doesn&rsquo;t check whether a function is called with the correct number of arguments. JavaScript will happily allow you to call a function expecting two arguments with 0, 1, 2, 3, &hellip; arguments. Missing arguments will be <code>undefined</code>. JavaScript also allows you to access the excess arguments via the <code>arguments</code> object. The <code>arguments</code> object is a local variable accessible within all functions. It is similar to an Array, but not quite the same. The elements of <code>arguments</code> can be accessed, and it has the <code>length</code>-property, but the other methods available for <code>Array</code>s cannot be used on the <code>arguments</code> object. One can convert the <code>arguments</code> object to an actual array, by calling <code>Array</code>&lsquo;s <code>slice</code>-method on it, like so: <code>var args = Array.prototype.slice.call(arguments);</code>.<span class="footnote">The <code>slice</code>-method of <code>Array</code> copies the elements into a new array, it optionally takes start- and end-indices. See <a href="#indirect-invocation" class="ref">Indirect invocation</a> for more about the <code>call</code>-method.</span></p>
-<p>Source: https://developer.mozilla.org/en-US/docs/JavaScript/Reference/Functions_and_function_scope/arguments</p>
 <p>TODO default parameters (compare with CL?)</p>
 <div class="question">What&rsquo;s the point of this <code>arguments</code> object? And why isn&rsquo;t it a proper <code>Array</code>?</div>
 <div class="answer">
@@ -377,11 +511,14 @@ overloaded("foo");
 // A string
 overloaded(1, "foo");
 // A number and a string</pre>
-<p>These <code>return</code>-statements could of course be replaced with different blocks of code, specific for each case.</p></div>
-<h5><a name="modularity"></a>I.1.8. Modularity</h5>
+<p>These <code>return</code>-statements could of course be replaced with different blocks of code, specific for each case.</p>
+<p>Of course, doing this resolution at run-time has a negative impact on the performance.</p></div>
+<h5><a name="modularity"></a>I.1.7. Modularity</h5>
 <p>TODO Modularity in JavaScript p 306</p></div>
 <h4><a name="functional-programming"></a>I.2. Functional programming</h4>
 <p>TODO functional programming p 331</p>
+<h4><a name="monkey-patching"></a>I.3. Monkey-patching</h4>
+<p>TODO</p>
 
     <div id="bibliography" name="bibliography">
       <h3 name="bibliography">Bibliography</h3>

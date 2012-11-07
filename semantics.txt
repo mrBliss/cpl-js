@@ -430,18 +430,213 @@ A: Of course, OOP is broader than "everything is an object". Most definitions
    a.counter; // Error: not visible!
    ```
 
-   ### Closures ###
 
    Q: What is a closure?
-   A: TODO p 310
+
+   A: Before explaining what a closure is, you have to know some things about
+      JavaScript's scoping rules
+
+      #### Function & global scope ###
+
+      JavaScript's scoping rules differ from common languages like C and Java.
+      In C and Java, curly braces (`{...}`) delimit different scopes. The body
+      of a function, a while-loop, a for-loop, a class (in the case of Java),
+      all have a separate scope (known as /block scope/). In JavaScript, there
+      are only two kinds of scope: the global scope and function scope.
+
+      Let's see some examples of these differing scoping rules
+
+      ```Java
+      for (int i = 0; i < 10; i++) {
+          // ...
+      }
+      System.out.println(i); // Error: i is undefined here,
+      // it is only accessible within the scope of the for-loop
+
+      int a = 10;
+      {
+          // A new scope
+          a = 3;
+      }
+      System.out.println(a); // 10
+      ```
+
+      ```JavaScript
+      for (var i = 0; i < 10; i++) {
+          // ...
+      }
+      println(i); // 10
+
+      var a = 10;
+      {
+          // No new scope
+          a = 3;
+      }
+      println(a); // 3
+      ```
+
+      By default all variables will be defined in the global scope, i.e. they
+      will be global variables. This sends cold shivers down many a
+      programmer's spine. The only way to delimit the scope of variable
+      definitions is by wrapping them in a function.
+
+      ```JavaScript
+      var x = 3;
+      (function() {
+          var x = 10;
+          // x = 10
+      })(); // This function is invoked immediately after definition
+      println(x); // 3
+      ```
+
+      #### Variable hoisting ####
+
+      In this intermezzo, another peculiarity of JavaScript's scoping rules is
+      introduced, /variable hoisting/.
+
+      ```JavaScript
+      var f = function() {
+          return y;
+      };
+      // ...
+      var y = 3;
+      f(); // 3
+      ```
+
+      In the example above, we define the function `f` which returns the value
+      of the undefined variable `y` when called. A bit later in the program,
+      but still in the same scope (global or function), we define the variable
+      `y`. Finally, we invoke `f`, which returns `3`. Shouldn't the definition
+      of `f` fail with an error message complaining about the undefined
+      variable `y`? What actually happens, is that all variable declarations
+      in the current scope are moved to the beginning of the scope. Only the
+      declarations, not the initialisations.
+
+      What happens under the hood is the following:
+
+      ```JavaScript
+      var f, y;
+      f = function() {
+          return y;
+      };
+      // ...
+      y = 3;
+      f(); // 3
+      ```
+
+      In this case, some people might consider variable hoisting to be
+      advantageous, but that's not always the case, see the following example:
+
+      ```JavaScript
+      var x = 0;
+      function f() {
+          println("A: " + x);
+          var x = 1;
+          println("B: " + x);
+      }
+      f();
+      // A: undefined
+      // B: 1
+      ```
+
+      Most programmers would expect the first `println`-statement to print out
+      `A: 0`. What actually happens is the following:
+
+      ```JavaScript
+      var x = 0;
+      function f() {
+          var x; // x is now declared, but uninitialised, i.e. `undefined`
+          println("A: " + x);
+          x = 1;
+          println("B: " + x);
+      }
+      f();
+      ```
+
+
+      This phenomenon is called /variable hoisting/. The variable declarations
+      are hoisted to the top of the scope, but the initialisations are left in
+      place.
+
+      Q: Why does JavaScript do this?
+
+      A: This is just one of JavaScript's many quirks. It's sometimes
+         difficult to imagine what Brendan Eich must have been thinking when
+         designing JavaScript...
+
+      #### Lexical & dynamic scope ####
+
+      We assume you're already familiar with lexical and dynamic scoping, so
+      we'll quickly glance over it.
+
+      In the case of lexical scoping, functions are invoked in the scope that
+      was active during the definition of the function. In the case of dynamic
+      scoping, functions are invoked in the scope active during the invocation
+      of the function. Let's show difference with an example.
+
+      ```JavaScript
+      var f = (function() {
+          var z = 'lexical';
+          return function() {
+              return z;
+          };
+      })();
+
+      var z = 'dynamic';
+      f(); // 'lexical' when lexically scoped,
+           // 'dynamic' in the other case
+      ```
+
+      JavaScript is lexically scoped, as is Scheme, one of JavaScript's
+      biggest influences TODO ref scheme. The return value of `f` in the
+      example above will be 'lexical'.
+
+      Q: Why
+
+      #### Closures ####
+
+      Let's have another look of the example that we showed you to demonstrate
+      encapsulation.
+
+      ```JavaScript
+      var a = (function () {
+          var counter = 0;
+          return {
+              inc: function() {
+                  counter++;
+              },
+          };
+      })();
+      a.inc(); // OK
+      a.counter; // Error: not visible!
+      ```
+
+      As JavaScript is lexically scoped, functions have to capture the scope
+      that was active during their definition. Essentially, what happens is
+      that all variables defined in a scope outside the defined function but
+      referenced from within the scope of the function, known as /free
+      variables/, have to be captured. In the example above, the function
+      defined on line 4 references a variable `counter` (line 5), that was
+      defined in another scope (line 2). The free variables are /closed/-over,
+      they are /captured/ by the closure. One can think of a closure as a pair
+      of a function, i.e. code, and its environment, i.e. data.
+
+      Encapsulation can be achieved by defining the variables meant to be
+      private in a function (scope) A, and defining a new function B within A,
+      that references these variables. The closure of function B will capture
+      these private variables. By holding onto function B, but discarding
+      function (scope) A, only B will be able to access these private
+      variable,<foot>Unless function B leaks them via its properties.</foot>
+      effectively achieving encapsulation.
+
 
    Q: What are the advantages of implementing encapsulation via closures?
 
    A: Actually, one could call it /emulating/ encapsulation via closures.
-      Because of the absence of encapsulation, JavaScript programmers are
-      required to implement encapsulation manually via closures. So one could
-      call it a disadvantage of JavaScript, although some people argue against
-      encapsulation.
+      Because of the absence of built-in encapsulation via
+      visibility-modifiers, JavaScript programmers are required to implement
+      encapsulation manually via closures. So one could call it a disadvantage
+      of JavaScript, although some people argue against encapsulation.
 
       With closures, the programmer has more control over encapsulation, but
       has to do more work to achieve it.
@@ -450,9 +645,9 @@ A: Of course, OOP is broader than "everything is an object". Most definitions
 
    ### Polymorphism ###
 
-   Polymorphism in JavaScript is achieved via inheritance.
+   Polymorphism in JavaScript is achieved through inheritance or duck typing.
 
-   Example:
+   Example of polymorphism through inheritance:
 
    ```JavaScript
    // Superclass Animal
@@ -480,8 +675,54 @@ A: Of course, OOP is broader than "everything is an object". Most definitions
    // Silence
    ```
 
-   Q: You mentioned that one can /override/ a method in JavaScript, is also
-      possible to overload a method in JavaScript?
+   Example of polymorphism through duck-typing:
+
+   ```JavaScript
+   var Dog = function(name) {
+       this.name = name;
+       this.makeNoise = function() { return "Bark"; };
+   };
+
+   var Turtle = function(name) {
+       this.name = name;
+       this.makeNoise = function() { return "Silence";};
+   };
+
+   var animals = [new Dog("Pluto"), new Turtle("Jeffrey")];
+
+   for (var i = 0; i < animals.length; i++) {
+       println(animals[i].makeNoise());
+   }
+   // Bark
+   // Silence
+   ```
+
+   >[Wikipedia on Duck typing][wiki-duck-typing] Duck-typing is a style of
+   dynamic typing in which an object's methods and properties determine the
+   valid semantics, rather than its inheritance from a particular class or
+   implementation of a specific interface.
+
+   [wiki-duck-typing]: http://en.wikipedia.org/wiki/Duck_typing
+
+   In the example above, all objects have the required `makeNoise` function
+   as a property, thus satisfy the required /semantics/.
+
+   Q: Which of the two is preferable, polymorphism through inheritance, or
+      through duck typing?
+
+   A: To obtain polymorphism through inheritance, you have to set up the
+      inheritance relation, including boilerplate code (constructors, method
+      prototypes, ...). This requires more work from the programmer. The
+      advantage of this approach is that the methods can be inherited from
+      prototypes of objects, requiring less memory than storing a method for
+      each object.
+
+      Not having to set up the inheritance relation, is one of advantages duck
+      typing. It's sufficient to add the appropriate methods to the objects
+      that will participate in this application of polymorphism.
+
+   Q: You mentioned that one can /override/ a method in JavaScript, is it also
+      possible to /overload/ a method in JavaScript?
 
    A: To be clear, a method (or function) overloads another method if it has
       the same name, but differs in the number of arguments or the types of
@@ -511,7 +752,6 @@ A: Of course, OOP is broader than "everything is an object". Most definitions
       and end-indices. See #[indirect-invocation] for more about the
       `call`-method.</foot>
 
-      Source: https://developer.mozilla.org/en-US/docs/JavaScript/Reference/Functions_and_function_scope/arguments
 
       TODO default parameters (compare with CL?)
 
@@ -604,6 +844,9 @@ A: Of course, OOP is broader than "everything is an object". Most definitions
       These `return`-statements could of course be replaced with different
       blocks of code, specific for each case.
 
+      Of course, doing this resolution at run-time has a negative impact on
+      the performance.
+
 
 
    ### Modularity ###
@@ -615,3 +858,7 @@ A: Of course, OOP is broader than "everything is an object". Most definitions
 ## Functional programming ##
 
 TODO functional programming p 331
+
+## Monkey-patching ##
+
+TODO
