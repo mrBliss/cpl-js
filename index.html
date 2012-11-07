@@ -17,7 +17,7 @@
     <script type="text/javascript" src="js/formatter.js"></script>
   </head>
 
-  <body name="top">
+  <body id="top">
     <div id="scroller">
       <a href="#top">&uarr; To top</a>
     </div>
@@ -69,15 +69,15 @@
       </div>
     </div>
     <span class="spacer"></span>
-    <h3 name="introduction">Introduction</h3>
+    <h3><a id="introduction"></a>Introduction</h3>
     <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enimad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
 
-    <h3><a name="semantics"></a>I. Semantics</h3>
-<h4><a name="object-oriented-programming"></a>I.1. Object-oriented programming</h4>
+    <h3 id="semantics">I. Semantics</h3>
+<h4 id="object-oriented-programming">I.1. Object-oriented programming</h4>
 <div class="question">I&rsquo;ve heard that JavaScript is an object-oriented language, could you expand on that?</div>
 <div class="answer">
 <p>Indeed, JavaScript is object-oriented. Typically, in object-oriented languages, everything is an object (e.g. Python, Scala, Ruby, Eiffel, &hellip;) In JavaScript this is not the case, there are both objects and primitives. The primitives in JS are numbers, strings, booleans, and the special types null and undefined. The objects include <code>Array</code>, <code>Function</code>, <code>Date</code>, <code>RegExp</code>, <code>Error</code>, &hellip; This design decision, by many people considered a mistake, was carried over from Java.</p>
-<h5><a name="objects"></a>I.1.1. Objects</h5>
+<h5 id="objects">I.1.1. Objects</h5>
 <p>Objects in JavaScript are in fact containers of properties, where each property has a name and a value. By assigning a function to a property&rsquo;s value, one can add a method to the object. This demonstrates the importance of the presence of first-class functions. Objects in JavaScript can be compared with untyped hashmaps from strings to values from any kind. Then name of a property can be any string, but the quotes can be dropped if the name of the property is a valid JavaScript identifier. The quotes are required when the property name is a reserved keyword, an empty string, or other strings not constituting valid JavaScript identifiers.</p>
 <pre>var emptyObject = {};
 var person = {
@@ -96,12 +96,12 @@ person.walk(); // "Do bi do ... walking, walking, walking"</pre>
 <div class="answer">
 <p>Of course, OOP is broader than &ldquo;everything is an object&rdquo;. Most definitions of object-oriented programming include features such as modularity, encapsulation, polymorphism, inheritance, &hellip;</p>
 <p>JavaScript has support most of them, but differs from other classical OO languages in the implementation of these features. Take for instance inheritance. Classical OO languages mostly feature a class-based inheritance mechanism, whereas JavaScript has prototype-based inheritance. JavaScript often has a different way of doing things compared to other languages, this will be a recurring theme.</p>
-<h5><a name="prototype-based-programming"></a>I.1.2. Prototype-based programming</h5>
+<h5 id="prototype-based-programming">I.1.2. Prototype-based programming</h5>
 <div class="question">What entails prototype-based inheritance?</div>
 <div class="answer">
 <p>A better term would be prototype-based programming, as inheritance is just one non-mandatory ingredient of this style of object-oriented programming. Prototype-based programming can easily be explained by comparing it with class-based programming.</p>
 <p>In class-based programming, one defines classes. Each class consists of fields and methods. To use a class, one creates a new object of the class, which will have the fields and methods defined in the class. Let&rsquo;s make an analogy: the class is the blueprint of the car, and the objects are cars built from the blueprint. Now let&rsquo;s throw inheritance in the mix. One can define a class that inherits from another class. This new class will contain all the fields and methods of the parent class, but can add fields and methods, and can also override fields and methods.</p>
-<p>In prototype-based programming, one defines objects. Each object will consist of fields and methods, or in JavaScript&rsquo;s case, properties. The whole concept of classes is removed from the equation. Instead of defining a blueprint to build new cars with, one just builds a car. But does this mean that we have to build every car from scratch, i.e. (re)define the fields and methods for every objects we want to use? No, to make a new object with the same fields and methods as another object, we <emph>clone</emph> the old object to get a new one. In other terms: we define a new object with the old object as prototype. Inheritance is also done via cloning, but after the cloning, the new object is extended with new fields and/or methods, and existing fields and/or methods can also be overriden. This new object can, in turn, be used as a prototype for other objects.</p>
+<p>In prototype-based programming, one defines objects. Each object will consist of fields and methods, or in JavaScript&rsquo;s case, properties. The whole concept of classes is removed from the equation. Instead of defining a blueprint to build new cars with, one just builds a car. But does this mean that we have to build every car from scratch, i.e. (re)define the fields and methods for every objects we want to use? No, to make a new object with the same fields and methods as another object, we <em>clone</em> the old object to get a new one. In other terms: we define a new object with the old object as prototype. Inheritance is also done via cloning, but after the cloning, the new object is extended with new fields and/or methods, and existing fields and/or methods can also be overriden. This new object can, in turn, be used as a prototype for other objects.</p>
 <div class="question">Could you show how it&rsquo;s done in JavaScript?</div>
 <div class="answer">
 <p>In JavaScript, objects can be created via object literal. In this case, <code>Object</code> will be their prototype.</p>
@@ -146,7 +146,7 @@ b.x; // "b's x"</pre></div>
 <div class="answer">
 <p>Prototype-based programming gives the programmer more flexibility and freedom to define and redefine the fields and methods of objects dynamically. Instead of focusing on building a brittle taxonomy of classes, as in class-based programming, the focus lies on making a set of objects with the desired behaviour, reusing them via cloning, and modifying their behaviour when it&rsquo;s required. When building a taxonomy, it is often the case that some class at the bottom of the chain inherited some unwanted fields or methods, as it is not always possible to classify everything in a consistent taxonomy. Prototype-based programming gives you the freedom to clone and override the fields and methods of other objects at will.</p>
 <p>For example, you have a bunch of <code>Cat</code> objects, but you want one of the cats, named Dexter, to make a different meow-sound. You can simply change the <code>meow</code> method of Dexter, a single <code>Cat</code> object, without affecting the others, or having to define a new subclass of <code>Cat</code>.</p>
-<p>Having so much control over which fields and methods to <emph>inherit</emph> allows the programmer to do things not possible in class-based languages without language support, for instance traits can easily be emulated using prototype-based programming. Even classes can be and often are emulated.</p>
+<p>Having so much control over which fields and methods to <em>inherit</em> allows the programmer to do things not possible in class-based languages without language support, for instance traits can easily be emulated using prototype-based programming. Even classes can be and often are emulated.</p>
 <p>Let&rsquo;s show you how to emulate classes using prototypes:</p>
 <pre>function Car(make) {
     this.make = make;
@@ -192,9 +192,9 @@ mixin(SportsCar, HasTires);
 //  the HasTires trait
 mySportsCar.puncture();
 mySportsCar.tiresOk; // false</pre>
-<p>Of course, freedom comes with a price. One of the disadvantages are the slower field and method accesses/dispatches and to a lesser extend the memory overhead. Objects cloned from others object don&rsquo;t clone the fields and methods. It would be wasteful to clone this reusable data. Instead, the cloned object keeps track of its prototype. Whenever an inherited field or method of the new object, i.e. a field or method defined in the prototype (or a prototype of the prototype), is accessed, the new object delegates the call to the prototype. This delegation will go on until a definition is found in one of the ancestor prototypes. The longer this <emph>chain</emph> of prototypes, the costlier a field access or method call.</p>
+<p>Of course, freedom comes with a price. One of the disadvantages are the slower field and method accesses/dispatches and to a lesser extend the memory overhead. Objects cloned from others object don&rsquo;t clone the fields and methods. It would be wasteful to clone this reusable data. Instead, the cloned object keeps track of its prototype. Whenever an inherited field or method of the new object, i.e. a field or method defined in the prototype (or a prototype of the prototype), is accessed, the new object delegates the call to the prototype. This delegation will go on until a definition is found in one of the ancestor prototypes. The longer this <em>chain</em> of prototypes, the costlier a field access or method call.</p>
 <p>Another disadvantage is that it becomes harder to figure out which fields and methods an object has, and where they were defined. When using classes, knowing the class of an object is enough to know which fields and methods an object has (this, of course, includes looking at superclasses). A class functions as the type of the object, but in JavaScript, properties can be added and removed from objects at run-time.</p></div></div>
-<h5><a name="invoking-functions"></a>I.1.3. Invoking functions</h5>
+<h5 id="invoking-functions">I.1.3. Invoking functions</h5>
 <p>In JavaScript, a function can be invoked in four different ways:</p>
 <ul>
 <li>As a function</li>
@@ -203,7 +203,7 @@ mySportsCar.tiresOk; // false</pre>
 <li>Indirectly through <code>call()</code> or <code>apply()</code></li>
 </ul>
 <p>Functions can behave differently, depending on the kind of invocation. For instance the value of <code>this</code>, will be different. In JavaScript, as in most object-oriented languages, <code>this</code> is a special keyword inside the context of a function that refers the object of which the function is a method, i.e. the owner of the method.</p>
-<h6><a name="function-invocation"></a>I.1.3.1. Function invocation</h6>
+<h6 id="function-invocation">I.1.3.1. Function invocation</h6>
 <p>Function invocation, is the regular kind of invocation, like you would call functions (or procedures) in C, Haskell, or Lisp, i.e. in a non-OO language.</p>
 <p>For example:</p>
 <pre>function add(x, y) {
@@ -211,7 +211,7 @@ mySportsCar.tiresOk; // false</pre>
 }</pre>
 <p>Functions that don&rsquo;t contain an explicit <code>return</code>-statement, will return <code>undefined</code>, JavaScript&rsquo;s <code>void</code>.</p>
 <p>In the case of a regular function invocation, the value of <code>this</code> will be the global object. TODO refer to the global object</p>
-<h6><a name="method-invocation"></a>I.1.3.2. Method invocation</h6>
+<h6 id="method-invocation">I.1.3.2. Method invocation</h6>
 <p>A function is considered a method when it&rsquo;s the property of an object. The big difference between function and method invocation, is that in the case of method invocation, <code>this</code> will refer to the object on which the method is called, instead of the global object.</p>
 <pre>function f() {
     return this.x;
@@ -222,7 +222,7 @@ f(); // 1
 // Method invocation
 var o = {x: 2, f: f};
 o.f(); // 2</pre>
-<h6><a name="constructor-invocation"></a>I.1.3.3. Constructor invocation</h6>
+<h6 id="constructor-invocation">I.1.3.3. Constructor invocation</h6>
 <p>When a function or method invocation is preceded by the <code>new</code> keyword, it is a constructor invocation.</p>
 <p>A few things are different for constructor invocations:</p>
 <ul>
@@ -235,7 +235,7 @@ o.f(); // 2</pre>
 <div class="answer">
 <p>TODO</p>
 </div>
-<h6><a name="indirect-invocation"></a>I.1.3.4. Indirect invocation</h6>
+<h6 id="indirect-invocation">I.1.3.4. Indirect invocation</h6>
 <p>The fourth and final kind of invocation, is indirect invocation. As <code>Function</code>s are also <code>Object</code>s in JavaScript, they can have methods. Two of the available methods of <code>Function</code>s are <code>call</code> and <code>apply</code>.<span class="footnote">For readers familiar with Common Lisp (or a <a href="http://en.wikipedia.org/wiki/Lisp-1_vs._Lisp-2#The_function_namespace" target="_blank">Lisp-2</a> to be more precise), <code>call</code> is JavaScript&rsquo;s <code>funcall</code>. For readers familiar with any Lisp dialect, JavaScript&rsquo;s <code>apply</code> is similar to most Lisp&rsquo;s <code>apply</code>.</span></p>
 <p>The <code>call</code> method is invoked on a function and takes at least one argument, the object to which <code>this</code> will refer in the context of the function. Extra arguments are passed to the function.</p>
 <p>The <code>apply</code> method is invoked on a function and takes at least one argument, the object to which <code>this</code> will refer in the context of the function. The optional second argument should be an <code>Array</code>, holding arguments that will be to the function.</p>
@@ -259,8 +259,8 @@ Person.prototype.introduce = function() {
 // invocation.
 var car = {name: 'Mater', town: 'Radiator Springs'};
 Person.prototype.introduce.call(car);</pre></div>
-<h5><a name="encapsulation"></a>I.1.4. Encapsulation</h5>
-<p>Another example of JavaScript&rsquo;s <emph>exotic</emph> way of doing things is encapsulation. Most classical OO languages support visibility modifiers to control the accessibility of fields and methods by other classes. In JavaScript, there are no such modifiers, but encapsulation is still achievable, via the use of closures.</p>
+<h5 id="encapsulation">I.1.4. Encapsulation</h5>
+<p>Another example of JavaScript&rsquo;s <em>exotic</em> way of doing things is encapsulation. Most classical OO languages support visibility modifiers to control the accessibility of fields and methods by other classes. In JavaScript, there are no such modifiers, but encapsulation is still achievable, via the use of closures.</p>
 <p>Example:</p>
 <pre class="Java">class A {
     private int counter = 0;
@@ -286,8 +286,8 @@ a.counter; // Error: not visible!</pre>
 <div class="question">What is a closure?</div>
 <div class="answer">
 <p>Before explaining what a closure is, you have to know some things about JavaScript&rsquo;s scoping rules</p>
-<h6><a name="function-global-scope"></a>I.1.4.1. Function & global scope</h6>
-<p>JavaScript&rsquo;s scoping rules differ from common languages like C and Java. In C and Java, curly braces (<code>{&hellip;}</code>) delimit different scopes. The body of a function, a while-loop, a for-loop, a class (in the case of Java), all have a separate scope (known as <emph>block scope</emph>). In JavaScript, there are only two kinds of scope: the global scope and function scope.</p>
+<h6 id="function-global-scope">I.1.4.1. Function & global scope</h6>
+<p>JavaScript&rsquo;s scoping rules differ from common languages like C and Java. In C and Java, curly braces (<code>{&hellip;}</code>) delimit different scopes. The body of a function, a while-loop, a for-loop, a class (in the case of Java), all have a separate scope (known as <em>block scope</em>). In JavaScript, there are only two kinds of scope: the global scope and function scope.</p>
 <p>Let&rsquo;s see some examples of these differing scoping rules</p>
 <pre class="Java">for (int i = 0; i < 10; i++) {
     // ...
@@ -319,8 +319,8 @@ println(a); // 3</pre>
     // x = 10
 })(); // This function is invoked immediately after definition
 println(x); // 3</pre>
-<h6><a name="variable-hoisting"></a>I.1.4.2. Variable hoisting</h6>
-<p>In this intermezzo, another peculiarity of JavaScript&rsquo;s scoping rules is introduced, <emph>variable hoisting</emph>.</p>
+<h6 id="variable-hoisting">I.1.4.2. Variable hoisting</h6>
+<p>In this intermezzo, another peculiarity of JavaScript&rsquo;s scoping rules is introduced, <em>variable hoisting</em>.</p>
 <pre>var f = function() {
     return y;
 };
@@ -355,11 +355,11 @@ function f() {
     println("B: " + x);
 }
 f();</pre>
-<p>This phenomenon is called <emph>variable hoisting</emph>. The variable declarations are hoisted to the top of the scope, but the initialisations are left in place.</p>
+<p>This phenomenon is called <em>variable hoisting</em>. The variable declarations are hoisted to the top of the scope, but the initialisations are left in place.</p>
 <div class="question">Why does JavaScript do this?</div>
 <div class="answer">
 <p>This is just one of JavaScript&rsquo;s many quirks. It&rsquo;s sometimes difficult to imagine what Brendan Eich must have been thinking when designing JavaScript&hellip;</p></div>
-<h6><a name="lexical-dynamic-scope"></a>I.1.4.3. Lexical & dynamic scope</h6>
+<h6 id="lexical-dynamic-scope">I.1.4.3. Lexical & dynamic scope</h6>
 <p>We assume you&rsquo;re already familiar with lexical and dynamic scoping, so we&rsquo;ll quickly glance over it.</p>
 <p>In the case of lexical scoping, functions are invoked in the scope that was active during the definition of the function. In the case of dynamic scoping, functions are invoked in the scope active during the invocation of the function. Let&rsquo;s show difference with an example.</p>
 <pre>var f = (function() {
@@ -374,7 +374,7 @@ f(); // 'lexical' when lexically scoped,
      // 'dynamic' in the other case</pre>
 <p>JavaScript is lexically scoped, as is Scheme, one of JavaScript&rsquo;s biggest influences TODO ref scheme. The return value of <code>f</code> in the example above will be &lsquo;lexical&rsquo;.</p>
 <p>Q: Why</p>
-<h6><a name="closures"></a>I.1.4.4. Closures</h6>
+<h6 id="closures">I.1.4.4. Closures</h6>
 <p>Let&rsquo;s have another look of the example that we showed you to demonstrate encapsulation.</p>
 <pre>var a = (function () {
     var counter = 0;
@@ -386,14 +386,14 @@ f(); // 'lexical' when lexically scoped,
 })();
 a.inc(); // OK
 a.counter; // Error: not visible!</pre>
-<p>As JavaScript is lexically scoped, functions have to capture the scope that was active during their definition. Essentially, what happens is that all variables defined in a scope outside the defined function but referenced from within the scope of the function, known as <emph>free variables</emph>, have to be captured. In the example above, the function defined on line 4 references a variable <code>counter</code> (line 5), that was defined in another scope (line 2). The free variables are <emph>closed</emph>-over, they are <emph>captured</emph> by the closure. One can think of a closure as a pair of a function, i.e. code, and its environment, i.e. data.</p>
+<p>As JavaScript is lexically scoped, functions have to capture the scope that was active during their definition. Essentially, what happens is that all variables defined in a scope outside the defined function but referenced from within the scope of the function, known as <em>free variables</em>, have to be captured. In the example above, the function defined on line 4 references a variable <code>counter</code> (line 5), that was defined in another scope (line 2). The free variables are <em>closed</em>-over, they are <em>captured</em> by the closure. One can think of a closure as a pair of a function, i.e. code, and its environment, i.e. data.</p>
 <p>Encapsulation can be achieved by defining the variables meant to be private in a function (scope) A, and defining a new function B within A, that references these variables. The closure of function B will capture these private variables. By holding onto function B, but discarding function (scope) A, only B will be able to access these private variable,<span class="footnote">Unless function B leaks them via its properties.</span> effectively achieving encapsulation.</p></div>
 <div class="question">What are the advantages of implementing encapsulation via closures?</div>
 <div class="answer">
-<p>Actually, one could call it <emph>emulating</emph> encapsulation via closures. Because of the absence of built-in encapsulation via visibility-modifiers, JavaScript programmers are required to implement encapsulation manually via closures. So one could call it a disadvantage of JavaScript, although some people argue against encapsulation.</p>
+<p>Actually, one could call it <em>emulating</em> encapsulation via closures. Because of the absence of built-in encapsulation via visibility-modifiers, JavaScript programmers are required to implement encapsulation manually via closures. So one could call it a disadvantage of JavaScript, although some people argue against encapsulation.</p>
 <p>With closures, the programmer has more control over encapsulation, but has to do more work to achieve it.</p>
 </div>
-<h5><a name="polymorphism"></a>I.1.5. Polymorphism</h5>
+<h5 id="polymorphism">I.1.5. Polymorphism</h5>
 <p>Polymorphism in JavaScript is achieved through inheritance or duck typing.</p>
 <p>Example of polymorphism through inheritance:</p>
 <pre>// Superclass Animal
@@ -437,16 +437,16 @@ for (var i = 0; i < animals.length; i++) {
 }
 // Bark
 // Silence</pre>
-<blockquote cite="http://en.wikipedia.org/wiki/Duck_typing">Duck-typing is a style of dynamic typing in which an object&rsquo;s methods and properties determine the valid semantics, rather than its inheritance from a particular class or implementation of a specific interface.<span class="cite">&mdash;<a href="http://en.wikipedia.org/wiki/Duck_typing">Wikipedia on Duck typing</a></span></blockquote>
-<p>In the example above, all objects have the required <code>makeNoise</code> function as a property, thus satisfy the required <emph>semantics</emph>.</p>
+<blockquote>Duck-typing is a style of dynamic typing in which an object&rsquo;s methods and properties determine the valid semantics, rather than its inheritance from a particular class or implementation of a specific interface.<span class="cite">&mdash;<a href="http://en.wikipedia.org/wiki/Duck_typing">Wikipedia on Duck typing</a></span></blockquote>
+<p>In the example above, all objects have the required <code>makeNoise</code> function as a property, thus satisfy the required <em>semantics</em>.</p>
 <div class="question">Which of the two is preferable, polymorphism through inheritance, or through duck typing?</div>
 <div class="answer">
 <p>To obtain polymorphism through inheritance, you have to set up the inheritance relation, including boilerplate code (constructors, method prototypes, &hellip;). This requires more work from the programmer. The advantage of this approach is that the methods can be inherited from prototypes of objects, requiring less memory than storing a method for each object.</p>
 <p>Not having to set up the inheritance relation, is one of advantages duck typing. It&rsquo;s sufficient to add the appropriate methods to the objects that will participate in this application of polymorphism.</p></div>
-<div class="question">You mentioned that one can <emph>override</emph> a method in JavaScript, is it also possible to <emph>overload</emph> a method in JavaScript?</div>
+<div class="question">You mentioned that one can <em>override</em> a method in JavaScript, is it also possible to <em>overload</em> a method in JavaScript?</div>
 <div class="answer">
 <p>To be clear, a method (or function) overloads another method if it has the same name, but differs in the number of arguments or the types of the expected arguments. The right method to call is chosen statically, at compile-time. Overloading is a feature typically present in statically typed languages. With JavaScript being a dynamically typed language, the compile-time resolution that determines which method to call is ruled out, as the types are not known in advance.</p>
-<h5><a name="function-arguments"></a>I.1.6. Function arguments</h5>
+<h5 id="function-arguments">I.1.6. Function arguments</h5>
 <p>Overloading based on arity is possible in dynamically typed languages, but not in JavaScript. The reason being that JavaScript doesn&rsquo;t check whether a function is called with the correct number of arguments. JavaScript will happily allow you to call a function expecting two arguments with 0, 1, 2, 3, &hellip; arguments. Missing arguments will be <code>undefined</code>. JavaScript also allows you to access the excess arguments via the <code>arguments</code> object. The <code>arguments</code> object is a local variable accessible within all functions. It is similar to an Array, but not quite the same. The elements of <code>arguments</code> can be accessed, and it has the <code>length</code>-property, but the other methods available for <code>Array</code>s cannot be used on the <code>arguments</code> object. One can convert the <code>arguments</code> object to an actual array, by calling <code>Array</code>&lsquo;s <code>slice</code>-method on it, like so: <code>var args = Array.prototype.slice.call(arguments);</code>.<span class="footnote">The <code>slice</code>-method of <code>Array</code> copies the elements into a new array, it optionally takes start- and end-indices. See <a href="#indirect-invocation" class="ref">Indirect invocation</a> for more about the <code>call</code>-method.</span></p>
 <p>TODO default parameters (compare with CL?)</p>
 <div class="question">What&rsquo;s the point of this <code>arguments</code> object? And why isn&rsquo;t it a proper <code>Array</code>?</div>
@@ -513,15 +513,15 @@ overloaded(1, "foo");
 // A number and a string</pre>
 <p>These <code>return</code>-statements could of course be replaced with different blocks of code, specific for each case.</p>
 <p>Of course, doing this resolution at run-time has a negative impact on the performance.</p></div>
-<h5><a name="modularity"></a>I.1.7. Modularity</h5>
+<h5 id="modularity">I.1.7. Modularity</h5>
 <p>TODO Modularity in JavaScript p 306</p></div>
-<h4><a name="functional-programming"></a>I.2. Functional programming</h4>
+<h4 id="functional-programming">I.2. Functional programming</h4>
 <p>TODO functional programming p 331</p>
-<h4><a name="monkey-patching"></a>I.3. Monkey-patching</h4>
+<h4 id="monkey-patching">I.3. Monkey-patching</h4>
 <p>TODO</p>
 
-    <div id="bibliography" name="bibliography">
-      <h3 name="bibliography">Bibliography</h3>
+    <div id="bibliography">
+      <h3>Bibliography</h3>
       <ol>
 <li class="book"><span class="author">Abelson, H., & Sussman, G.J.</span> <span class="year">(1984)</span>. <span class="title">Structure and Interpretation of Computer Programs</span>. <span class="publisher-address">Cambridge, MA</span>: <span class="publisher">MIT Press</span>.</li>
 <li class="blog"><span class="authors">Buckler, C.</span> (October 10, 2012). <span class="title">How to Create Custom Events in JavaScript</span>. Message posted to <a href="http://jspro.com/raw-javascript/how-to-create-custom-events-in-javascript/">http://jspro.com/raw-javascript/how-to-create-custom-events-in-javascript/</a></li>
@@ -551,6 +551,7 @@ overloaded(1, "foo");
 <li class="encyc"><span class="title">Prototype-based programming</span>. In <span class="encyc">Wikipedia</span>. Retrieved November 1, 2012, from <a href="http://en.wikipedia.org/wiki/Prototype-based_programming">http://en.wikipedia.org/wiki/Prototype-based_programming</a></li>
 <li class="website"><span class="siteName">Google Developers</span>. (2012). <span class="title">V8 Introduction</span>. <a href="https://developers.google.com/v8/intro">https://developers.google.com/v8/intro</a></li>
 <li class="website"><span class="siteName">Dev.Opera</span>. (2009). <span class="title">What can you do with JavaScript?</span>. Retrieved November 3, 2012, from <a href="http://dev.opera.com/articles/view/javascript-uses/">http://dev.opera.com/articles/view/javascript-uses/</a></li></ol>
+
     </div>
 
   </body>

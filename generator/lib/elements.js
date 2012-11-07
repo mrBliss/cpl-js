@@ -112,8 +112,8 @@ Paragraph.prototype.toHTML = function() {
 
 Title.prototype.toHTML = function() {
     var hLevel = this.level + 2;
-    return '<h' + hLevel +'><a name="' + this.anchor()
-        + '"></a>' + this.number + ' ' + this.text + '</h' + hLevel + '>';
+    return '<h' + hLevel +' id="' + this.anchor()
+        + '">' + this.number + ' ' + this.text + '</h' + hLevel + '>';
 };
 
 CodeBlock.prototype.toHTML = function() {
@@ -135,9 +135,7 @@ LinkDef.prototype.toHTML = function() {
 };
 
 BlockQuote.prototype.toHTML = function() {
-    return '<blockquote' + (this.url
-                            ? ' cite="' + this.url + '">'
-                            : '>')
+    return '<blockquote>'
         + this.text
         + (this.url
            ? '<span class="cite">&mdash;<a href="' + this.url + '">'
