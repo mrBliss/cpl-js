@@ -74,6 +74,9 @@ exports.testBlankLines = function(test) {
 exports.testTitle = function(test) {
     parses(test, parser.Title, '# Bla #\n',
            {indent: 0, level: 1, text:'Bla'});
+    parses(test, parser.Title, '# Bla #[bla]\n',
+           {indent: 0, level: 1, text:'Bla',
+            label: 'bla'});
     parses(test, parser.Title, '     # Bla #\n',
            {indent: 5, level: 1, text: 'Bla'});
     parses(test, parser.Title, '## Bla di ##\n',
@@ -84,6 +87,10 @@ exports.testTitle = function(test) {
            '# Bla #\n  ## Di ##\n',
            [{indent: 0, level: 1, text: 'Bla'},
             {indent: 2, level: 2, text: 'Di'}]);
+    parses(test, jsparse.sequence(parser.Title, parser.Title),
+           '# Bla #[a]\n  ## Di ##[b]\n',
+           [{indent: 0, level: 1, text: 'Bla', label: 'a'},
+            {indent: 2, level: 2, text: 'Di', label: 'b'}]);
     doesntParse(test, parser.Title, '# Bla\n');
     doesntParse(test, parser.Title, '# Bla #');
     doesntParse(test, parser.Title, '# Bla\nDi #');

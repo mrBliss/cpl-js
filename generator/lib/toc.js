@@ -16,7 +16,7 @@ exports.toRoman = function(n) {
     }
 };
 
-exports.tocTraverser = function(toc) {
+exports.tocBuilder = function(toc) {
     var levels = [0, 0, 0, 0, 0, 0];
     function numberString() {
         var s = exports.toRoman(levels[0]) + '.';
@@ -26,7 +26,7 @@ exports.tocTraverser = function(toc) {
         }
         return s;
     }
-    return (function(elem) {
+    return function(elem) {
         if (elem.level) {
             levels[elem.level - 1]++;
             for (var i = elem.level; i < levels.length; i++) {
@@ -40,7 +40,7 @@ exports.tocTraverser = function(toc) {
             }
             toc[key] = [elem.number, elem.text];
         }
-    });
+    };
 };
 exports.toHTML = function(toc) {
     var html = '';
@@ -68,4 +68,32 @@ exports.toHTML = function(toc) {
         html += '</ol>\n</li>\n';
     }
     return html;
+};
+
+exports.labelCollector = function(labels) {
+    return function(elem) {
+        if (elem.label) {
+            labels[elem.label] = [elem.anchor(), elem.text];
+        }
+    };
+};
+
+exports.fillInReferences = function(labels) {
+    return function(s) {
+        return s.replace(/#\[[^\]]+\]/g, function($1) {
+            var m = $1.match(/#\[([^\]]+)\]/);
+            if (m && m[1]) {
+                var label = m[1];
+                var ref = labels[label];
+                if (!ref) {
+                    console.log('WARNING: unresolved reference: ' + label);
+                    return '??';
+                } else {
+                    return '<a href="#' + ref[0] + '" class="ref">' +
+                        ref[1] + '</a>';
+                }
+            }
+            return '';
+        });
+    };
 };

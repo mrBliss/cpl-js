@@ -7,6 +7,9 @@
 // * 'proper quotes'
 // * "proper double quotes"
 // * ... (&hellip;)
+// * <foot>Foo bar</foot> -- "For bar" will be a footnote
+// Not done by `markup`, but also available:
+// * #[lbl] -- a reference to the title with label 'lbl'
 
 exports.markup = function(s) {
     return s.replace(/`([^`]+)`/g, '<code>$1</code>')
@@ -21,5 +24,6 @@ exports.markup = function(s) {
         .replace(/"\b/g, '&ldquo;')
         .replace(/"/g, '&rdquo;')
         .replace(/\.{3}/g, '&hellip;')
-        .replace(/<foot>(.+?)<\/foot>/g, '<span class="footnote">$1</span>');
+        .replace(/<foot>(.+?)<\/foot>/g,
+                 '<span class="footnote">$1</span>');
 };

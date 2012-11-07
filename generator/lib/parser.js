@@ -76,9 +76,10 @@ var Title = action(
         count(rep1(ch('#'))),
         ws(trimRight(joined(rep1(but(ch('#')))))),
         ignored(rep1(ch('#'))),
+        opt(between('[', joined(rep1(but(ch(']')))), ']')),
         ignored(NewLine))),
     function(arr) {
-        return new el.Title(arr[0], arr[1][0], arr[1][1]);
+        return new el.Title(arr[0], arr[1][0], arr[1][1], arr[1][2]);
     });
 
 

@@ -2,10 +2,11 @@ function Paragraph(indent, text) {
     this.indent = indent;
     this.text = text;
 }
-function Title(indent, level, text) {
+function Title(indent, level, text, label) {
     this.indent = indent;
     this.level = level;
     this.text = text;
+    if (label) this.label = label;
 }
 function CodeBlock(indent, lang, code) {
     this.indent = indent;
@@ -20,6 +21,7 @@ function Question(indent, text) {
     this.indent = indent;
     this.text = text;
 }
+
 
 function HasContents() {};
 
@@ -79,6 +81,16 @@ function Page(contents) {
 Page.prototype = new HasContents();
 Page.prototype.constructor = Page;
 
+// Anchor
+
+Title.prototype.anchor = function() {
+    if (!this._anchor) {
+        this._anchor = this.text.toLowerCase()
+            .replace(/[^a-z0-9-]|\s/g, '-');
+    }
+    return this._anchor;
+};
+
 
 // toHTML
 
@@ -88,9 +100,7 @@ Paragraph.prototype.toHTML = function() {
 
 Title.prototype.toHTML = function() {
     var hLevel = this.level + 2;
-    var anchor = this.text.toLowerCase()
-            .replace(/[^a-z0-9-]|\s/g, '-');
-    return '<h' + hLevel +'><a name="' + anchor
+    return '<h' + hLevel +'><a name="' + this.anchor()
         + '"></a>' + this.number + ' ' + this.text + '</h' + hLevel + '>';
 };
 

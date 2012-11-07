@@ -12,10 +12,14 @@ var bibliography = bib.makeBibliography();
 var str = fs.readFileSync('../semantics.txt', 'utf8');
 var parsed = parser.parse(parser.Page, str);
 if (parsed) {
-    var markedUp = parsed.ast.transform(markup),
-        tableOfContents = {};
-    markedUp.traverse(toc.tocTraverser(tableOfContents));
-    var html = markedUp.toHTML();
+    var ast = parsed.ast,
+        tableOfContents = {},
+        labels = {};
+    ast.traverse(toc.tocBuilder(tableOfContents));
+    ast.traverse(toc.labelCollector(labels));
+    var markedUp = ast.transform(markup);
+    var withRefs = markedUp.transform(toc.fillInReferences(labels));
+    var html = withRefs.toHTML();
     var template = fs.readFileSync('../template.html', 'utf8');
     fs.writeFile('../index.html', template
                  .replace('<!--BODY-->', html)

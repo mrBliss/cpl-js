@@ -1,6 +1,6 @@
 # Semantics #
 
-## Object-oriented programming ##
+## Object-oriented programming ##[oop]
 
 
 Q: I've heard that JavaScript is an object-oriented language, could you expand
@@ -12,7 +12,7 @@ A: Indeed, JavaScript is object-oriented. Typically, in object-oriented
    The primitives in JS are numbers, strings, booleans, and the special types
    null and undefined. The objects include `Array`, `Function`, `Date`,
    `RegExp`, `Error`, ... This design decision, by many people considered a
-   mistake, was carried over from Java.
+   mistake, was carried over from Java. Test: see #[oop]
 
    ### Objects ###
 
