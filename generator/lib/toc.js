@@ -70,27 +70,56 @@ exports.toHTML = function(toc) {
     return html;
 };
 
-exports.labelCollector = function(labels) {
+exports.labelCollector = function(refs, links) {
     return function(elem) {
         if (elem.label) {
-            labels[elem.label] = [elem.anchor(), elem.text];
+            if (elem.url) {
+                // LinkDef
+                links[elem.label] = elem.url;
+            } else {
+                // Title
+                refs[elem.label] = [elem.anchor(), elem.text];
+            }
         }
     };
 };
 
-exports.fillInReferences = function(labels) {
+exports.fillInReferences = function(refs) {
     return function(s) {
+        // #[label]
         return s.replace(/#\[[^\]]+\]/g, function($1) {
             var m = $1.match(/#\[([^\]]+)\]/);
             if (m && m[1]) {
-                var label = m[1];
-                var ref = labels[label];
+                var label = m[1],
+                    ref = refs[label];
                 if (!ref) {
                     console.log('WARNING: unresolved reference: ' + label);
                     return '??';
                 } else {
                     return '<a href="#' + ref[0] + '" class="ref">' +
                         ref[1] + '</a>';
+                }
+            }
+            return '';
+        });
+    };
+};
+
+
+exports.fillInLinks = function(links) {
+    return function(s) {
+        // [text][label]
+        return s.replace(/\[[^\]]+\]\[[^\]]+\]/g, function($1) {
+            var m = $1.match(/\[([^\]]+)\]\[([^\]]+)\]/);
+            if (m && m[1] && m[2]) {
+                var text = m[1],
+                    label = m[2],
+                    url = links[label];
+                if (!url) {
+                    console.log('WARNING: unresolved link: ' + label);
+                    return '??';
+                } else {
+                    return '<a href="' + url + '" target="_blank">' + text + '</a>';
                 }
             }
             return '';

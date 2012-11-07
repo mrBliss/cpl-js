@@ -38,6 +38,14 @@
 <ol>
 <li><a href="#objects">Objects</a></li>
 <li><a href="#prototype-based-programming">Prototype-based programming</a></li>
+<li><a href="#invoking-functions">Invoking functions</a>
+<ol>
+<li><a href="#function-invocation">Function invocation</a></li>
+<li><a href="#method-invocation">Method invocation</a></li>
+<li><a href="#constructor-invocation">Constructor invocation</a></li>
+<li><a href="#indirect-invocation">Indirect invocation</a></li>
+</ol>
+</li>
 <li><a href="#encapsulation">Encapsulation</a></li>
 <li><a href="#closures">Closures</a></li>
 <li><a href="#polymorphism">Polymorphism</a></li>
@@ -61,7 +69,7 @@
 <h4><a name="object-oriented-programming"></a>I.1. Object-oriented programming</h4>
 <div class="question">I&rsquo;ve heard that JavaScript is an object-oriented language, could you expand on that?</div>
 <div class="answer">
-<p>Indeed, JavaScript is object-oriented. Typically, in object-oriented languages, everything is an object (e.g. Python, Scala, Ruby, Eiffel, &hellip;) In JavaScript this is not the case, there are both objects and primitives. The primitives in JS are numbers, strings, booleans, and the special types null and undefined. The objects include <code>Array</code>, <code>Function</code>, <code>Date</code>, <code>RegExp</code>, <code>Error</code>, &hellip; This design decision, by many people considered a mistake, was carried over from Java. Test: see <a href="#object-oriented-programming" class="ref">Object-oriented programming</a></p>
+<p>Indeed, JavaScript is object-oriented. Typically, in object-oriented languages, everything is an object (e.g. Python, Scala, Ruby, Eiffel, &hellip;) In JavaScript this is not the case, there are both objects and primitives. The primitives in JS are numbers, strings, booleans, and the special types null and undefined. The objects include <code>Array</code>, <code>Function</code>, <code>Date</code>, <code>RegExp</code>, <code>Error</code>, &hellip; This design decision, by many people considered a mistake, was carried over from Java.</p>
 <h5><a name="objects"></a>I.1.1. Objects</h5>
 <p>Objects in JavaScript are in fact containers of properties, where each property has a name and a value. By assigning a function to a property&rsquo;s value, one can add a method to the object. This demonstrates the importance of the presence of first-class functions. Objects in JavaScript can be compared with untyped hashmaps from strings to values from any kind. Then name of a property can be any string, but the quotes can be dropped if the name of the property is a valid JavaScript identifier. The quotes are required when the property name is a reserved keyword, an empty string, or other strings not constituting valid JavaScript identifiers.</p>
 <pre>var emptyObject = {};
@@ -108,13 +116,7 @@ Object.getPrototypeOf(myCar); // { drive: [Function] }, the prototype of Car</pr
 <p>Notice that the name of the constructor function is capitalized, this is convention, carried over from Java.</p>
 <div class="question">If the naming is only a convention, how then differs a constructor from a regular function?</div>
 <div class="answer">
-<p>It doesn&rsquo;t actually, it&rsquo;s the use of <code>new</code> that makes a regular function act like a constructor. By prepending this keyword, a couple of things happen.</p>
-<ul>
-<li>A new object is created, accessible via <code>this</code>.</li>
-<li>The constructor function is invoked on this object. TODO refer to caller contexts.</li>
-<li>The prototype of the constructor function is stored as the prototype of the new object.</li>
-<li>The newly created object is automatically returned at the end of the function call.</li>
-</ul></div>
+<p>It doesn&rsquo;t actually, it&rsquo;s the use of <code>new</code> that makes a regular function act like a constructor. By prepending this keyword, a couple of things happen, see <a href="#invoking-functions" class="ref">Invoking functions</a>.</p></div>
 <p>Here&rsquo;s another example of inheritance in JavaScript.</p>
 <pre>// Create a new object that inherits from obj
 function inherit(obj) {
@@ -184,10 +186,73 @@ mixin(SportsCar, HasTires);
 mySportsCar.puncture();
 mySportsCar.tiresOk; // false</pre>
 <p>Of course, freedom comes with a price. One of the disadvantages are the slower field and method accesses/dispatches and to a lesser extend the memory overhead. Objects cloned from others object don&rsquo;t clone the fields and methods. It would be wasteful to clone this reusable data. Instead, the cloned object keeps track of its prototype. Whenever an inherited field or method of the new object, i.e. a field or method defined in the prototype (or a prototype of the prototype), is accessed, the new object delegates the call to the prototype. This delegation will go on until a definition is found in one of the ancestor prototypes. The longer this <emph>chain</emph> of prototypes, the costlier a field access or method call.</p>
-<p>Another disadvantage is that it becomes harder to figure out which fields and methods an object has, and where they were defined. When using classes, knowing the class of an object is enough to know which fields and methods an object has (this, of course, includes looking at superclasses). A class functions as the type of the object, but in JavaScript, properties can be added and removed from objects at run-time.</p>
-<p>http://en.wikipedia.org/wiki/Prototype-based_programming</p></div></div>
-<p>TODO mention caller contexts p284, this</p>
-<h5><a name="encapsulation"></a>I.1.3. Encapsulation</h5>
+<p>Another disadvantage is that it becomes harder to figure out which fields and methods an object has, and where they were defined. When using classes, knowing the class of an object is enough to know which fields and methods an object has (this, of course, includes looking at superclasses). A class functions as the type of the object, but in JavaScript, properties can be added and removed from objects at run-time.</p></div></div>
+<h5><a name="invoking-functions"></a>I.1.3. Invoking functions</h5>
+<p>In JavaScript, a function can be invoked in four different ways:</p>
+<ul>
+<li>As a function</li>
+<li>As a method</li>
+<li>As a constructor</li>
+<li>Indirectly through <code>call()</code> or <code>apply()</code></li>
+</ul>
+<p>Functions can behave differently, depending on the kind of invocation. For instance the value of <code>this</code>, will be different. In JavaScript, as in most object-oriented languages, <code>this</code> is a special keyword inside the context of a function that refers the object of which the function is a method, i.e. the owner of the method.</p>
+<h6><a name="function-invocation"></a>I.1.3.1. Function invocation</h6>
+<p>Function invocation, is the regular kind of invocation, like you would call functions (or procedures) in C, Haskell, or Lisp, i.e. in a non-OO language.</p>
+<p>For example:</p>
+<pre>function add(x, y) {
+    return x + y;
+}</pre>
+<p>Functions that don&rsquo;t contain an explicit <code>return</code>-statement, will return <code>undefined</code>, JavaScript&rsquo;s <code>void</code>.</p>
+<p>In the case of a regular function invocation, the value of <code>this</code> will be the global object. TODO refer to the global object</p>
+<h6><a name="method-invocation"></a>I.1.3.2. Method invocation</h6>
+<p>A function is considered a method when it&rsquo;s the property of an object. The big difference between function and method invocation, is that in the case of method invocation, <code>this</code> will refer to the object on which the method is called, instead of the global object.</p>
+<pre>function f() {
+    return this.x;
+}
+// Function invocation
+var x = 1;
+f(); // 1
+// Method invocation
+var o = {x: 2, f: f};
+o.f(); // 2</pre>
+<h6><a name="constructor-invocation"></a>I.1.3.3. Constructor invocation</h6>
+<p>When a function or method invocation is preceded by the <code>new</code> keyword, it is a constructor invocation.</p>
+<p>A few things are different for constructor invocations:</p>
+<ul>
+<li>A new object is created and will be accessible via <code>this</code>.</li>
+<li>The prototype of the constructor function is stored as the prototype of the new object.</li>
+<li>The newly created object is automatically returned at the end of the function call, no explicit <code>return</code> is required.</li>
+<li>When the constructor has no parameters, the parentheses after the function name are optional. E.g. <code>new Object()</code> vs <code>new Object</code>.</li>
+</ul>
+<div class="question">So you&rsquo;re saying, every function can be invoked as a constructor? What is the point of that?</div>
+<div class="answer">
+<p>TODO</p>
+</div>
+<h6><a name="indirect-invocation"></a>I.1.3.4. Indirect invocation</h6>
+<p>The fourth and final kind of invocation, is indirect invocation. As <code>Function</code>s are also <code>Object</code>s in JavaScript, they can have methods. Two of the available methods of <code>Function</code>s are <code>call</code> and <code>apply</code>.<span class="footnote">For readers familiar with Common Lisp (or a <a href="http://en.wikipedia.org/wiki/Lisp-1_vs._Lisp-2#The_function_namespace" target="_blank">Lisp-2</a> to be more precise), <code>call</code> is JavaScript&rsquo;s <code>funcall</code>. For readers familiar with any Lisp dialect, JavaScript&rsquo;s <code>apply</code> is similar to most Lisp&rsquo;s <code>apply</code>.</span></p>
+<p>The <code>call</code> method is invoked on a function and takes at least one argument, the object to which <code>this</code> will refer in the context of the function. Extra arguments are passed to the function.</p>
+<p>The <code>apply</code> method is invoked on a function and takes at least one argument, the object to which <code>this</code> will refer in the context of the function. The optional second argument should be an <code>Array</code>, holding arguments that will be to the function.</p>
+<pre>
+function f(x, y) {
+    return [this, x, y];
+}
+f.call({a: 'foo'},  1, 2); // [ { a: 'foo' }, 1, 2 ]
+f.apply({a: 'foo'}, [1, 2]); // [ { a: 'foo' }, 1, 2 ]</pre>
+<div class="question">Can you give me a use case of these <code>call</code>- and <code>apply</code>-methods?</div>
+<div class="answer">
+<p>A possible use case is the reuse of methods. Let&rsquo;s say we have an object (or a class) A with some methods. We also have some other, totally unrelated object B. There might be a method defined on A that we wish to invoke on B too, instead of copying the method from object A to object B, or making A B&rsquo;s prototype, we can simply invoke the method on object B.</p>
+<pre>// Object/Class A
+var Person = function(name) { this.name = name; };
+Person.prototype.introduce = function() {
+    return "Hello, my name is " + this.name;
+};
+// Object B. We don't want B to inherit from A. We could add the
+// `introduce`-method as a property to B, but indirect invocation is much
+// cheaper that copying the method, and then performing a method
+// invocation.
+var car = {name: 'Mater', town: 'Radiator Springs'};
+Person.prototype.introduce.call(car);</pre></div>
+<h5><a name="encapsulation"></a>I.1.4. Encapsulation</h5>
 <p>Another example of JavaScript&rsquo;s <emph>exotic</emph> way of doing things is encapsulation. Most classical OO languages support visibility modifiers to control the accessibility of fields and methods by other classes. In JavaScript, there are no such modifiers, but encapsulation is still achievable, via the use of closures.</p>
 <p>Example:</p>
 <pre class="Java">class A {
@@ -211,13 +276,13 @@ a.counter; // Error: not visible!
 })();
 a.inc(); // OK
 a.counter; // Error: not visible!</pre>
-<h5><a name="closures"></a>I.1.4. Closures</h5>
+<h5><a name="closures"></a>I.1.5. Closures</h5>
 <p>Q: What is a closure? A: TODO p 310</p>
 <div class="question">What are the advantages of implementing encapsulation via closures?</div>
 <div class="answer">
 <p>Actually, one could call it <emph>emulating</emph> encapsulation via closures. Because of the absence of encapsulation, JavaScript programmers are required to implement encapsulation manually via closures. So one could call it a disadvantage of JavaScript, although some people argue against encapsulation.</p>
 <p>With closures, the programmer has more control over encapsulation, but has to do more work to achieve it.</p></div>
-<h5><a name="polymorphism"></a>I.1.5. Polymorphism</h5>
+<h5><a name="polymorphism"></a>I.1.6. Polymorphism</h5>
 <p>Polymorphism in JavaScript is achieved via inheritance.</p>
 <p>Example:</p>
 <pre>// Superclass Animal
@@ -246,8 +311,8 @@ for (var i = 0; i < animals.length; i++) {
 <div class="question">You mentioned that one can <emph>override</emph> a method in JavaScript, is also possible to overload a method in JavaScript?</div>
 <div class="answer">
 <p>To be clear, a method (or function) overloads another method if it has the same name, but differs in the number of arguments or the types of the expected arguments. The right method to call is chosen statically, at compile-time. Overloading is a feature typically present in statically typed languages. With JavaScript being a dynamically typed language, the compile-time resolution that determines which method to call is ruled out, as the types are not known in advance.</p>
-<h5><a name="function-arguments"></a>I.1.6. Function arguments</h5>
-<p>Overloading based on arity is possible in dynamically typed languages, but not in JavaScript. The reason being that JavaScript doesn&rsquo;t check whether a function is called with the correct number of arguments. JavaScript will happily allow you to call a function expecting two arguments with 0, 1, 2, 3, &hellip; arguments. Missing arguments will be <code>undefined</code>. JavaScript also allows you to access the excess arguments via the <code>arguments</code> object. The <code>arguments</code> object is a local variable accessible within all functions. It is similar to an Array, but not quite the same. The elements of <code>arguments</code> can be accessed, and it has the <code>length</code>-property, but the other methods available for <code>Array</code>s cannot be used on the <code>arguments</code> object. One can convert the <code>arguments</code> object to an actual array, by calling <code>Array</code>&lsquo;s <code>slice</code>-method on it, like so: <code>var args = Array.prototype.slice.call(arguments);</code>.<span class="footnote">The <code>slice</code>-method of <code>Array</code> copies the elements into a new array, it optionally takes start- and end-indices.</span></p>
+<h5><a name="function-arguments"></a>I.1.7. Function arguments</h5>
+<p>Overloading based on arity is possible in dynamically typed languages, but not in JavaScript. The reason being that JavaScript doesn&rsquo;t check whether a function is called with the correct number of arguments. JavaScript will happily allow you to call a function expecting two arguments with 0, 1, 2, 3, &hellip; arguments. Missing arguments will be <code>undefined</code>. JavaScript also allows you to access the excess arguments via the <code>arguments</code> object. The <code>arguments</code> object is a local variable accessible within all functions. It is similar to an Array, but not quite the same. The elements of <code>arguments</code> can be accessed, and it has the <code>length</code>-property, but the other methods available for <code>Array</code>s cannot be used on the <code>arguments</code> object. One can convert the <code>arguments</code> object to an actual array, by calling <code>Array</code>&lsquo;s <code>slice</code>-method on it, like so: <code>var args = Array.prototype.slice.call(arguments);</code>.<span class="footnote">The <code>slice</code>-method of <code>Array</code> copies the elements into a new array, it optionally takes start- and end-indices. See <a href="#indirect-invocation" class="ref">Indirect invocation</a> for more about the <code>call</code>-method.</span></p>
 <p>Source: https://developer.mozilla.org/en-US/docs/JavaScript/Reference/Functions_and_function_scope/arguments</p>
 <p>TODO default parameters (compare with CL?)</p>
 <div class="question">What&rsquo;s the point of this <code>arguments</code> object? And why isn&rsquo;t it a proper <code>Array</code>?</div>
@@ -313,7 +378,7 @@ overloaded("foo");
 overloaded(1, "foo");
 // A number and a string</pre>
 <p>These <code>return</code>-statements could of course be replaced with different blocks of code, specific for each case.</p></div>
-<h5><a name="modularity"></a>I.1.7. Modularity</h5>
+<h5><a name="modularity"></a>I.1.8. Modularity</h5>
 <p>TODO Modularity in JavaScript p 306</p></div>
 <h4><a name="functional-programming"></a>I.2. Functional programming</h4>
 <p>TODO functional programming p 331</p>

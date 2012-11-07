@@ -159,6 +159,23 @@ exports.testList = function(test) {
     test.done();
 };
 
+exports.testLinkDef = function(test) {
+    parses(test, parser.LinkDef,
+           '[lisp2]: '
+           + 'http://the.url/Lisp-1_vs._Lisp-2\n',
+           {label: 'lisp2',
+            url: 'http://the.url/Lisp-1_vs._Lisp-2'});
+    parses(test, parser.LinkDef,
+           '     [foobar]: '
+           + 'http://the.url/Lisp-1_vs._Lisp-2\n',
+           {label: 'foobar',
+            url: 'http://the.url/Lisp-1_vs._Lisp-2'});
+    doesntParse(test, parser.LinkDef, '[foobar]:\n');
+    doesntParse(test, parser.LinkDef, '[foobar]:  \n');
+    doesntParse(test, parser.LinkDef, '[foobar]:  bla\n');
+    test.done();
+}
+
 exports.testQuestion = function(test) {
     parses(test, parser.Question, 'Q: Bladibla\n',
            {indent: 0, text: 'Bladibla'});

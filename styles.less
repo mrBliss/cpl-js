@@ -122,7 +122,16 @@ h5 {
     font-style: italic;
     margin-bottom: 0.3em;
 }
+h6 {
+    font-size: 1.1em;
+    margin-bottom: 0.3em;
+}
 
+h4, h5, h6 {
+    &:first-letter {
+        font-size: 1.3em;
+    }
+}
 strong {
     color: @highlight2;
 }
@@ -175,7 +184,7 @@ div.answer {
     div.question, div.answer {
         margin-left: 25px;
     }
-    p {
+    p, ul {
         font-size: 1.1em;
         line-height: 1.3em;
     }
@@ -224,7 +233,7 @@ div.editor {
         margin-bottom: -1px;
         padding-left: 1px;
         li {
-            font-size: 0.75em;
+            font-size: 0.7em;
             line-height: 1.1em;
             padding: 0.3em;
             margin-left: -1px;

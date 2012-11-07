@@ -17,11 +17,14 @@ function List(indent, items) {
     this.indent = indent;
     this.items = items;
 }
+function LinkDef(label, url) {
+    this.label = label;
+    this.url = url;
+}
 function Question(indent, text) {
     this.indent = indent;
     this.text = text;
 }
-
 
 function HasContents() {};
 
@@ -117,6 +120,11 @@ List.prototype.toHTML = function() {
     }).join('\n') + '\n</ul>';
 };
 
+LinkDef.prototype.toHTML = function() {
+    // No HTML representation
+    return '';
+}
+
 Question.prototype.toHTML = function() {
     return '<div class="question">' + this.text + '</div>';
 };
@@ -162,6 +170,10 @@ List.prototype.transform = function(t) {
     return this;
 };
 
+LinkDef.prototype.transform = function(t) {
+    return this;
+}
+
 Question.prototype.transform = function(t) {
     this.text = t(this.text);
     return this;
@@ -205,6 +217,10 @@ List.prototype.traverse = function(f) {
     f(this);
 };
 
+LinkDef.prototype.traverse = function(f) {
+    f(this);
+};
+
 Question.prototype.traverse = function(f) {
     f(this);
 };
@@ -235,6 +251,7 @@ exports.Paragraph = Paragraph;
 exports.Title = Title;
 exports.CodeBlock = CodeBlock;
 exports.List = List;
+exports.LinkDef = LinkDef;
 exports.Question = Question;
 exports.Answer = Answer;
 exports.QA = QA;

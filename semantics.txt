@@ -1,6 +1,6 @@
 # Semantics #
 
-## Object-oriented programming ##[oop]
+## Object-oriented programming ##
 
 
 Q: I've heard that JavaScript is an object-oriented language, could you expand
@@ -12,7 +12,7 @@ A: Indeed, JavaScript is object-oriented. Typically, in object-oriented
    The primitives in JS are numbers, strings, booleans, and the special types
    null and undefined. The objects include `Array`, `Function`, `Date`,
    `RegExp`, `Error`, ... This design decision, by many people considered a
-   mistake, was carried over from Java. Test: see #[oop]
+   mistake, was carried over from Java.
 
    ### Objects ###
 
@@ -140,15 +140,7 @@ A: Of course, OOP is broader than "everything is an object". Most definitions
 
          A: It doesn't actually, it's the use of `new` that makes a regular
             function act like a constructor. By prepending this keyword, a
-            couple of things happen.
-
-            * A new object is created, accessible via `this`.
-            * The constructor function is invoked on this object. TODO refer
-              to caller contexts.
-            * The prototype of the constructor function is stored as the
-              prototype of the new object.
-            * The newly created object is automatically returned at the end of
-              the function call.
+            couple of things happen, see #[func-invocation].
 
          Here's another example of inheritance in JavaScript.
 
@@ -274,10 +266,133 @@ A: Of course, OOP is broader than "everything is an object". Most definitions
          JavaScript, properties can be added and removed from objects at
          run-time.
 
-         http://en.wikipedia.org/wiki/Prototype-based_programming
 
+   ### Invoking functions ###[func-invocation]
 
-   TODO mention caller contexts p284, this
+   In JavaScript, a function can be invoked in four different ways:
+
+   * As a function
+   * As a method
+   * As a constructor
+   * Indirectly through `call()` or `apply()`
+
+   Functions can behave differently, depending on the kind of invocation. For
+   instance the value of `this`, will be different. In JavaScript, as in most
+   object-oriented languages, `this` is a special keyword inside the context
+   of a function that refers the object of which the function is a method,
+   i.e. the owner of the method.
+
+   #### Function invocation ####
+
+   Function invocation, is the regular kind of invocation, like you would call
+   functions (or procedures) in C, Haskell, or Lisp, i.e. in a non-OO
+   language.
+
+   For example:
+
+   ```JavaScript
+   function add(x, y) {
+       return x + y;
+   }
+   ```
+
+   Functions that don't contain an explicit `return`-statement, will return
+   `undefined`, JavaScript's `void`.
+
+   In the case of a regular function invocation, the value of `this` will be
+   the global object. TODO refer to the global object
+
+   #### Method invocation ####
+
+   A function is considered a method when it's the property of an object. The
+   big difference between function and method invocation, is that in the case
+   of method invocation, `this` will refer to the object on which the method
+   is called, instead of the global object.
+
+   ```JavaScript
+   function f() {
+       return this.x;
+   }
+   // Function invocation
+   var x = 1;
+   f(); // 1
+   // Method invocation
+   var o = {x: 2, f: f};
+   o.f(); // 2
+   ```
+
+   #### Constructor invocation ####
+
+   When a function or method invocation is preceded by the `new` keyword, it
+   is a constructor invocation.
+
+   A few things are different for constructor invocations:
+
+   * A new object is created and will be accessible via `this`.
+   * The prototype of the constructor function is stored as the prototype of
+     the new object.
+   * The newly created object is automatically returned at the end of the
+     function call, no explicit `return` is required.
+   * When the constructor has no parameters, the parentheses after the
+     function name are optional. E.g. `new Object()` vs `new Object`.
+
+   Q: So you're saying, every function can be invoked as a constructor? What
+      is the point of that?
+
+   A: TODO
+
+   #### Indirect invocation ####[indirect-invocation]
+
+   The fourth and final kind of invocation, is indirect invocation. As
+   `Function`s are also `Object`s in JavaScript, they can have methods. Two of
+   the available methods of `Function`s are `call` and `apply`.<foot>For
+   readers familiar with Common Lisp (or a [Lisp-2][lisp2] to be more
+   precise), `call` is JavaScript's `funcall`. For readers familiar with any
+   Lisp dialect, JavaScript's `apply` is similar to most Lisp's
+   `apply`.</foot>
+
+   [lisp2]: http://en.wikipedia.org/wiki/Lisp-1_vs._Lisp-2#The_function_namespace
+
+   The `call` method is invoked on a function and takes at least one argument,
+   the object to which `this` will refer in the context of the function. Extra
+   arguments are passed to the function.
+
+   The `apply` method is invoked on a function and takes at least one
+   argument, the object to which `this` will refer in the context of the
+   function. The optional second argument should be an `Array`, holding
+   arguments that will be to the function.
+
+   ```JavaScript
+
+   function f(x, y) {
+       return [this, x, y];
+   }
+   f.call({a: 'foo'},  1, 2); // [ { a: 'foo' }, 1, 2 ]
+   f.apply({a: 'foo'}, [1, 2]); // [ { a: 'foo' }, 1, 2 ]
+   ```
+
+   Q: Can you give me a use case of these `call`- and `apply`-methods?
+
+   A: A possible use case is the reuse of methods. Let's say we have an object
+      (or a class) A with some methods. We also have some other, totally
+      unrelated object B. There might be a method defined on A that we wish to
+      invoke on B too, instead of copying the method from object A to object
+      B, or making A B's prototype, we can simply invoke the method on object
+      B.
+
+      ```JavaScript
+      // Object/Class A
+      var Person = function(name) { this.name = name; };
+      Person.prototype.introduce = function() {
+          return "Hello, my name is " + this.name;
+      };
+      // Object B. We don't want B to inherit from A. We could add the
+      // `introduce`-method as a property to B, but indirect invocation is much
+      // cheaper that copying the method, and then performing a method
+      // invocation.
+      var car = {name: 'Mater', town: 'Radiator Springs'};
+      Person.prototype.introduce.call(car);
+      ```
 
    ### Encapsulation ###
 
@@ -393,7 +508,8 @@ A: Of course, OOP is broader than "everything is an object". Most definitions
       `slice`-method on it, like so: `var args =
       Array.prototype.slice.call(arguments);`.<foot>The `slice`-method of
       `Array` copies the elements into a new array, it optionally takes start-
-      and end-indices.</foot>
+      and end-indices. See #[indirect-invocation] for more about the
+      `call`-method.</foot>
 
       Source: https://developer.mozilla.org/en-US/docs/JavaScript/Reference/Functions_and_function_scope/arguments
 

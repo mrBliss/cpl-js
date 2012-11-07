@@ -14,12 +14,14 @@ var parsed = parser.parse(parser.Page, str);
 if (parsed) {
     var ast = parsed.ast,
         tableOfContents = {},
-        labels = {};
+        refs = {},
+        links = {};
     ast.traverse(toc.tocBuilder(tableOfContents));
-    ast.traverse(toc.labelCollector(labels));
+    ast.traverse(toc.labelCollector(refs, links));
     var markedUp = ast.transform(markup);
-    var withRefs = markedUp.transform(toc.fillInReferences(labels));
-    var html = withRefs.toHTML();
+    var withRefs = markedUp.transform(toc.fillInReferences(refs));
+    var withLinks = withRefs.transform(toc.fillInLinks(links));
+    var html = withLinks.toHTML();
     var template = fs.readFileSync('../template.html', 'utf8');
     fs.writeFile('../index.html', template
                  .replace('<!--BODY-->', html)

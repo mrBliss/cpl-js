@@ -93,7 +93,6 @@ $(document).ready(function () {
                        top: (e.pageY + 10) + 'px'});
             $elem.after(popup);
             popup.click(function(e) {
-                e.preventDefault();
                 popup.remove();
             });
         });

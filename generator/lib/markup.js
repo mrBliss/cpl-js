@@ -1,4 +1,3 @@
-
 // Markdown like syntax, but not for lists or paragraphs.
 // Currently supported:
 // * `code`
@@ -8,8 +7,21 @@
 // * "proper double quotes"
 // * ... (&hellip;)
 // * <foot>Foo bar</foot> -- "For bar" will be a footnote
+//
 // Not done by `markup`, but also available:
-// * #[lbl] -- a reference to the title with label 'lbl'
+// * #[lbl] -- a reference to the title with label `lbl`
+// * [text][lbl] -- a link with `text` as text to click on. The url to
+// go to is determined by an accompanying link definition.
+// Link definitions must be put in a separate paragraph, this
+// unclutters the text and improves the reading experience.
+//
+// Example:
+//
+// Bla di bla [here][google] la. Foo [there][reddit].
+//
+// [here]: http://www.google.com
+// [reddit]: http://www.reddit.com
+//
 
 exports.markup = function(s) {
     return s.replace(/`([^`]+)`/g, '<code>$1</code>')

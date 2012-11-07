@@ -81,7 +81,13 @@ var Title = action(
     function(arr) {
         return new el.Title(arr[0], arr[1][0], arr[1][1], arr[1][2]);
     });
-
+var LinkDef = action(
+    seq(ws(between('[', joined(rep1(but(ch(']')))), ']')),
+        ch(':'),
+        ws(joined(seq(token("http"), TillEOL, ignored(NewLine))))),
+    function(arr) {
+        return new el.LinkDef(arr[0], arr[2]);
+    });
 
 var CodeBlock = action(
     seq(opt(WS),
@@ -143,6 +149,7 @@ var Answer = action(
                                    // To break to recursion
                                    return QA(p);
                                },
+                               LinkDef,
                                Paragraph)),
                    function(arr) {
                        return filter(arr, function(x) {
@@ -193,6 +200,7 @@ exports = {
     CodeBlock: CodeBlock,
     ListItem: ListItem,
     List: List,
+    LinkDef: LinkDef,
     Question: Question,
     Answer: Answer,
     QA: QA,
