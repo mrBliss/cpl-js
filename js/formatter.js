@@ -37,6 +37,11 @@ $(document).ready(function () {
             return "// Invalid input: " + err.message;
         };
     }
+    function fixEncoding(cm, text) {
+        text = text || cm.getValue();
+        var decoded = $('<div/>').html(text).text();
+        cm.setValue(decoded);
+    }
     $('pre').each(function(index, pre) {
         var id = 'editor' + index;
         var codeMirror = CodeMirror(function(editor) {
@@ -59,10 +64,11 @@ $(document).ready(function () {
                 event.preventDefault();
                 var val = codeMirror.getValue();
                 codeMirror.setValue(val + "\n" + evalJS(val));
+                fixEncoding(codeMirror);
             });
             $links.last().click(function (event) {
                 event.preventDefault();
-                codeMirror.setValue($div.data('initial'));
+                fixEncoding(codeMirror, $div.data('initial'));
             });
         }, {
             value: pre.innerHTML,
@@ -81,6 +87,7 @@ $(document).ready(function () {
                            } : undefined)
             }
         });
+        fixEncoding(codeMirror);
     });
 
     // Popup footnotes
