@@ -44,8 +44,11 @@ $(document).ready(function () {
             var $div = $('<div class="editor" id="' + id + '"></div>');
             var $tabs = $('<ul class="tabs">'
                           + '<li>' + (pre.className || 'JavaScript') + '</li>'
+                          + (!pre.className ?
+                             '<li><a href="#eval">Evaluate</a></li>'
+                             : '')
                           + '<li><a href="#reset">Reset</a></li>'
-                          + '<li><a href="#eval">Evaluate</a></li></ul>');
+                          + '</ul>');
             $div.append($tabs);
             $div.append(editor);
             $pre.replaceWith($div);
@@ -54,12 +57,12 @@ $(document).ready(function () {
             var $links = $('a', $tabs);
             $links.first().click(function (event) {
                 event.preventDefault();
-                codeMirror.setValue($div.data('initial'));
+                var val = codeMirror.getValue();
+                codeMirror.setValue(val + "\n" + evalJS(val));
             });
             $links.last().click(function (event) {
                 event.preventDefault();
-                var val = codeMirror.getValue();
-                codeMirror.setValue(val + "\n" + evalJS(val));
+                codeMirror.setValue($div.data('initial'));
             });
         }, {
             value: pre.innerHTML,
@@ -71,7 +74,11 @@ $(document).ready(function () {
             matchBrackets: true,
             extraKeys: {
                 "Ctrl-R": function () { $("div#" + id + " a[href='#reset']").click(); },
-                "Ctrl-E": function () { $("div#" + id + " a[href='#eval']").click(); }
+                "Ctrl-E": (!pre.className
+                           ? function () {
+                               $("div#" + id + ""
+                                 + " a[href='#eval']").click();
+                           } : undefined)
             }
         });
     });
