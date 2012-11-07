@@ -90,8 +90,8 @@ Title.prototype.toHTML = function() {
     var hLevel = this.level + 2;
     var anchor = this.text.toLowerCase()
             .replace(/[^a-z0-9-]|\s/g, '-');
-    return '<h' + hLevel +' name="' + anchor
-        + '">' + this.text + '</h' + hLevel + '>';
+    return '<h' + hLevel +'><a name="' + anchor
+        + '"></a>' + this.number + ' ' + this.text + '</h' + hLevel + '>';
 };
 
 CodeBlock.prototype.toHTML = function() {
@@ -128,7 +128,8 @@ Page.prototype.toHTML = function() {
     }).join('\n');
 };
 
-// Transformer - Mutable
+// Transformer
+
 
 Paragraph.prototype.transform = function(t) {
     this.text = t(this.text);
@@ -136,6 +137,7 @@ Paragraph.prototype.transform = function(t) {
 };
 
 Title.prototype.transform = function(t) {
+    this.text = t(this.text);
     return this;
 };
 
@@ -173,6 +175,48 @@ Page.prototype.transform = function(t) {
         this.contents[i].transform(t);
     }
     return this;
+};
+
+// Traversal
+
+Paragraph.prototype.traverse = function(f) {
+    f(this);
+};
+
+Title.prototype.traverse = function(f) {
+    f(this);
+};
+
+CodeBlock.prototype.traverse = function(f) {
+    f(this);
+};
+
+List.prototype.traverse = function(f) {
+    f(this);
+};
+
+Question.prototype.traverse = function(f) {
+    f(this);
+};
+
+Answer.prototype.traverse = function(f) {
+    f(this);
+    for (var i = 0; i < this.contents.length; i++) {
+        this.contents[i].traverse(f);
+    }
+};
+
+QA.prototype.traverse = function(f) {
+    f(this);
+    this.question.traverse(f);
+    this.answer.traverse(f);
+};
+
+Page.prototype.traverse = function(f) {
+    f(this);
+    for (var i = 0; i < this.contents.length; i++) {
+        this.contents[i].traverse(f);
+    }
 };
 
 // Exports

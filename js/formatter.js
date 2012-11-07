@@ -75,4 +75,28 @@ $(document).ready(function () {
             }
         });
     });
+
+    // Popup footnotes
+    $('span.footnote').each(function(index, elem) {
+        var link = $('<a href="#" class="footnote">[' + (index + 1)
+                     + ']</a>');
+        var $elem = $(elem);
+        $elem.before(link);
+        $(link).click(function(e) {
+            e.preventDefault();
+            // Don't make the popup if it's already present
+            if ($('div#footnote' + (index + 1)).length > 0) return;
+            var popup = $('<div id="footnote' + (index + 1) + '" class="footnote">' + $elem.html() +
+                          '</div>');
+            var $window = $(window);
+            popup.css({left: (e.pageX - $window.width() * 0.15) + 'px',
+                       top: (e.pageY + 10) + 'px'});
+            $elem.after(popup);
+            popup.click(function(e) {
+                e.preventDefault();
+                popup.remove();
+            });
+        });
+    });
+
 });

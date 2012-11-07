@@ -66,12 +66,11 @@ div#info {
     margin-top: 1em;
     div.leftCol {
         float: left;
-        padding-right: 3em;
+        padding-right: 1em;
         border-right: 1px dashed lighten(@text, 60%);
     }
     div.rightCol {
         float: left;
-        padding-left: 3em;
     }
 }
 li.unnumbered {
@@ -79,6 +78,7 @@ li.unnumbered {
     padding-top: 0.2em;
 }
 div#toc {
+    padding-left: 0;
     font-size: 0.9em;
     ol {
         list-style-type: upper-roman;
@@ -86,10 +86,13 @@ div#toc {
             font-weight: bold;
         }
         ol {
-            margin-top: -0.5em;
+            // margin-top: -0.5em;
             list-style-type: decimal;
             li {
                 font-weight: normal;
+                li {
+                    font-size: 0.9em;
+                }
             }
             a:hover {
                 background: lighten(@linkBg, 5%);
@@ -115,7 +118,7 @@ h4 {
     border-bottom: 1px dotted @text;
 }
 h5 {
-    font-size: 1.1em;
+    font-size: 1.2em;
     font-style: italic;
     margin-bottom: 0.3em;
 }
@@ -147,6 +150,7 @@ div.question {
     font-style: italic;
     font-size: 1.5em;
     line-height: 1.8em;
+    // margin-top: 2em;
     margin-bottom: 0;
     &:before {
         .qa-before("Q: ");
@@ -248,6 +252,32 @@ div.editor {
         border: 1px solid @border;
         font-size: 0.8em;
     }
+}
+
+span.footnote {
+    display: none;
+    // font-size: 0.75em;
+    // font-style: italic;
+}
+a.footnote {
+    background: @linkBg;
+    text-decoration: none;
+    vertical-align: baseline;
+    font-size: 0.8em;
+    line-height: 0.5em;
+    position: relative;
+    top: -0.4em;
+    margin-right: 0.5em;
+}
+div.footnote {
+    position: absolute;
+    width: 30%;
+    background: @bg;
+    border: 1px solid @border;
+    .rounded-corners;
+    padding: 1em;
+    z-index: 999;
+    font-size: 0.9em;
 }
 
 div#bibliography {

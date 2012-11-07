@@ -10,9 +10,9 @@ A: Indeed, JavaScript is object-oriented. Typically, in object-oriented
    languages, everything is an object (e.g. Python, Scala, Ruby, Eiffel, ...)
    In JavaScript this is not the case, there are both objects and primitives.
    The primitives in JS are numbers, strings, booleans, and the special types
-   null and undefined. The objects include Array, Function, Date, RegExp,
-   Error, ... This design decision, by many people considered a mistake, was
-   carried over from Java.
+   null and undefined. The objects include `Array`, `Function`, `Date`,
+   `RegExp`, `Error`, ... This design decision, by many people considered a
+   mistake, was carried over from Java.
 
    ### Objects ###
 
@@ -391,9 +391,9 @@ A: Of course, OOP is broader than "everything is an object". Most definitions
       cannot be used on the `arguments` object. One can convert the
       `arguments` object to an actual array, by calling `Array`'s
       `slice`-method on it, like so: `var args =
-      Array.prototype.slice.call(arguments);`. FOOTNOTE: The `slice`-method of
-      `Array` copies the elements into a new array, it optionally takes a
-      start- and end-indices.
+      Array.prototype.slice.call(arguments);`.<foot>The `slice`-method of
+      `Array` copies the elements into a new array, it optionally takes start-
+      and end-indices.</foot>
 
       Source: https://developer.mozilla.org/en-US/docs/JavaScript/Reference/Functions_and_function_scope/arguments
 
