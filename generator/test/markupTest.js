@@ -3,7 +3,7 @@ var m = require('../lib/markup.js').markup;
 
 exports.testMarkup = function(test) {
     test.equal(m('`code`'), '<code>code</code>');
-    test.equal(m('/italic/'), '<emph>italic</emph>');
+    test.equal(m('/italic/'), '<em>italic</em>');
     test.equal(m('foo and/or bla di or/and bar'),
                'foo and/or bla di or/and bar');
     test.equal(m('*bold*'), '<strong>bold</strong>');
@@ -15,5 +15,13 @@ exports.testMarkup = function(test) {
     test.equal(m('...'), '&hellip;');
     test.equal(m('Bla <foot>Bar Baz</foot>'),
                'Bla <span class="footnote">Bar Baz</span>');
+    test.equal(m('contained /only 4 methods/: `toString`'),
+               'contained <em>only 4 methods</em>:'
+               + ' <code>toString</code>');
+    test.equal(m('calling `Array`\'s `slice`-method'),
+               'calling <code>Array</code>&rsquo;s'
+               + ' <code>slice</code>-method');
+    test.equal(m('`""`'), '<code>""</code>');
+    test.equal(m("`''`"), "<code>''</code>");
     test.done();
 };
