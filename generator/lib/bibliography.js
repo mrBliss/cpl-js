@@ -9,6 +9,16 @@ var formatAuthors = function(authors) {
     }).join(', & ');
 };
 
+var BibItem = function() {};
+BibItem.prototype.toURL = function() {
+    // this.number is filled in by makeBibIndex, which should have
+    // been called by now.
+    return '#bib-' + this.number;
+};
+BibItem.prototype.toReference = function() {
+    return '<a href="' + this.toURL() + '" class="ref">'
+        + '<span class="bib">' + this.number +'</span> ' + this.title + '</a>';
+};
 
 var Book = function(name, fields) {
     this.name = name;
@@ -16,6 +26,8 @@ var Book = function(name, fields) {
         this[field] = fields[field];
     }
 };
+Book.prototype = new BibItem;
+Book.prototype.constructor = Book;
 Book.prototype.toHTML = function() {
     var fmtAuthors = formatAuthors(this.authors);
     // We need pattern-matching
@@ -26,7 +38,7 @@ Book.prototype.toHTML = function() {
     case 3: fmtEdition = '3rd'; break;
     default: fmtEdition = this.edition + 'th';
     };
-    return '<li class="book">'
+    return '<li class="book" id="bib-' + this.number + '">'
         + '<span class="author">' + fmtAuthors + '</span> '
         + '<span class="year">(' + this.year + ')</span>. '
         + '<span class="title">' + this.title + '</span>'
@@ -43,8 +55,10 @@ var Wikipedia = function(name, fields) {
         this[field] = fields[field];
     }
 };
+Wikipedia.prototype = new BibItem;
+Wikipedia.prototype.constructor = Wikipedia;
 Wikipedia.prototype.toHTML = function() {
-    return '<li class="encyc"><span class="title">'
+    return '<li class="encyc" id="bib-' + this.number + '"><span class="title">'
         + this.title + '</span>. In <span class="encyc">Wikipedia</span>.'
         + ' Retrieved ' + this.retrieved + ', from <a href="' +
         this.url + '">' + this.url + '</a></li>';
@@ -56,8 +70,10 @@ var Website = function(name, fields) {
         this[field] = fields[field];
     }
 };
+Website.prototype = new BibItem;
+Website.prototype.constructor = Website;
 Website.prototype.toHTML = function() {
-    return '<li class="website"><span class="siteName">'
+    return '<li class="website" id="bib-' + this.number + '"><span class="siteName">'
         + this.siteName + '</span>. '
         + (this.year ? '(' + this.year + '). ': '')
         + '<span class="title">' + this.title + '</span>. '
@@ -74,8 +90,10 @@ var Blog = function(name, fields) {
         this[field] = fields[field];
     }
 };
+Blog.prototype = new BibItem;
+Blog.prototype.constructor = Blog;
 Blog.prototype.toHTML = function() {
-    return '<li class="blog"><span class="authors">'
+    return '<li class="blog" id="bib-' + this.number + '"><span class="authors">'
         + formatAuthors(this.authors) + '</span> '
         + (this.published
            ? '(' + this.published + '). '
@@ -87,10 +105,10 @@ Blog.prototype.toHTML = function() {
 
 exports.makeBibliography = function() {
     // Ugly, but easy
-    eval(fs.readFileSync('../bibliography.js', 'utf8'));
-
-    var html = '<ol>\n';
-    html += (entries.sort(function(a, b) {
+    var entries;
+    eval(fs.readFileSync('../bibliography.js',
+                                        'utf8'));
+    return entries.sort(function(a, b) {
         if (a.authors && b.authors) {
             return (a.authors < b.authors)
                 ? -1
@@ -108,9 +126,23 @@ exports.makeBibliography = function() {
                 ? 1
                 : 0;
         }
-    }).map(function(book) {
+    });
+};
+
+exports.makeBibIndex = function(bib) {
+    var index = {};
+    for (var i = 0; i < bib.length; i++) {
+        bib[i].number = i + 1;
+        index[bib[i].name] = bib[i];
+    }
+    return index;
+};
+
+exports.toHTML = function(bib) {
+    var html = '<ol>\n';
+    html += (bib).map(function(book) {
         return book.toHTML();
-    }).join('\n'));
+    }).join('\n');
 
     html += '</ol>';
     return html;

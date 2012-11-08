@@ -9,6 +9,8 @@ var parser = require('./parser.js'),
 //                                           'utf8')).ast
 
 var bibliography = bib.makeBibliography();
+var bibIndex = bib.makeBibIndex(bibliography);
+var bibHTML = bib.toHTML(bibliography);
 var str = fs.readFileSync('../semantics.txt', 'utf8');
 var parsed = parser.parse(parser.Page, str);
 if (parsed) {
@@ -19,15 +21,15 @@ if (parsed) {
     ast.traverse(toc.tocBuilder(tableOfContents));
     ast.traverse(toc.labelCollector(refs, links));
     var markedUp = ast.transform(markup);
-    var withRefs = markedUp.transform(toc.fillInReferences(refs));
+    var withRefs = markedUp.transform(toc.fillInReferences(refs, bibIndex));
     var withLinks = withRefs.transform(toc.fillInLinks(links));
-    withRefs.traverse(toc.fillInBlockQuoteLinks(links));
+    withRefs.traverse(toc.fillInBlockQuoteRefs(links, bibIndex));
     var html = withLinks.toHTML();
     var template = fs.readFileSync('../template.html', 'utf8');
     fs.writeFile('../index.html', template
                  .replace('<!--BODY-->', html)
                  .replace('<!--TOC-->', toc.toHTML(tableOfContents))
-                 .replace('<!--BIB-->', bibliography),
+                 .replace('<!--BIB-->', bibHTML),
                  function(err) {
                      if (err) {
                          console.log(err);

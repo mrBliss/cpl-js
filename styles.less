@@ -142,6 +142,11 @@ strong {
 a.ref, em {
     font-style: italic;
 }
+a.ref span.bib {
+    font-style: normal;
+    &:before { content: '['}
+    &:after { content: ']'}
+}
 
 .shadow(@color, @distance: 5px) {
     -moz-box-shadow:    inset 0 0 @distance @color;
@@ -294,6 +299,11 @@ blockquote {
     border-right: 5px solid @border;
     border-top: 1px dotted @border;
     border-bottom: 1px dotted @border;
+    margin-left: 0;
+    margin-right: 0;
+    em {
+        font-style: normal;
+    }
     span.cite {
         margin-left: 2em;
     }

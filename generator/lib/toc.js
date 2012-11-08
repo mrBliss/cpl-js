@@ -61,7 +61,7 @@ exports.toHTML = function(toc) {
         var anchor = t[1].toLowerCase()
                 .replace(/[^a-z0-9-]|\s/g, '-')
                 .replace(/-+/, '-');
-        html += '<li><a href="#' + anchor +'">' + t[1] + '</a>';
+        html += '<li><a href="#' + anchor +'">' + t[1].replace(/`/g, '') + '</a>';
         prevLevel = level;
     };
     html += '</li>\n</ol>\n</li>\n';
@@ -85,7 +85,7 @@ exports.labelCollector = function(refs, links) {
     };
 };
 
-exports.fillInReferences = function(refs) {
+exports.fillInReferences = function(refs, bibIndex) {
     return function(s) {
         // #[label]
         return s.replace(/#\[[^\]]+\]/g, function($1) {
@@ -94,9 +94,17 @@ exports.fillInReferences = function(refs) {
                 var label = m[1],
                     ref = refs[label];
                 if (!ref) {
-                    console.log('WARNING: unresolved reference: ' + label);
-                    return '??';
+                    // Not an in-document reference, maybe a
+                    // bibliography reference
+                    ref = bibIndex[label];
+                    if (!ref) {
+                        console.log('WARNING: unresolved reference: ' + label);
+                        return '??';
+                    } else {
+                        return ref.toReference();
+                    }
                 } else {
+                    // An in-document reference
                     return '<a href="#' + ref[0] + '" class="ref">' +
                         ref[1] + '</a>';
                 }
@@ -105,7 +113,6 @@ exports.fillInReferences = function(refs) {
         });
     };
 };
-
 
 exports.fillInLinks = function(links) {
     return function(s) {
@@ -128,12 +135,19 @@ exports.fillInLinks = function(links) {
     };
 };
 
-exports.fillInBlockQuoteLinks = function(links) {
+exports.fillInBlockQuoteRefs = function(links, bibIndex) {
     return function(elem) {
-        if (elem.link) {
-            var url = links[elem.link];
+        if (elem.ref) {
+            var url = links[elem.ref];
             if (!url) {
-                console.log('WARNING: unresolved link: ' + elem.link);
+                // Not a link, maybe a bibliography reference
+                var bibItem = bibIndex[elem.ref];
+                if (bibItem) {
+                    elem.url = bibItem.toURL();
+                } else {
+                    console.log('WARNING: unresolved reference: ' +
+                                elem.ref);
+                }
             } else {
                 elem.url = url;
             }
