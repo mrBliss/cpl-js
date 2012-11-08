@@ -174,4 +174,22 @@ var entries = [
         year: 2012,
         title: 'V8 Introduction',
         url: 'https://developers.google.com/v8/intro'
+    }),
+    new Blog('ModulePattern', {
+        authors: [['Cherry', 'Ben']],
+        published: 'March 12, 2010',
+        title: 'JavaScript Module Pattern: In-Depth',
+        url: 'http://www.adequatelygood.com/2010/3/JavaScript-Module-Pattern-In-Depth'
+    }),
+    new Blog('JavaScriptModules', {
+        authors: [['Padburry', 'David']],
+        published: 'August 21, 2011',
+        title: 'JavaScript Modules',
+        url: 'http://blog.davidpadbury.com/2011/08/21/javascript-modules/'
+    }),
+    new Website('NodeJSModules', {
+        siteName: 'Node.js',
+        year: 2012,
+        title: 'Node.js v0.8.14 Manual & Documentation - Modules',
+        url: 'http://nodejs.org/api/modules.html'
     })];
