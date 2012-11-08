@@ -81,10 +81,10 @@ div#info {
     div.leftCol {
         float: left;
         padding-right: 1em;
-        border-right: 1px dashed lighten(@text, 60%);
     }
     div.rightCol {
         float: left;
+        border-left: 1px dashed lighten(@text, 60%);
     }
 }
 li.unnumbered {
@@ -263,7 +263,7 @@ div.editor {
         float: left;
         list-style-type: none;
         text-align: center;
-        margin-bottom: -1px;
+        margin-bottom: -0.2em;
         padding-left: 1px;
         li {
             font-size: 0.7em;
@@ -297,6 +297,9 @@ div.editor {
         clear: both;
         border: 1px solid @border;
         font-size: 0.8em;
+    }
+    .CodeMirror-scroll {
+        height: auto;
     }
 }
 
@@ -344,7 +347,10 @@ a.footnote {
     line-height: 0.5em;
     position: relative;
     top: -0.4em;
-    margin-right: 0.5em;
+    margin-right: 0.3em;
+}
+span.footnote + a.footnote {
+    margin-left: -0.4em;
 }
 div.footnote {
     position: absolute;
@@ -385,11 +391,11 @@ div#bibliography {
 }
 
 .rounded-corners (@radius: 5px) {
-  -webkit-border-radius: @radius;
-  -moz-border-radius: @radius;
-  -ms-border-radius: @radius;
-  -o-border-radius: @radius;
-  border-radius: @radius;
+    -webkit-border-radius: @radius;
+    -moz-border-radius: @radius;
+    -ms-border-radius: @radius;
+    -o-border-radius: @radius;
+    border-radius: @radius;
 }
 .gradient(@from) {
     .gradient2(@from, darken(@from, 10%));
