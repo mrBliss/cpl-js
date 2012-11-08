@@ -173,6 +173,7 @@ var Answer = action(
                                },
                                LinkDef,
                                BlockQuote,
+                               HTML,
                                Paragraph)),
                    function(arr) {
                        return filter(arr, function(x) {
