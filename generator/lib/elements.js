@@ -13,10 +13,44 @@ function CodeBlock(indent, lang, code) {
     this.lang = lang;
     this.code = code;
 }
+function ListItem(indent, text) {
+    this.indent = indent;
+    this.text = text;
+}
 function List(indent, items) {
     this.indent = indent;
     this.items = items;
+    for (var i = 0; i < this.items.length; i++) {
+        if (i == 0) this.items[i].indent += this.indent;
+        this.items[i].indent += 2;
+    }
+    this.fixIndentation();
 }
+List.prototype.fixIndentation = function() {
+    if (this.items.length > 1) {
+        var prevIndent = this.items[0].indent;
+        var newItems = [this.items[0]];
+        for (var i = 1; i < this.items.length; i++) {
+            var subList = [],
+                tempIndent = this.items[i].indent,
+                startI = i;
+            while (i < this.items.length
+                   && this.items[i].indent >= prevIndent + 2) {
+                this.items[i].indent -= 2;
+                subList.push(this.items[i++]);
+            }
+            if (subList.length > 0) {
+                subList[0].indent -= this.items[startI - 1].indent;
+                newItems.push(new List(tempIndent - 2, subList));
+                i--;
+            } else {
+                newItems.push(this.items[i]);
+            }
+            prevIndent = tempIndent;
+        }
+        this.items = newItems;
+    }
+};
 function LinkDef(label, url) {
     this.label = label;
     this.url = url;
@@ -74,7 +108,7 @@ function Answer(indent, contents) {
     }
 }
 
-Answer.prototype = new HasContents();
+Answer.prototype = new HasContents;
 Answer.prototype.constructor = Answer;
 
 
@@ -89,7 +123,7 @@ function Page(contents) {
     this.fixIndentation();
 }
 
-Page.prototype = new HasContents();
+Page.prototype = new HasContents;
 Page.prototype.constructor = Page;
 
 // Anchor
@@ -123,9 +157,14 @@ CodeBlock.prototype.toHTML = function() {
     return '<pre' + className + '>' + this.code + '</pre>';
 };
 
+
+ListItem.prototype.toHTML = function() {
+    return '<li>' + this.text + '</li>';
+};
+
 List.prototype.toHTML = function() {
     return '<ul>\n' + this.items.map(function(item) {
-        return '<li>' + item + '</li>';
+        return item.toHTML();
     }).join('\n') + '\n</ul>';
 };
 
@@ -181,10 +220,13 @@ Title.prototype.transform = function(t) {
 CodeBlock.prototype.transform = function(t) {
     return this;
 };
-
+ListItem.prototype.transform = function(t) {
+    this.text = t(this.text);
+    return this;
+}
 List.prototype.transform = function(t) {
     for (var i = 0; i < this.items.length; i++) {
-        this.items[i] = t(this.items[i]);
+        this.items[i].transform(t);
     }
     return this;
 };
@@ -237,6 +279,10 @@ CodeBlock.prototype.traverse = function(f) {
     f(this);
 };
 
+ListItem.prototype.traverse = function(f) {
+    f(this);
+};
+
 List.prototype.traverse = function(f) {
     f(this);
 };
@@ -278,6 +324,7 @@ Page.prototype.traverse = function(f) {
 exports.Paragraph = Paragraph;
 exports.Title = Title;
 exports.CodeBlock = CodeBlock;
+exports.ListItem = ListItem;
 exports.List = List;
 exports.LinkDef = LinkDef;
 exports.BlockQuote = BlockQuote;

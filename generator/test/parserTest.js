@@ -127,19 +127,19 @@ exports.testCodeBlock = function(test) {
 
 exports.testListItem = function(test) {
     parses(test, parser.ListItem, '* Alpha Beta Gamma\n',
-           'Alpha Beta Gamma');
+           {indent: 0, text: 'Alpha Beta Gamma'});
     parses(test, parser.ListItem, '* Alpha\nBeta\n',
-           'Alpha Beta');
+           {indent: 0, text: 'Alpha Beta'});
     parses(test, parser.ListItem, '* Alpha\n  Beta\n',
-           'Alpha Beta');
+           {indent: 0, text: 'Alpha Beta'});
     parses(test, parser.ListItem, '  * Alpha\n  Beta\n',
-           'Alpha Beta');
+           {indent: 2, text: 'Alpha Beta'});
     parses(test, parser.ListItem, '  * Alpha\n    Beta\n',
-           'Alpha Beta');
+           {indent: 2, text: 'Alpha Beta'});
     parses(test, parser.ListItem, '  * A\n  B\n  C\n  D\n',
-           'A B C D');
+           {indent: 2, text: 'A B C D'});
     parses(test, parser.ListItem, '* A\n B\n\n C\n',
-           'A B');
+           {indent: 0, text: 'A B'});
     doesntParse(test, parser.ListItem, '*\n');
     doesntParse(test, parser.ListItem, 'bla * di');
     doesntParse(test, parser.ListItem, 'bla\n');
@@ -149,10 +149,36 @@ exports.testListItem = function(test) {
 
 exports.testList = function(test) {
     parses(test, parser.List, ' * Alpha\n * Beta\n * Gamma\n',
-           {indent: 1, items: ['Alpha', 'Beta', 'Gamma']});
+           {indent: 1,
+            items: [{indent: 3, text: 'Alpha'},
+                    {indent: 3, text: 'Beta'},
+                    {indent: 3, text: 'Gamma'}]});
     parses(test, parser.List,
            '* Alpha\n  Golf\n* Beta\n  Delta\n Echo\n',
-           {indent: 0, items: ['Alpha Golf', 'Beta Delta Echo']});
+           {indent: 0,
+            items: [{indent: 2, text: 'Alpha Golf'},
+                    {indent: 2, text: 'Beta Delta Echo'}]});
+    parses(test, parser.List,
+           '* 1\n  * 1a\n  * 1b\n* 2\n',
+           {indent: 0,
+            items: [{indent: 2, text: '1'},
+                    {indent: 2,
+                     items: [{indent: 4, text: '1a'},
+                             {indent: 4, text: '1b'}]},
+                    {indent: 2, text: '2'}]});
+    parses(test, parser.List,
+           '* 1\n  * 1a\n  * 1b\n    * 1b1\n* 2\n  * 2a\n* 3\n',
+           {indent: 0,
+            items: [{indent: 2, text: '1'},
+                    {indent: 2,
+                     items: [{indent: 4, text: '1a'},
+                             {indent: 4, text: '1b'},
+                             {indent: 4,
+                              items: [{indent: 6, text: '1b1'}]}]},
+                    {indent: 2, text: '2'},
+                    {indent: 2,
+                     items: [{indent: 4, text: '2a'}]},
+                    {indent: 2, text: '3'}]});
     doesntParse(test, parser.List, '*\n');
     doesntParse(test, parser.List, 'bla * di');
     doesntParse(test, parser.List, 'bla\n');
@@ -248,7 +274,8 @@ exports.testAnswer = function(test) {
             contents: [{indent: 6, level: 1, text: 'Bla'},
                        {indent: 6, text: 'Foo'},
                        {indent: 6, items:
-                        ['Bar', 'Baz']}]});
+                        [{indent: 8, text: 'Bar'},
+                         {indent: 8, text: 'Baz'}]}]});
     var answ1 = 'A: Alpha\n'
             + '   Beta\n'
             + '   Gamma\n'

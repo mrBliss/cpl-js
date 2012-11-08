@@ -103,20 +103,20 @@ var CodeBlock = action(
 
 
 var ListItem = action(
-    seq(ignored(ws(ch('*'))),
+    seq(indented(ignored(ch('*'))),
         ws(WholeLine),
         rep0(ws(seq(but(choice(NewLine, ch('*'))),
                     ws(joined(seq(joined(rep0(ButNewLine)),
                                   ignored(NewLine)))))))),
     function(arr) {
-        if (arr[1] && arr[1].length > 0) {
-            var lines = arr[1].map(function(l) {
+        if (arr[2] && arr[2].length > 0) {
+            var lines = arr[2].map(function(l) {
                 return l[0] + l[1];
             });
-            lines.unshift(arr[0].replace(/\s$/, ''));
-            return lines.join(' ').replace(/\s+$/, '');
+            lines.unshift(arr[1].replace(/\s$/, ''));
+            return new el.ListItem(arr[0][0], lines.join(' ').replace(/\s+$/, ''));
         } else {
-            return arr[0].replace(/\s+$/, '');
+            return new el.ListItem(arr[0][0], arr[1].replace(/\s+$/, ''));
         }
     });
 
