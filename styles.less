@@ -7,9 +7,23 @@
 @border: #CCCCCC;
 @codeBg: darken(@bg, 1%);
 
+.serif {
+    font-family: "Crimson Text", Georgia, serif;
+}
+.sans {
+    font-family: "Quattrocento Sans", Helvetica, Arial, sans-serif;
+}
+// For code blocks
+.monospace1 {
+    font-family: "Inconsolata", Monaco, Consolas, monospace;
+}
+// For inline code
+.monospace2 {
+    font-family: Consolas, Menlo, Monaco, "Liberation Mono", Courier, monospace;
+}
 
 body {
-    font-family: "Crimson Text", Georgia, serif;
+    .serif;
     font-size: 110%;
     line-height: 1.25em;
     color: @text;
@@ -208,13 +222,13 @@ div.answer {
 }
 
 pre, div.editor, div.CodeMirror {
-    font-family: "Inconsolata", Monaco, Consolas, monospace;
+    .monospace1;
 }
 code {
-    font-family: Consolas, Menlo, Monaco, "Liberation Mono", Courier, monospace;
+    .monospace2;
 }
 div.editor ul.tabs {
-    font-family: "Quattrocento Sans", Helvetica, Arial, sans-serif;
+    .sans;
 }
 code {
     font-size: 0.7em;
