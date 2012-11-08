@@ -197,15 +197,18 @@ div.answer {
     }
     p, ul {
         font-size: 1.1em;
-        line-height: 1.3em;
+        line-height: 1.4em;
     }
 }
 
 pre, div.editor, div.CodeMirror {
     font-family: "Inconsolata", Monaco, Consolas, monospace;
 }
-code, div.editor ul.tabs {
+code {
     font-family: Consolas, Menlo, Monaco, "Liberation Mono", Courier, monospace;
+}
+div.editor ul.tabs {
+    font-family: "Quattrocento Sans", Helvetica, Arial, sans-serif;
 }
 code {
     font-size: 0.7em;
@@ -213,6 +216,7 @@ code {
     padding: 0.2em;
     padding-bottom: 0;
     background: @linkBg;
+    line-height: 1.3em;
     &:hover {
         background: darken(@linkBg, 2%);
     }
@@ -251,7 +255,7 @@ div.editor {
             .gradient2(darken(@bg, 3%), darken(@bg, 9%));
             &:first-child  {
                 border-top-left-radius: 5px;
-                font-style: italic;
+                font-weight: bold;
                 padding-left: 1em;
                 padding-right: 1em;
                 .gradient2(@bg, darken(@bg, 3%));
