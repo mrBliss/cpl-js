@@ -107,12 +107,12 @@ person.walk(); // "Do bi do ... walking, walking, walking"</pre>
 <h5 id="prototype-based-programming">I.1.2. Prototype-based programming</h5>
 <div class="question">What entails prototype-based inheritance?</div>
 <div class="answer">
-<p>A better term would be prototype-based programming, as inheritance is just one non-mandatory ingredient of this style of object-oriented programming. Prototype-based programming can easily be explained by comparing it with class-based programming.</p>
-<p>In class-based programming, one defines classes. Each class consists of fields and methods. To use a class, one creates a new object of the class, which will have the fields and methods defined in the class. Let&rsquo;s make an analogy: the class is the blueprint of the car, and the objects are cars built from the blueprint. Now let&rsquo;s throw inheritance in the mix. One can define a class that inherits from another class. This new class will contain all the fields and methods of the parent class, but can add fields and methods, and can also override fields and methods.</p>
-<p>In prototype-based programming, one defines objects. Each object will consist of fields and methods, or in JavaScript&rsquo;s case, properties. The whole concept of classes is removed from the equation. Instead of defining a blueprint to build new cars with, one just builds a car. But does this mean that we have to build every car from scratch, i.e. (re)define the fields and methods for every objects we want to use? No, to make a new object with the same fields and methods as another object, we <em>clone</em> the old object to get a new one. In other terms: we define a new object with the old object as prototype. Inheritance is also done via cloning, but after the cloning, the new object is extended with new fields and/or methods, and existing fields and/or methods can also be overriden. This new object can, in turn, be used as a prototype for other objects.</p>
+<p>A better term would be prototype-based programming, as inheritance is just one ingredient of this style of object-oriented programming. Prototype-based programming can easily be explained by comparing it with class-based programming.</p>
+<p>In class-based programming, one defines <em>classes</em>. Each class consists of fields and methods. To use a class, one <em>instantiates</em> a new object of the class, which will have the fields and methods defined in the class. The values of the fields can differ from object to object. Let&rsquo;s make an analogy: the class is the blueprint of the car, and the objects are cars built from the blueprint. Now let&rsquo;s throw inheritance in the mix. One can define a class that inherits from another class. This new class will contain all the fields and methods of the parent class, but can add fields and methods, and can also override fields and methods.</p>
+<p>In prototype-based programming, one defines <em>objects</em>. Each object will consist of fields and methods, or in JavaScript&rsquo;s case, <em>properties</em>. The whole concept of classes is removed from the equation. Instead of defining a blueprint to build new cars with, one just builds a car. But does this mean that we have to build every car from scratch, i.e. (re)define the fields and methods for every objects we want to use? No, to make a new object with the same fields and methods as another object, we <em>clone</em> the old object to get a new one. In other terms: we define a new object with the old object as <em>prototype</em>. Inheritance is also done via cloning, but after the cloning, the new object is extended with new fields and/or methods, and existing fields and/or methods can also be overriden. This new object can, in turn, be used as a prototype for other objects.</p>
 <div class="question">Could you show how it&rsquo;s done in JavaScript?</div>
 <div class="answer">
-<p>In JavaScript, objects can be created via object literal. In this case, <code>Object</code> will be their prototype.</p>
+<p>In JavaScript, objects can be created via object literals. In this case, <code>Object</code> will be their prototype.</p>
 <pre>var o = {foo: "bar"};
 // Object.getPrototypeOf(x) returns the prototype of x
 Object.getPrototypeOf(o); // {}, which is an empty Object</pre>
@@ -128,10 +128,10 @@ Car.prototype.drive = function() {
 };
 var myCar = new Car("BMW");
 Object.getPrototypeOf(myCar); // { drive: [Function] }, the prototype of Car</pre>
-<p>Notice that the name of the constructor function is capitalized, this is convention, carried over from Java.</p>
+<p>Notice that the name of the constructor function is capitalized. This is a convention carried over from Java.</p>
 <div class="question">If the naming is only a convention, how then differs a constructor from a regular function?</div>
 <div class="answer">
-<p>It doesn&rsquo;t actually, it&rsquo;s the use of <code>new</code> that makes a regular function act like a constructor. By prepending this keyword, a couple of things happen, see <a href="#invoking-functions" class="ref">Invoking functions</a>.</p></div>
+<p>It doesn&rsquo;t actually, it&rsquo;s the use of <code>new</code> keyword that makes a regular function act like a constructor. By prepending this keyword to the function invocation, a couple of things happen, see <a href="#constructor-invocation" class="ref">Constructor invocation</a>.</p></div>
 <div class="question">If methods are just properties that are functions, why don&rsquo;t you just define them in the constructor instead of defining them on the prototype? The latter seems more verbose.</div>
 <div class="answer">
 <p>If we were to define the methods in the constructor, copies of these methods would be created for every object created via the constructor. The methods defined on the prototype don&rsquo;t have to be copied, but are inherited.</p></div>
@@ -575,7 +575,7 @@ a.f(5); // 8</pre></div>
 <div class="question">What kind of typing discipline does JavaScript have?</div>
 <div class="answer">
 <p>Unlike for instance Java, a language people would believe to be akin to JavaScript when comparing their names, JavaScript isn&rsquo;t statically typed, but dynamically typed.</p>
-<p>The types of <em>variables</em> aren&rsquo;t known at <em>compile</em>-time, but the types of the <em>values</em> are known at <em>run</em>-time. Programmers don&rsquo;t have to annotate functions and variables with types like in statically typed programs.<span class="footnote">In statically typed languages with type inference like ML and Haskell, it is also not required to declare the types.</span></p>
+<p>The types of <em>variables</em> aren&rsquo;t known at <em>compile</em>-time, but the types of the <em>values</em> are known at <em>run</em>-time. Programmers don&rsquo;t have to annotate functions and variables with types like in statically typed programs.<span class="footnote">In statically typed languages with type inference, e.g. ML, Haskell, etc it is also not required to declare the types.</span></p>
 <div class="question">Why did JavaScript&rsquo;s creator choose to make JavaScript dynamically typed?</div>
 <div class="answer">
 <p>As mentioned before, JavaScript&rsquo;s creator, Brendan Eich, based JavaScript on Scheme, which is a dynamically typed language.</p>
@@ -602,8 +602,38 @@ Integer.parseInt("12") * 3; // 36</pre>
 {} + []; // 0
 {} + {}; // NaN</pre>
 <p>TODO ^^ doesn&rsquo;t work properly in the browser</p>
-<p>That&rsquo;s the downside of these conversion, you have to know when they will occur and which conversion will occur for which types. As you saw, these rules aren&rsquo;t really intuitive.</p></div>
+<p>That&rsquo;s the downside of these conversion, you have to know when they will occur and which conversion will occur for which types. As you saw, these rules aren&rsquo;t really intuitive.</p>
+</div>
 <h5 id="equality">I.2.2. Equality</h5>
+<p>Like most programming languages, JavaScript has a <code>==</code> operator to check whether two values are equal, its inverse, <code>!=</code> is also present. JavaScript also has another operator that checks whether two values are equal, <code>===</code>, and of course, its inverse, <code>!==</code>. The latter operator, <code>===</code>, is also called the <em>strict</em> equality or <em>identity</em> operator. The two operators define <em>equality</em> in a different manner.</p>
+<p>The strict equality operator, <code>===</code>, compares two values as follows:</p>
+<ul>
+<li>If the two values have different types, they are not equal.</li>
+<li>If both values are <code>null</code> or both values are <code>undefined</code>, they are equal.</li>
+<li>If both values are the boolean value <code>true</code> or both are the boolean value <code>false</code>, they are equal.</li>
+<li>If one or both values is <code>NaN</code>, they are not equal. The <code>NaN</code> value is never equal to any other value, including itself! To check whether a value <code>x</code> is <code>NaN</code>, use <code>x !== x</code>. <code>NaN</code> is the only value of <code>x</code> for which this expression will be true.</li>
+<li>If both values are numbers and have the same value, they are equal. If one value is <code>0</code> and the other is <code>-0</code>, they are also equal.</li>
+<li>If both values are strings and contain exactly the same 16-bit values (see the sidebar in Text) in the same positions, they are equal. If the strings differ in length or content, they are not equal.</li>
+<li>If both values refer to the same object, array, or function, they are equal. If they refer to different objects they are not equal, even if both objects have identical properties.</li>
+</ul>
+<p>The (non-strict) equality operator, <code>==</code>, compares two values as follows:</p>
+<ul>
+<li>If the two values have the same type, test them for strict equality as described above. If they are strictly equal, they are equal. If they are not strictly equal, they are not equal.</li>
+<li>If the two values do not have the same type, the <code>==</code> operator may still consider them equal. Use the following rules and type conversions to check for equality:</li>
+<ul>
+<li>If one value is <code>null</code> and the other is <code>undefined</code>, they are equal.</li>
+<li>If one value is a number and the other is a string, convert the string to a number and try the comparison again, using the converted value.</li>
+<li>If either value is <code>true</code>, convert it to <code>1</code> and try the comparison again. If either value is <code>false</code>, convert it to <code>0</code> and try the comparison again.</li>
+<li>If one value is an object and the other is a number or string, convert the object to a primitive. An object is converted to a primitive value by either its <code>toString()</code> method or its <code>valueOf()</code> method. The built-in classes of core JavaScript attempt <code>valueOf()</code> conversion before <code>toString()</code> conversion, except for the <code>Date</code> class, which performs <code>toString()</code> conversion.</li>
+<li>Any other combinations of values are not equal.</li>
+</ul>
+</ul>
+<p>Source: <a href="#bib-13" class="ref"><span class="bib">13</span> JavaScript: The Definitive Guide</a></p>
+<p>The following table illustrates the rules of the strict equality operator, <code>===</code>.</p>
+<table class="comparisons" id="strict-equality-table"></table>
+<p>And the following table illustrates the rules of the non-strict equality operator, <code>==</code>.</p>
+<table class="comparisons" id="equality-table"></table>
+<p>Tables adapted from <a href="https://github.com/dorey/JavaScript-Equality-Table" target="_blank">dorey&rsquo;s JavaScript-Equality-Table</a>.</p>
 <h5 id="-undefined-----null-">I.2.3. <code>undefined</code> & <code>null</code></h5>
 <p>Most (object-oriented) languages have a special value, <code>null</code>, a.k.a. the <em>null pointer</em>, which is used to indicate the absence of a value. Whenever a variable is expected to be a pointer or an object, i.e. has a reference type, it can contain the <code>null</code> value, meaning that the variable has no value. This null pointer is the cause of many errors, as the programmer should verify whether a reference isn&rsquo;t a null pointer before using it.<span class="footnote">C.A.R. Hoare, the inventor of the null reference, calls it his &ldquo;billion-dollar mistake&rdquo;.</span><span class="footnote">A safer alternative is a nullable type, like Haskell&rsquo;s <code>Maybe</code> type or Scala&rsquo;s <code>Option</code> type.</span></p>
 <p>Allowing null pointers in a language is commonly regarded as a source of problems. Of course, JavaScript can do better than this, it has two different special values that are essentially null pointers! The first one is <code>null</code>, the regular null pointer, which indicates the absence of a value. <code>null</code> is a special keyword in the JavaScript. The second one is <code>undefined</code> indicates that a value is not initialised, e.g. the value of missing parameters, undefined methods, missing properties of an <code>Object</code>, missing elements of an <code>Array</code>. In older versions of JavaScript <code>undefined</code> was a global value, which could even be changed! Changing the value of the global <code>undefined</code> value could break whole programs. Luckily, this mistake was corrected in later versions. The type of <code>null</code> is <code>object</code>, in a way, this makes sense, because <code>null</code> takes the place of an absent <code>object</code>. The type of <code>undefined</code> is <code>undefined</code>.</p>
@@ -612,7 +642,7 @@ Integer.parseInt("12") * 3; // 36</pre>
 <p>It&rsquo;s hard to conceive of a convincing argument for a separation between the two. Here&rsquo;s the one Douglas Crockford makes in <a href="#bib-8" class="ref"><span class="bib">8</span> JavaScript: The Good Parts</a>:</p>
 <blockquote>You might consider <code>undefined</code> to represent a system-level, unexpected, or error-like absence of value and <code>null</code> to represent program-level, normal, or expected absence of value. If you need to assign one of these values to a variable or property or pass one of these values to a function, <code>null</code> is almost always the right choice.<br><span class="cite">&mdash;<a href="#bib-8">Douglas Crockford</a></span></blockquote></div>
 <h5 id="truthiness-and-falsiness">I.2.4. Truthiness and falsiness</h5>
-<p>JavaScript has a <code>boolean</code> type of which there exist two values, <code>true</code> and <code>false</code>. These two values or expressions that evaluate to one of them can be used as conditions of an if-statement. The condition of an if-statement in JavaScript can actually be of any type, not just boolean. All values can be converted to a boolean, depending on the <em>truthiness</em> or <em>falsiness</em> of the value. All values are considered to be <em>truthy</em>, including <code>Object</code>s, <code>Array</code>s, numbers, except for the following list of values which are <em>falsy</em>.</p>
+<p>JavaScript has a <code>boolean</code> type of which there exist two values, <code>true</code> and <code>false</code>. These two values, or expressions that evaluate to one of them can be used as conditions of an if-statement, or any other <em>boolean context</em>.<span class="footnote">Expressions used as operands of a boolean operator are also in a boolean context, e.g. <code>1 && true == true</code>.</span> In JavaScript, values of all types can, not just boolean, can be used in a boolean context. All values can be converted to a boolean, depending on the <em>truthiness</em> or <em>falsiness</em> of the value. All values are considered to be <em>truthy</em>, including <code>Object</code>s, <code>Array</code>s, numbers, except for the following list of values which are <em>falsy</em>:</p>
 <ul>
 <li><code>undefined</code></li>
 <li><code>null</code></li>
@@ -624,10 +654,16 @@ Integer.parseInt("12") * 3; // 36</pre>
 <p>The concept of truthiness and falsiness comes from Lisp-like languages.</p>
 <div class="question">Is this something one shouldn&rsquo;t rely on, such as these type conversions?</div>
 <div class="answer">
-<p>No, this actually proves to be useful in most cases. With one check, you can quickly cover the most common edge cases. If you&rsquo;re working with strings or numbers, you still have to pay attention to <code>0</code> and <code>""</code>.</p></div></div>
-<p>types: primitive types and object types</p>
-<p>primitive types: numbers, strings, booleans, null, undefined object types: exist out of properties, arrays and functions are special objects</p>
-<p>classes: Object, Array, Function, Date, RegExp, Error</p>
+<p>This actually proves to be useful in most cases. With one check, you can quickly cover the most common edge cases. If you&rsquo;re working with strings or numbers, you still have to pay attention to <code>0</code> and <code>""</code>, see the following example:</p>
+<pre>function g(x, y) {
+    if (x && y)
+        return x + y;
+    else
+        return -1;
+}
+g(4, 5); // 9
+g(4, 0); // -1</pre>
+<p>The programmer could have had the following behaviour in mind when writing the function <code>g</code> in the example above: &ldquo;when both arguments are non-<code>null</code> and also not <code>undefined</code>, return the sum of them.&rdquo; This, of course, will not function correctly as <code>0</code>, a falsy number, will fail the check. You can see that it&rsquo;s easy to overlook this subtlety.</p></div></div>
 <p>types: mutable and immutable</p>
 <p>mutable: Objects (so Date and RegExp too) and Arrays immutable: numbers, booleans, null, undefined, and strings (actually immutable arrays)</p>
 <h4 id="functional-programming">I.3. Functional programming</h4>

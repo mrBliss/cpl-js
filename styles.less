@@ -412,3 +412,52 @@ div#bibliography {
     padding-left: @indent;
     text-indent: -@indent;
 }
+.rotate(@deg) {
+    -moz-transform: rotate(@deg);
+    -webkit-transform: rotate(@deg);
+    -o-transform: rotate(@deg);
+    -ms-transform: rotate(@deg);
+    transform: rotate(@deg);
+}
+table.comparisons {
+    .sans;
+    font-size: 0.8em;
+    border-spacing: 0;
+    margin: -1em auto 3em auto;
+    td.cell {
+        padding: 0.1em;
+        div {
+            @size: 1.5em;
+            width: @size;
+            height: @size;
+            border: 2px solid black;
+            .rounded-corners(3px);
+        }
+        &.green div {
+	    background-color: #5bbe5b;
+	    border-color: #0b6c0b;
+        }
+        &.red div {
+	    background-color: #ed9e98;
+	    border-color: #be120d;
+        }
+    }
+    td.header.row {
+        text-align: center;
+    }
+    td.header.col {
+	height: 6em;
+        span {
+            margin-left: 0.5em;
+            position: absolute;
+            .rotate(90deg);
+        }
+        // Put 'undefined' and 'NaN' in the center of their column
+        &:nth-child(12) span {
+            margin-left: -1em;
+        }
+        &:last-child span {
+            margin-left: -0.1em;
+        }
+    }
+}

@@ -121,4 +121,66 @@ $(document).ready(function () {
         });
     });
 
+    // Equality tables
+    // Adapted from https://github.com/dorey/JavaScript-Equality-Table
+    function makeEqualityTable(cmpStr, table) {
+        var comparisons = [true, false, 1, 0, -1, '1', '0', '-1', '', null,
+                           undefined, [], {}, [[]], [0], [1],
+                           parseFloat('nan')];
+        function map(f, x) {
+            var result = [];
+            for (var i = 0; i < x.length; i += 1)
+                result.push(f(x[i]));
+            return result;
+        }
+
+        function repr(x) {
+            if (typeof(x) === 'string') return '"' + x.replace('"', '\\"') + '"';
+            if (x && x.constructor === Array) return '[' + map(repr, x).join(', ') + ']';
+            if (x && typeof(x) === 'object') return '{}';
+            return String(x);
+        }
+
+        var curRow = $('<tr />').html('<td />'),
+            representations = [],
+            tVal, i, j, result, elem;
+
+        $.each(comparisons, function(i) {
+            tVal = repr(comparisons[i]);
+            curRow.append($('<td />', {'class':'col header'}).html($('<span />').html(tVal)));
+            representations.push(tVal);
+        });
+        table.append(curRow);
+
+        for (i = 0; i < comparisons.length; i += 1) {
+            curRow = $("<tr />");
+            curRow.append($("<td />", {'class':'row header'}).html(representations[i]));
+
+            for (j = 0; j < comparisons.length; j += 1) {
+                elem = $("<td />", {'class': 'cell'}).html("<div />");
+                if (cmpStr === "===") {
+                    if (comparisons[i] === comparisons[j]) {
+                        elem.addClass('green');
+                        elem.attr('title', "" + representations[i] + "===" + representations[j] + "  » true ");
+                    } else {
+                        elem.addClass('red');
+                        elem.attr('title', "" + representations[i] + "===" + representations[j] + "  » false ");
+                    }
+                } else if (cmpStr === "==") {
+                    if (comparisons[i] == comparisons[j]) {
+                        elem.addClass('green');
+                        elem.attr('title', "" + representations[i] + "==" + representations[j] + "  » true ");
+                    } else {
+                        elem.addClass('red');
+                        elem.attr('title', "" + representations[i] + "==" + representations[j] + "  » false ");
+                    }
+                }
+                curRow.append(elem);
+            }
+            table.append(curRow);
+        }
+    }
+
+    makeEqualityTable('===', $('table#strict-equality-table'));
+    makeEqualityTable('==', $('table#equality-table'));
 });
