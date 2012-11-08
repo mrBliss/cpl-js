@@ -63,6 +63,11 @@ function BlockQuote(indent, text, cite, ref) {
         this.ref = ref;
     }
 }
+function HTML(indent, html) {
+    this.indent = indent;
+    this.html = html;
+}
+
 function Question(indent, text) {
     this.indent = indent;
     this.text = text;
@@ -183,6 +188,10 @@ BlockQuote.prototype.toHTML = function() {
         + '</blockquote>';
 };
 
+HTML.prototype.toHTML = function() {
+    return this.html;
+}
+
 Question.prototype.toHTML = function() {
     return '<div class="question">' + this.text + '</div>';
 };
@@ -237,6 +246,10 @@ LinkDef.prototype.transform = function(t) {
 
 BlockQuote.prototype.transform = function(t) {
     this.text = t(this.text);
+    return this;
+};
+
+HTML.prototype.transform = function(t) {
     return this;
 };
 
@@ -295,6 +308,10 @@ BlockQuote.prototype.traverse = function(f) {
     f(this);
 };
 
+HTML.prototype.traverse = function(f) {
+    f(this);
+};
+
 Question.prototype.traverse = function(f) {
     f(this);
 };
@@ -328,6 +345,7 @@ exports.ListItem = ListItem;
 exports.List = List;
 exports.LinkDef = LinkDef;
 exports.BlockQuote = BlockQuote;
+exports.HTML = HTML;
 exports.Question = Question;
 exports.Answer = Answer;
 exports.QA = QA;

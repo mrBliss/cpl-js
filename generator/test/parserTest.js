@@ -233,6 +233,23 @@ exports.testBlockQuote = function(test) {
     test.done();
 };
 
+exports.testHTML = function(test) {
+    parses(test, parser.HTML,
+           '<html>bla<html</html>',
+           {indent: 0, html: 'bla<html'});
+    parses(test, parser.HTML,
+           '<html>bla<html</html>\n',
+           {indent: 0, html: 'bla<html'});
+    parses(test, parser.HTML,
+           '   <html><p>\n<li></p></html>\n',
+           {indent: 3, html: '<p>\n<li></p>'});
+    doesntParse(test, parser.HTML, '<html>bla');
+    doesntParse(test, parser.HTML, '<html>bla<html>');
+    doesntParse(test, parser.HTML, '</html>');
+    test.done();
+}
+
+
 
 exports.testQuestion = function(test) {
     parses(test, parser.Question, 'Q: Bladibla\n',

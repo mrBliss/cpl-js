@@ -143,6 +143,14 @@ var BlockQuote = action(
                                  arr[1][1][0], arr[1][1][1]);
     });
 
+var HTML = action(indented(seq(between('<html>',
+                                       joined(rep0(but(token('</html>')))),
+                                       '</html>'),
+                               opt(NewLine))),
+                  function(arr) {
+                      return new el.HTML(arr[0], arr[1][0]);
+                  });
+
 
 var Question = action(
     seq(count(rep0(ch(' '))),
@@ -217,6 +225,7 @@ exports = {
     List: List,
     LinkDef: LinkDef,
     BlockQuote: BlockQuote,
+    HTML: HTML,
     Question: Question,
     Answer: Answer,
     QA: QA,

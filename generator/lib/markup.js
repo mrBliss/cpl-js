@@ -15,6 +15,9 @@
 //   >[Source][url] You can also add the source of the quote.
 //   > Provide a link definition for it.
 //
+// * <html>inline html</html> -- HTML code that will not be touched,
+//                               can span multiple lines.
+//
 // * #[lbl] -- a reference to the title with label `lbl`
 // * [text][lbl] -- a link with `text` as text to click on. The url to
 // go to is determined by an accompanying link definition.
