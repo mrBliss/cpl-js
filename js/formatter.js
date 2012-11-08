@@ -1,4 +1,5 @@
 $(document).ready(function () {
+
     // TODO snippets relying on previous definitions don't work
     function evalJS(sourceCode, callback) {
         /*
@@ -42,6 +43,16 @@ $(document).ready(function () {
         var decoded = $('<div/>').html(text).text();
         cm.setValue(decoded);
     }
+    function modeName(className) {
+        switch (className) {
+        case 'Java':
+            return 'text/x-java';
+        case undefined:
+        case 'NodeJS':
+        default:
+            return 'javascript';
+        }
+    }
     $('pre').each(function(index, pre) {
         var id = 'editor' + index;
         var codeMirror = CodeMirror(function(editor) {
@@ -72,9 +83,7 @@ $(document).ready(function () {
             });
         }, {
             value: pre.innerHTML,
-            mode: (pre.className
-                   ? (pre.className == 'Java' ? 'text/x-java' : pre.className)
-                   : "javascript"),
+            mode: modeName(pre.className),
             indentUnit: 4,
             lineNumbers: true,
             matchBrackets: true,
