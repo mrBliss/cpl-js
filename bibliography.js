@@ -23,6 +23,14 @@ var entries = [
         publisher: 'MIT Press',
         address: 'Cambridge, MA'
     }),
+    new Book('Okasaki', {
+        authors: [['Okasaki', 'Chris']],
+        title: 'Purely Functional Data Structures',
+        year: 1999,
+        edition: 1,
+        publisher: "Cambridge University Press",
+        address: 'Cambridge, England'
+    }),
     new Wikipedia('JSHistory', {
         title: 'JavaScript History',
         retrieved: 'November 3, 2012',

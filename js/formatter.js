@@ -112,7 +112,7 @@ $(document).ready(function () {
             var popup = $('<div id="footnote' + (index + 1) + '" class="footnote">' + $elem.html() +
                           '</div>');
             var $window = $(window);
-            popup.css({left: (e.pageX - $window.width() * 0.15) + 'px',
+            popup.css({left: (e.pageX - $window.width() * 0.2) + 'px',
                        top: (e.pageY + 10) + 'px'});
             $elem.after(popup);
             popup.click(function(e) {

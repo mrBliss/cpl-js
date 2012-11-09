@@ -18,7 +18,8 @@
 // * <html>inline html</html> -- HTML code that will not be touched,
 //                               can span multiple lines.
 //
-// * #[lbl] -- a reference to the title with label `lbl`
+// * #[lbl] -- a reference to the title with label `lbl` or to a
+// bibliography item.
 // * [text][lbl] -- a link with `text` as text to click on. The url to
 // go to is determined by an accompanying link definition.
 // Link definitions must be put in a separate paragraph, this

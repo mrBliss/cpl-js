@@ -67,7 +67,12 @@
 <li><a href="#truthiness-and-falsiness">Truthiness and falsiness</a></li>
 </ol>
 </li>
-<li><a href="#functional-programming">Functional programming</a></li>
+<li><a href="#functional-programming">Functional programming</a>
+<ol>
+<li><a href="#immutability">Immutability</a></li>
+<li><a href="#higher-order-functions--recursion---lists">Higher-order functions, recursion & lists</a></li>
+</ol>
+</li>
 <li><a href="#monkey-patching">Monkey-patching</a></li>
 </ol>
 </li>
@@ -298,7 +303,7 @@ a.inc(); // OK
 a.counter; // Error: not visible!</pre>
 <div class="question">What is a closure?</div>
 <div class="answer">
-<p>Before explaining what a closure is, you have to know some things about JavaScript&rsquo;s scoping rules</p>
+<p>Before explaining what a closure is, you have to know some things about JavaScript&rsquo;s scoping rules.</p>
 <h6 id="function-global-scope">I.1.4.1. Function & global scope</h6>
 <p>JavaScript&rsquo;s scoping rules differ from common languages like C and Java. In C and Java, curly braces (<code>{&hellip;}</code>) delimit different scopes. The body of a function, a while-loop, a for-loop, a class (in the case of Java), all have a separate scope (known as <em>block scope</em>). In JavaScript, there are only two kinds of scope: the global scope and function scope.</p>
 <p>Let&rsquo;s see some examples of these differing scoping rules</p>
@@ -371,7 +376,8 @@ f();</pre>
 <p>This phenomenon is called <em>variable hoisting</em>. The variable declarations are hoisted to the top of the scope, but the initialisations are left in place.</p>
 <div class="question">Why does JavaScript do this?</div>
 <div class="answer">
-<p>This is just one of JavaScript&rsquo;s many quirks. It&rsquo;s sometimes difficult to imagine what Brendan Eich must have been thinking when designing JavaScript&hellip;</p></div>
+<p>This is just one of JavaScript&rsquo;s many quirks. It&rsquo;s sometimes difficult to imagine what Brendan Eich must have been thinking when designing JavaScript&hellip;</p>
+</div>
 <h6 id="lexical-dynamic-scope">I.1.4.3. Lexical & dynamic scope</h6>
 <p>We assume you&rsquo;re already familiar with lexical and dynamic scoping, so we&rsquo;ll quickly glance over it.</p>
 <p>In the case of lexical scoping, functions are invoked in the scope that was active during the definition of the function. In the case of dynamic scoping, functions are invoked in the scope active during the invocation of the function. Let&rsquo;s show difference with an example.</p>
@@ -386,7 +392,6 @@ var z = 'dynamic';
 f(); // 'lexical' when lexically scoped,
      // 'dynamic' in the other case</pre>
 <p>JavaScript is lexically scoped, as is Scheme, one of JavaScript&rsquo;s biggest influences TODO ref scheme. The return value of <code>f</code> in the example above will be &lsquo;lexical&rsquo;.</p>
-<p>Q: Why</p>
 <h6 id="closures">I.1.4.4. Closures</h6>
 <p>Let&rsquo;s have another look of the example that we showed you to demonstrate encapsulation.</p>
 <pre>var a = (function () {
@@ -400,7 +405,27 @@ f(); // 'lexical' when lexically scoped,
 a.inc(); // OK
 a.counter; // Error: not visible!</pre>
 <p>As JavaScript is lexically scoped, functions have to capture the scope that was active during their definition. Essentially, what happens is that all variables defined in a scope outside the defined function but referenced from within the scope of the function, known as <em>free variables</em>, have to be captured. In the example above, the function defined on line 4 references a variable <code>counter</code> (line 5), that was defined in another scope (line 2). The free variables are <em>closed</em>-over, they are <em>captured</em> by the closure. One can think of a closure as a pair of a function, i.e. code, and its environment, i.e. data.</p>
-<p>Encapsulation can be achieved by defining the variables meant to be private in a function (scope) A, and defining a new function B within A, that references these variables. The closure of function B will capture these private variables. By holding onto function B, but discarding function (scope) A, only B will be able to access these private variable,<span class="footnote">Unless function B leaks them via its properties.</span> effectively achieving encapsulation.</p></div>
+<p>Encapsulation can be achieved by defining the variables meant to be private in a function (scope) A, and defining a new function B within A, that references these variables. The closure of function B will capture these private variables. By holding onto function B, but discarding function (scope) A, only B will be able to access these private variable,<span class="footnote">Unless function B leaks them via its properties.</span> effectively achieving encapsulation.</p>
+<p>The following example<span class="footnote">Taken from the <a href="http://www.dartlang.org/docs/dart-up-and-running/ch02.html#for-loops" target="_blank">Dart Language Tour</a>.</span> demonstrates a common pitfall with closures (and scope) in JavaScript:</p>
+<pre>var closures = [];
+for (var i = 0; i <= 1; i++) {
+    var f = function() { println(i); } // f will print i when invoked
+    closures.push(f);
+}
+closures[0](); // 2, why not 0?
+closures[1](); // 2, why not 1?</pre>
+<p>What happens is that the <em>variable</em> is captured by the closure, not the <em>value</em> of the variable during the capture. Because JavaScript has no separate scope for the body of a for-loop, the variable <code>i</code> is in scope during the whole example. The for-loop stops when variable <code>i</code> is greater than <code>1</code>, i.e. <code>2</code>, this explains why both closures print the number <code>2</code>.</p>
+<p>The solution to this problem is to wrap the definition of <code>f</code> in another function which takes the variables that will be captured as arguments, effectively creating a new scope/closure, and invoking it immediately with the variable to capture as argument. Function arguments are passed by value, not by reference.</p>
+<pre>var closures = [];
+for (var i = 0; i <= 1; i++) {
+    var f = (function(i) {
+        return function() {
+            println(i);
+        };})(i);
+    closures.push(f);
+}
+closures[0](); // 0
+closures[1](); // 1</pre></div>
 <div class="question">What are the advantages of implementing encapsulation via closures?</div>
 <div class="answer">
 <p>Actually, one could call it <em>emulating</em> encapsulation via closures. Because of the absence of built-in encapsulation via visibility-modifiers, JavaScript programmers are required to implement encapsulation manually via closures. So one could call it a disadvantage of JavaScript, although some people argue against encapsulation.</p>
@@ -575,13 +600,13 @@ a.f(5); // 8</pre></div>
 <div class="question">What kind of typing discipline does JavaScript have?</div>
 <div class="answer">
 <p>Unlike for instance Java, a language people would believe to be akin to JavaScript when comparing their names, JavaScript isn&rsquo;t statically typed, but dynamically typed.</p>
-<p>The types of <em>variables</em> aren&rsquo;t known at <em>compile</em>-time, but the types of the <em>values</em> are known at <em>run</em>-time. Programmers don&rsquo;t have to annotate functions and variables with types like in statically typed programs.<span class="footnote">In statically typed languages with type inference, e.g. ML, Haskell, etc it is also not required to declare the types.</span></p>
+<p>The types of <em>variables</em> aren&rsquo;t known at <em>compile</em>-time, but the types of the <em>values</em> are known at <em>run</em>-time. Programmers don&rsquo;t have to annotate functions and variables with types like in statically typed programs.<span class="footnote">In statically typed languages with <em>type inference</em>, e.g. ML, Haskell, &hellip; it is also not required to declare the types.</span></p>
 <div class="question">Why did JavaScript&rsquo;s creator choose to make JavaScript dynamically typed?</div>
 <div class="answer">
 <p>As mentioned before, JavaScript&rsquo;s creator, Brendan Eich, based JavaScript on Scheme, which is a dynamically typed language.</p>
 <p>JavaScript was intended to be a quick and easy scripting language. Advocates of dynamic typing suggest that programmer productivity is increased, at least for small to medium size programs, when the programmer doesn&rsquo;t have to figure out the types when writing the program.</p>
 <p>Even though static typing has many advantages, like better documentation, the elimination of type errors at runtime,<span class="footnote">Most (static) type systems are actually unsound and cannot guarantee a program is well-typed in all of the cases. For instance <em>casting</em> in Java and C is a totally unsafe operation. Even Haskell, a language with an advanced type system, has an unsafe function that bypasses the type system: <code>unsafePerformIO</code>.</span> correct auto completion of identifiers during development, &hellip; it would be very hard to make JavaScript statically typed.</p>
-<p>The ability to extend prototypes of objects with new properties at run-time, the ability to change the prototype of an object at run-time, the way the <code>arguments</code>-object works, or even the <code>eval</code> function (TODO refer) will make a static type system for JavaScript very complicated, or in the case of <code>eval</code>, impossible.</p></div>
+<p>The ability to extend (prototypes of) objects with new properties at run-time, the ability to change the prototype of an object at run-time, the way the <code>arguments</code>-object works, or even the <code>eval</code> function (TODO refer) will make a static type system for JavaScript very complicated, or in the case of <code>eval</code>, impossible.</p></div>
 <h5 id="weak-typing">I.2.1. Weak typing</h5>
 <p>JavaScript&rsquo;s type system is also <em>weakly</em> typed. The opposite of weak typing is, <em>strong</em> typing. In weakly typed programs, types can be implicitly converted to other types, whereas these conversion have to be done explicitly in strongly typed language.</p>
 <p>An example will make it much clearer:</p>
@@ -589,9 +614,9 @@ a.f(5); // 8</pre></div>
 <pre class="Java">"12" * 3; // Type Error
 Integer.parseInt("12") * 3; // 36</pre>
 <p>In the JavaScript example, <code>12</code>, a string, is implicitly converted to a number to be able to multiply it with <code>3</code>. In strongly typed languages, such as Java, the conversion of string to number has to be done explicitly.</p>
-<div class="question">This looks a useful feature to me, why isn&rsquo;t Java weakly typed?</div>
+<div class="question">This looks like a useful feature to me, why aren&rsquo;t most languages weakly typed?</div>
 <div class="answer">
-<p>In the example above, it indeed seems useful. This is not always the case, it&rsquo;s not always obvious when a conversion and which conversion will happen. Take the following example:</p>
+<p>In the example above, it indeed seems useful. This is not always the case. It&rsquo;s not always obvious when a conversion and which conversion will occur. Take the following example:</p>
 <pre>('10' - 1) * 2; // 18 = 9 * 2
 ('10' + 1) * 2; // 202 = 101 * 2</pre>
 <p><code>Object</code>s and <code>Array</code>s can also cause some odd interactions:</p>
@@ -601,8 +626,10 @@ Integer.parseInt("12") * 3; // 36</pre>
 [] + {}; // "[object Object]"
 {} + []; // 0
 {} + {}; // NaN</pre>
+<p>Source: <a href="https://www.destroyallsoftware.com/talks/wat" target="_blank">Gary Bernhardt&rsquo;s talk, &ldquo;WAT&rdquo;</a></p>
+
 <p>TODO ^^ doesn&rsquo;t work properly in the browser</p>
-<p>That&rsquo;s the downside of these conversion, you have to know when they will occur and which conversion will occur for which types. As you saw, these rules aren&rsquo;t really intuitive.</p>
+<p>This is the downside of these conversions, you have to know when they will occur and which conversion will occur for which types. Looking at the examples, you will probably agree that these rules aren&rsquo;t really intuitive.</p>
 </div>
 <h5 id="equality">I.2.2. Equality</h5>
 <p>Like most programming languages, JavaScript has a <code>==</code> operator to check whether two values are equal, its inverse, <code>!=</code> is also present. JavaScript also has another operator that checks whether two values are equal, <code>===</code>, and of course, its inverse, <code>!==</code>. The latter operator, <code>===</code>, is also called the <em>strict</em> equality or <em>identity</em> operator. The two operators define <em>equality</em> in a different manner.</p>
@@ -664,10 +691,63 @@ Integer.parseInt("12") * 3; // 36</pre>
 g(4, 5); // 9
 g(4, 0); // -1</pre>
 <p>The programmer could have had the following behaviour in mind when writing the function <code>g</code> in the example above: &ldquo;when both arguments are non-<code>null</code> and also not <code>undefined</code>, return the sum of them.&rdquo; This, of course, will not function correctly as <code>0</code>, a falsy number, will fail the check. You can see that it&rsquo;s easy to overlook this subtlety.</p></div></div>
-<p>types: mutable and immutable</p>
-<p>mutable: Objects (so Date and RegExp too) and Arrays immutable: numbers, booleans, null, undefined, and strings (actually immutable arrays)</p>
 <h4 id="functional-programming">I.3. Functional programming</h4>
-<p>TODO functional programming p 331</p>
+<div class="question">You mentioned that JavaScript has first-class functions, does this mean that JavaScript is a functional language?</div>
+<div class="answer">
+<p>It&rsquo;s true that nearly all, if not all, functional languages support first-class functions, but this alone doesn&rsquo;t make a language functional. Functional programming consists of more than just first-class functions, sometimes it&rsquo;s more about what you <em>can&rsquo;t</em> do<span class="footnote">In Haskell, for example, you can&rsquo;t just change the value of a variable.</span>, or in some cases, what the default is.<span class="footnote">Immutable data structures are the default in Scala, but mutable ones are also available.</span></p>
+<p>An important tenet of functional programming is the avoidance or isolation of side-effects. All forms of state are side-effects. In JavaScript, pretty much every accessible variable can be modified, effectively making the whole environment <em>stateful</em>. It&rsquo;s very common to define and change global variables, even by accident (TODO refer var keyword omission). The properties of objects are mutable by default, including the methods and the prototype. Just like Ruby, JavaScript is a very dynamic language, offering the programmer nearly maximum flexibility, at the cost of the omnipresent fragility of state.</p>
+<h5 id="immutability">I.3.1. Immutability</h5>
+<p>An important tool to minimize the presence of state in a program is the use of immutable data structures, instead of mutable ones, which are inherently stateful. Rather than modifying the data structure in-place, a new copy of the data structure is made with the desired modifications.<span class="footnote">Copying the whole data structure for every change is of course costly. Luckily, efficient immutable data structures exist, for example the <em>hash array mapped trie</em>, invented by the late Phill Bagwell. See <a href="#bib-14" class="ref"><span class="bib">14</span> Purely Functional Data Structures</a>, for more such data structures.</span></p>
+<p>It might come as a surprise, but in JavaScript, properties can be made immutable. As you will see, this requires a lot more effort. This clearly indicates the language designer&rsquo;s intention, to discourage users from using the feature.</p>
+<div class="question">How do you mean, &ldquo;This clearly indicates the language designer&rsquo;s intention, to discourage users from using the feature&rdquo;?</div>
+<div class="answer">
+<p>When something requires more code, and thus more effort, programmers will not be inclined to continue to make the extra effort every time, and will quickly fall back to the default way.</p></div>
+<p>Here&rsquo;s how to make a property mutable:</p>
+<pre> var obj = {x: 1};
+ // Make obj's x property immutable
+ Object.defineProperty(obj, 'x', {
+     writable: false
+ });
+ obj.x = 3;
+ obj.x; // 1</pre>
+<p>You can still assign a new value to the property, it just won&rsquo;t have any effect. Of course, this in now way comes close to Haskell&rsquo;s, Scala&rsquo;s or Clojure&rsquo;s immutable datastructures.</p>
+<h5 id="higher-order-functions--recursion---lists">I.3.2. Higher-order functions, recursion & lists</h5>
+<p>If there even was an accepted definition of functional programming, JavaScript probably wouldn&rsquo;t satisfy the requirements, but this won&rsquo;t prevent programmers from writing JavaScript programs in a functional style. Thanks to Scheme&rsquo;s influence, JavaScript is equipped with first-class functions, which allow the programmer to write some of the typical higher-order functions that are almost invariably present in a functional language.</p>
+<p>Disclaimer: the following functions are in no way optimized or robust enough for general use, they just serve to illustrate programming in a functional style.</p>
+<p>Let&rsquo;s start off with some primitives, they should be familiar to programmers that have dabbled in Lisp or Haskell.</p>
+<pre>// Make a list with x as head and xs as tail
+var cons = function(x, xs) {
+    // Make a copy of xs
+    var xs2 = xs.slice(0);
+    xs2.unshift(x);
+    return xs2;
+};
+// Return the first element of xs
+var head = function(xs) {
+    return xs[0];
+};
+// Return all but the first element of xs
+var tail = function(xs) {
+    return xs.slice(1);
+};
+// Return true when xs is an empty list
+var isEmpty = function(xs) {
+    return xs.length == 0;
+};</pre>
+<p>Using these primitives, we can easily define our first <em>higher-order function</em>. A higher-order function is a function that takes a function as an argument, or returns a function. The function defined below, <code>map</code> takes two arguments: a function <code>f</code> and an array <code>xs</code>. <code>map</code> will apply <code>f</code> to every element in <code>xs</code> and return a new array containing the return values of these applications.</p>
+<pre>var map = function(f, xs) {
+    if (isEmpty(xs))
+        return [];
+    else
+        return cons(f(head(xs)), map(f, tail(xs)));
+};
+map(function(x) { return x + 1; }, [1, 2, 3]); // [2, 3, 4]</pre>
+<p>On the last line of the example above, you can see the <code>map</code> function in use: we increment each element of a list with one. You will probably have noticed that declaring the anonymous function to increment a value with one takes much space. Just to declare the simplest anonymous function, the identity function, takes at least 21 characters in JavaScript: <code>function(x){return x}</code>, compare this with for example Haskell: <code>\x->x</code>, only 5 characters! This unwieldiness of the <code>function</code> keyword is one of JavaScript&rsquo;s warts, which is really hard to ignore when writing programs using higher-order functions.</p>
+<p>Version 1.6 of JavaScript provides a built-in <code>map</code> function declared on the prototype of <code>Array</code>:</p>
+<pre>[1, 2, 3].map(function(x) { return x + 1; }); // [2, 3, 4]</pre>
+<p>In addition to <code>map</code>, <code>forEach</code>, <code>every</code>, <code>some</code>, and <code>filter</code> are also available. In even more recent versions of JavaScript, <code>reduce</code> and <code>reduceRight</code> are available. These will ring a bell with programmers with Haskell or Clojure experience.</p>
+<p>TODO partial application</p>
+<p>TODO list some frameworks (e.g. underscore.js)</p></div>
 <h4 id="monkey-patching">I.4. Monkey-patching</h4>
 <p>TODO</p>
 
@@ -679,32 +759,33 @@ g(4, 0); // -1</pre>
 <li class="blog" id="bib-3"><span class="authors">Buckler, C.</span> (December 1, 2010). <span class="title">JavaScript Execution and Browser Limits</span>. Message posted to <a href="http://www.sitepoint.com/javascript-execution-browser-limits/">http://www.sitepoint.com/javascript-execution-browser-limits/</a></li>
 <li class="blog" id="bib-4"><span class="authors">Cherry, B.</span> (March 12, 2010). <span class="title">JavaScript Module Pattern: In-Depth</span>. Message posted to <a href="http://www.adequatelygood.com/2010/3/JavaScript-Module-Pattern-In-Depth">http://www.adequatelygood.com/2010/3/JavaScript-Module-Pattern-In-Depth</a></li>
 <li class="blog" id="bib-5"><span class="authors">Cornford, R.</span> (March, 2004). <span class="title">Javascript Closures</span>. Message posted to <a href="http://jibbering.com/faq/notes/closures/">http://jibbering.com/faq/notes/closures/</a></li>
-<li class="blog" id="bib-6"><span class="authors">Crockford, D.</span> (2001). <span class="title">JavaScript: The World's Most Misunderstood Programming Language</span>. Message posted to <a href="http://javascript.crockford.com/javascript.html">http://javascript.crockford.com/javascript.html</a></li>
-<li class="blog" id="bib-7"><span class="authors">Crockford, D.</span> <span class="title">The Little JavaScripter</span>. Message posted to <a href="http://crockford.com/javascript/little.html">http://crockford.com/javascript/little.html</a></li>
+<li class="blog" id="bib-6"><span class="authors">Crockford, D.</span> <span class="title">The Little JavaScripter</span>. Message posted to <a href="http://crockford.com/javascript/little.html">http://crockford.com/javascript/little.html</a></li>
+<li class="blog" id="bib-7"><span class="authors">Crockford, D.</span> (2001). <span class="title">JavaScript: The World's Most Misunderstood Programming Language</span>. Message posted to <a href="http://javascript.crockford.com/javascript.html">http://javascript.crockford.com/javascript.html</a></li>
 <li class="book" id="bib-8"><span class="author">Crockford, D.</span> <span class="year">(2008)</span>. <span class="title">JavaScript: The Good Parts</span>. <span class="publisher-address">Sebastopol, CA</span>: <span class="publisher">O'Reilly Media</span>.</li>
 <li class="blog" id="bib-9"><span class="authors">De Rosa, A.</span> (October 15, 2012). <span class="title">Five Useful Functions Missing in JavaScript</span>. Message posted to <a href="http://jspro.com/raw-javascript/5-useful-functions-missing-in-javascript/">http://jspro.com/raw-javascript/5-useful-functions-missing-in-javascript/</a></li>
 <li class="blog" id="bib-10"><span class="authors">Edwards, J.</span> (October 15, 2012). <span class="title">Modular Design Patterns: Private, Privileged, and Protected Members in JavaScript</span>. Message posted to <a href="http://jspro.com/raw-javascript/modular-design-patterns-in-javascript/">http://jspro.com/raw-javascript/modular-design-patterns-in-javascript/</a></li>
 <li class="blog" id="bib-11"><span class="authors">Eich, B.</span> (April 3, 2008). <span class="title">Popularity</span>. Message posted to <a href="https://brendaneich.com/2008/04/popularity/">https://brendaneich.com/2008/04/popularity/</a></li>
 <li class="blog" id="bib-12"><span class="authors">Eich, B.</span> (July 21, 2010). <span class="title">A Brief History of JavaScript</span>. Message posted to <a href="https://brendaneich.com/2010/07/a-brief-history-of-javascript/">https://brendaneich.com/2010/07/a-brief-history-of-javascript/</a></li>
 <li class="book" id="bib-13"><span class="author">Flanagan, D.</span> <span class="year">(2011)</span>. <span class="title">JavaScript: The Definitive Guide</span> <span class="edition">(6th ed.)</span>. <span class="publisher-address">Sebastopol, CA</span>: <span class="publisher">O'Reilly Media</span>.</li>
-<li class="blog" id="bib-14"><span class="authors">Padburry, D.</span> (August 21, 2011). <span class="title">JavaScript Modules</span>. Message posted to <a href="http://blog.davidpadbury.com/2011/08/21/javascript-modules/">http://blog.davidpadbury.com/2011/08/21/javascript-modules/</a></li>
-<li class="blog" id="bib-15"><span class="authors">Rauschmayer, A.</span> (December 17, 2011). <span class="title">Fake operator overloading in JavaScript</span>. Message posted to <a href="http://www.2ality.com/2011/12/fake-operator-overloading.html">http://www.2ality.com/2011/12/fake-operator-overloading.html</a></li>
-<li class="blog" id="bib-16"><span class="authors">Tetlaw, A.</span> (November 11, 2008). <span class="title">arguments: A JavaScript Oddity</span>. Message posted to <a href="http://www.sitepoint.com/arguments-a-javascript-oddity/">http://www.sitepoint.com/arguments-a-javascript-oddity/</a></li>
-<li class="blog" id="bib-17"><span class="authors">Willison, S.</span> (March 7, 2006). <span class="title">A re-introduction to JavaScript (JS Tutorial)</span>. Message posted to <a href="https://developer.mozilla.org/en-US/docs/JavaScript/A_re-introduction_to_JavaScript">https://developer.mozilla.org/en-US/docs/JavaScript/A_re-introduction_to_JavaScript</a></li>
-<li class="blog" id="bib-18"><span class="authors">Wilton-Jones, M.</span> <span class="title">JavaScript History</span>. Message posted to <a href="http://www.howtocreate.co.uk/jshistory.html">http://www.howtocreate.co.uk/jshistory.html</a></li>
-<li class="website" id="bib-19"><span class="siteName">About.com</span>. <span class="title">A Brief History of Javascript</span>. Retrieved November 3, 2012, from <a href="http://javascript.about.com/od/reference/a/history.htm">http://javascript.about.com/od/reference/a/history.htm</a></li>
-<li class="encyc" id="bib-20"><span class="title">ECMAScript</span>. In <span class="encyc">Wikipedia</span>. Retrieved November 3, 2012, from <a href="http://en.wikipedia.org/wiki/ECMAScript">http://en.wikipedia.org/wiki/ECMAScript</a></li>
-<li class="encyc" id="bib-21"><span class="title">ECMAScript Syntax</span>. In <span class="encyc">Wikipedia</span>. Retrieved November 3, 2012, from <a href="http://en.wikipedia.org/wiki/ECMAScript_syntax">http://en.wikipedia.org/wiki/ECMAScript_syntax</a></li>
-<li class="website" id="bib-22"><span class="siteName">JSON</span>. <span class="title">Introducing JSON</span>. <a href="http://www.json.org">http://www.json.org</a></li>
-<li class="website" id="bib-23"><span class="siteName">Mozilla Developer Network</span>. (2012). <span class="title">JavaScript - Reference - Functions and function scope - arguments</span>. Retrieved November 3, 2012, from <a href="https://developer.mozilla.org/en-US/docs/JavaScript/Reference/Functions_and_function_scope/arguments">https://developer.mozilla.org/en-US/docs/JavaScript/Reference/Functions_and_function_scope/arguments</a></li>
-<li class="encyc" id="bib-24"><span class="title">JavaScript History</span>. In <span class="encyc">Wikipedia</span>. Retrieved November 3, 2012, from <a href="http://en.wikipedia.org/wiki/JavaScript#History">http://en.wikipedia.org/wiki/JavaScript#History</a></li>
-<li class="website" id="bib-25"><span class="siteName">About.com</span>. <span class="title">JavaScript and JScript: What's the Difference?</span>. Retrieved November 3, 2012, from <a href="http://javascript.about.com/od/reference/a/jscript.htm">http://javascript.about.com/od/reference/a/jscript.htm</a></li>
-<li class="website" id="bib-26"><span class="siteName">WebScanNotes.com</span>. (2012). <span class="title">Javascript Semantics for Computer Scientists</span>. Retrieved November 3, 2012, from <a href="http://webscannotes.com/2012/06/19/javascript-semantics-for-computer-scientists-part-1-variables-and-scope/">http://webscannotes.com/2012/06/19/javascript-semantics-for-computer-scientists-part-1-variables-and-scope/</a></li>
-<li class="website" id="bib-27"><span class="siteName">Dev.Opera</span>. (2008). <span class="title">MAMA: Key findings</span>. Retrieved November 3, 2012, from <a href="http://dev.opera.com/articles/view/mama-key-findings/">http://dev.opera.com/articles/view/mama-key-findings/</a></li>
-<li class="website" id="bib-28"><span class="siteName">Node.js</span>. (2012). <span class="title">Node.js v0.8.14 Manual & Documentation - Modules</span>. <a href="http://nodejs.org/api/modules.html">http://nodejs.org/api/modules.html</a></li>
-<li class="encyc" id="bib-29"><span class="title">Prototype-based programming</span>. In <span class="encyc">Wikipedia</span>. Retrieved November 1, 2012, from <a href="http://en.wikipedia.org/wiki/Prototype-based_programming">http://en.wikipedia.org/wiki/Prototype-based_programming</a></li>
-<li class="website" id="bib-30"><span class="siteName">Google Developers</span>. (2012). <span class="title">V8 Introduction</span>. <a href="https://developers.google.com/v8/intro">https://developers.google.com/v8/intro</a></li>
-<li class="website" id="bib-31"><span class="siteName">Dev.Opera</span>. (2009). <span class="title">What can you do with JavaScript?</span>. Retrieved November 3, 2012, from <a href="http://dev.opera.com/articles/view/javascript-uses/">http://dev.opera.com/articles/view/javascript-uses/</a></li></ol>
+<li class="book" id="bib-14"><span class="author">Okasaki, C.</span> <span class="year">(1999)</span>. <span class="title">Purely Functional Data Structures</span>. <span class="publisher-address">Cambridge, England</span>: <span class="publisher">Cambridge University Press</span>.</li>
+<li class="blog" id="bib-15"><span class="authors">Padburry, D.</span> (August 21, 2011). <span class="title">JavaScript Modules</span>. Message posted to <a href="http://blog.davidpadbury.com/2011/08/21/javascript-modules/">http://blog.davidpadbury.com/2011/08/21/javascript-modules/</a></li>
+<li class="blog" id="bib-16"><span class="authors">Rauschmayer, A.</span> (December 17, 2011). <span class="title">Fake operator overloading in JavaScript</span>. Message posted to <a href="http://www.2ality.com/2011/12/fake-operator-overloading.html">http://www.2ality.com/2011/12/fake-operator-overloading.html</a></li>
+<li class="blog" id="bib-17"><span class="authors">Tetlaw, A.</span> (November 11, 2008). <span class="title">arguments: A JavaScript Oddity</span>. Message posted to <a href="http://www.sitepoint.com/arguments-a-javascript-oddity/">http://www.sitepoint.com/arguments-a-javascript-oddity/</a></li>
+<li class="blog" id="bib-18"><span class="authors">Willison, S.</span> (March 7, 2006). <span class="title">A re-introduction to JavaScript (JS Tutorial)</span>. Message posted to <a href="https://developer.mozilla.org/en-US/docs/JavaScript/A_re-introduction_to_JavaScript">https://developer.mozilla.org/en-US/docs/JavaScript/A_re-introduction_to_JavaScript</a></li>
+<li class="blog" id="bib-19"><span class="authors">Wilton-Jones, M.</span> <span class="title">JavaScript History</span>. Message posted to <a href="http://www.howtocreate.co.uk/jshistory.html">http://www.howtocreate.co.uk/jshistory.html</a></li>
+<li class="website" id="bib-20"><span class="siteName">About.com</span>. <span class="title">A Brief History of Javascript</span>. Retrieved November 3, 2012, from <a href="http://javascript.about.com/od/reference/a/history.htm">http://javascript.about.com/od/reference/a/history.htm</a></li>
+<li class="encyc" id="bib-21"><span class="title">ECMAScript</span>. In <span class="encyc">Wikipedia</span>. Retrieved November 3, 2012, from <a href="http://en.wikipedia.org/wiki/ECMAScript">http://en.wikipedia.org/wiki/ECMAScript</a></li>
+<li class="encyc" id="bib-22"><span class="title">ECMAScript Syntax</span>. In <span class="encyc">Wikipedia</span>. Retrieved November 3, 2012, from <a href="http://en.wikipedia.org/wiki/ECMAScript_syntax">http://en.wikipedia.org/wiki/ECMAScript_syntax</a></li>
+<li class="website" id="bib-23"><span class="siteName">JSON</span>. <span class="title">Introducing JSON</span>. <a href="http://www.json.org">http://www.json.org</a></li>
+<li class="website" id="bib-24"><span class="siteName">Mozilla Developer Network</span>. (2012). <span class="title">JavaScript - Reference - Functions and function scope - arguments</span>. Retrieved November 3, 2012, from <a href="https://developer.mozilla.org/en-US/docs/JavaScript/Reference/Functions_and_function_scope/arguments">https://developer.mozilla.org/en-US/docs/JavaScript/Reference/Functions_and_function_scope/arguments</a></li>
+<li class="encyc" id="bib-25"><span class="title">JavaScript History</span>. In <span class="encyc">Wikipedia</span>. Retrieved November 3, 2012, from <a href="http://en.wikipedia.org/wiki/JavaScript#History">http://en.wikipedia.org/wiki/JavaScript#History</a></li>
+<li class="website" id="bib-26"><span class="siteName">About.com</span>. <span class="title">JavaScript and JScript: What's the Difference?</span>. Retrieved November 3, 2012, from <a href="http://javascript.about.com/od/reference/a/jscript.htm">http://javascript.about.com/od/reference/a/jscript.htm</a></li>
+<li class="website" id="bib-27"><span class="siteName">WebScanNotes.com</span>. (2012). <span class="title">Javascript Semantics for Computer Scientists</span>. Retrieved November 3, 2012, from <a href="http://webscannotes.com/2012/06/19/javascript-semantics-for-computer-scientists-part-1-variables-and-scope/">http://webscannotes.com/2012/06/19/javascript-semantics-for-computer-scientists-part-1-variables-and-scope/</a></li>
+<li class="website" id="bib-28"><span class="siteName">Dev.Opera</span>. (2008). <span class="title">MAMA: Key findings</span>. Retrieved November 3, 2012, from <a href="http://dev.opera.com/articles/view/mama-key-findings/">http://dev.opera.com/articles/view/mama-key-findings/</a></li>
+<li class="website" id="bib-29"><span class="siteName">Node.js</span>. (2012). <span class="title">Node.js v0.8.14 Manual & Documentation - Modules</span>. <a href="http://nodejs.org/api/modules.html">http://nodejs.org/api/modules.html</a></li>
+<li class="encyc" id="bib-30"><span class="title">Prototype-based programming</span>. In <span class="encyc">Wikipedia</span>. Retrieved November 1, 2012, from <a href="http://en.wikipedia.org/wiki/Prototype-based_programming">http://en.wikipedia.org/wiki/Prototype-based_programming</a></li>
+<li class="website" id="bib-31"><span class="siteName">Google Developers</span>. (2012). <span class="title">V8 Introduction</span>. <a href="https://developers.google.com/v8/intro">https://developers.google.com/v8/intro</a></li>
+<li class="website" id="bib-32"><span class="siteName">Dev.Opera</span>. (2009). <span class="title">What can you do with JavaScript?</span>. Retrieved November 3, 2012, from <a href="http://dev.opera.com/articles/view/javascript-uses/">http://dev.opera.com/articles/view/javascript-uses/</a></li></ol>
 
     </div>
 

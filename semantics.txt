@@ -452,7 +452,7 @@ A: Of course, OOP is broader than "everything is an object". Most definitions
    Q: What is a closure?
 
    A: Before explaining what a closure is, you have to know some things about
-      JavaScript's scoping rules
+      JavaScript's scoping rules.
 
       #### Function & global scope ###[scope]
 
@@ -571,7 +571,6 @@ A: Of course, OOP is broader than "everything is an object". Most definitions
       f();
       ```
 
-
       This phenomenon is called /variable hoisting/. The variable declarations
       are hoisted to the top of the scope, but the initialisations are left in
       place.
@@ -609,8 +608,6 @@ A: Of course, OOP is broader than "everything is an object". Most definitions
       biggest influences TODO ref scheme. The return value of `f` in the
       example above will be 'lexical'.
 
-      Q: Why
-
       #### Closures ####[closures]
 
       Let's have another look of the example that we showed you to demonstrate
@@ -646,6 +643,49 @@ A: Of course, OOP is broader than "everything is an object". Most definitions
       function (scope) A, only B will be able to access these private
       variable,<foot>Unless function B leaks them via its properties.</foot>
       effectively achieving encapsulation.
+
+      The following example<foot>Taken from the [Dart Language
+      Tour][dartlangtour].</foot> demonstrates a common pitfall with closures
+      (and scope) in JavaScript:
+
+      [dartlangtour]: http://www.dartlang.org/docs/dart-up-and-running/ch02.html#for-loops
+
+      ```JavaScript
+      var closures = [];
+      for (var i = 0; i <= 1; i++) {
+          var f = function() { println(i); } // f will print i when invoked
+          closures.push(f);
+      }
+      closures[0](); // 2, why not 0?
+      closures[1](); // 2, why not 1?
+      ```
+
+      What happens is that the /variable/ is captured by the closure, not the
+      /value/ of the variable during the capture. Because JavaScript has no
+      separate scope for the body of a for-loop, the variable `i` is in scope
+      during the whole example. The for-loop stops when variable `i` is
+      greater than `1`, i.e. `2`, this explains why both closures print the
+      number `2`.
+
+      The solution to this problem is to wrap the definition of `f` in another
+      function which takes the variables that will be captured as arguments,
+      effectively creating a new scope/closure, and invoking it immediately
+      with the variable to capture as argument. Function arguments are passed
+      by value, not by reference.
+
+      ```JavaScript
+      var closures = [];
+      for (var i = 0; i <= 1; i++) {
+          var f = (function(i) {
+              return function() {
+                  println(i);
+              };})(i);
+          closures.push(f);
+      }
+      closures[0](); // 0
+      closures[1](); // 1
+      ```
+
 
 
    Q: What are the advantages of implementing encapsulation via closures?
@@ -1002,8 +1042,8 @@ A: Unlike for instance Java, a language people would believe to be akin to
    The types of /variables/ aren't known at /compile/-time, but the types of
    the /values/ are known at /run/-time. Programmers don't have to annotate
    functions and variables with types like in statically typed
-   programs.<foot>In statically typed languages with type inference, e.g. ML,
-   Haskell, etc it is also not required to declare the types.</foot>
+   programs.<foot>In statically typed languages with /type inference/, e.g.
+   ML, Haskell, ... it is also not required to declare the types.</foot>
 
    Q: Why did JavaScript's creator choose to make JavaScript dynamically
       typed?
@@ -1056,11 +1096,12 @@ A: Unlike for instance Java, a language people would believe to be akin to
    number to be able to multiply it with `3`. In strongly typed languages,
    such as Java, the conversion of string to number has to be done explicitly.
 
-   Q: This looks a useful feature to me, why isn't Java weakly typed?
+   Q: This looks like a useful feature to me, why aren't most languages weakly
+      typed?
 
    A: In the example above, it indeed seems useful. This is not always the
-      case, it's not always obvious when a conversion and which conversion
-      will happen. Take the following example:
+      case. It's not always obvious when a conversion and which conversion
+      will occur. Take the following example:
 
       ```JavaScript
       ('10' - 1) * 2; // 18 = 9 * 2
@@ -1078,11 +1119,16 @@ A: Unlike for instance Java, a language people would believe to be akin to
       {} + {}; // NaN
       ```
 
+      Source: [Gary Bernhardt's talk, "WAT"][wat]
+
+      [wat]: https://www.destroyallsoftware.com/talks/wat
+
       TODO ^^ doesn't work properly in the browser
 
-      That's the downside of these conversion, you have to know when they will
-      occur and which conversion will occur for which types. As you saw, these
-      rules aren't really intuitive.
+      This is the downside of these conversions, you have to know when they
+      will occur and which conversion will occur for which types. Looking at
+      the examples, you will probably agree that these rules aren't really
+      intuitive.
 
 
    ### Equality ###
@@ -1265,6 +1311,15 @@ A: It's true that nearly all, if not all, functional languages support
 
    ### Immutability ###
 
+   An important tool to minimize the presence of state in a program is the use
+   of immutable data structures, instead of mutable ones, which are inherently
+   stateful. Rather than modifying the data structure in-place, a new copy of
+   the data structure is made with the desired modifications.<foot>Copying the
+   whole data structure for every change is of course costly. Luckily,
+   efficient immutable data structures exist, for example the /hash array
+   mapped trie/, invented by the late Phill Bagwell. See #[Okasaki], for more
+   such data structures.</foot>
+
    It might come as a surprise, but in JavaScript, properties can be made
    immutable. As you will see, this requires a lot more effort. This clearly
    indicates the language designer's intention, to discourage users from using
@@ -1335,7 +1390,7 @@ A: It's true that nearly all, if not all, functional languages support
 
    Using these primitives, we can easily define our first /higher-order
    function/. A higher-order function is a function that takes a function as
-   an argument or returns a function. The function defined below, `map` takes
+   an argument, or returns a function. The function defined below, `map` takes
    two arguments: a function `f` and an array `xs`. `map` will apply `f` to
    every element in `xs` and return a new array containing the return values
    of these applications.
@@ -1352,12 +1407,12 @@ A: It's true that nearly all, if not all, functional languages support
 
    On the last line of the example above, you can see the `map` function in
    use: we increment each element of a list with one. You will probably have
-   noticed that declaring the anonymous function to increment a value with
-   one takes much space. Just to declare the simplest anonymous function, the
+   noticed that declaring the anonymous function to increment a value with one
+   takes much space. Just to declare the simplest anonymous function, the
    identity function, takes at least 21 characters in JavaScript:
    `function(x){return x}`, compare this with for example Haskell: `\x->x`,
    only 5 characters! This unwieldiness of the `function` keyword is one of
-   JavaScript's warts, which will be hard to ignore when writing programs
+   JavaScript's warts, which is really hard to ignore when writing programs
    using higher-order functions.
 
    Version 1.6 of JavaScript provides a built-in `map` function declared on
@@ -1367,10 +1422,10 @@ A: It's true that nearly all, if not all, functional languages support
    [1, 2, 3].map(function(x) { return x + 1; }); // [2, 3, 4]
    ```
 
-   In addition to `map`, `forEach` (not really functional), `every`, `some`,
-   and `filter` are also available. In even more recent versions of
-   JavaScript, `reduce` and `reduceRight` are available. These should ring a
-   bell if you ever programmed in e.g. Haskell or Clojure.
+   In addition to `map`, `forEach`, `every`, `some`, and `filter` are also
+   available. In even more recent versions of JavaScript, `reduce` and
+   `reduceRight` are available. These will ring a bell with programmers with
+   Haskell or Clojure experience.
 
 
    TODO partial application
