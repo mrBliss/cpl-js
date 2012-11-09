@@ -135,12 +135,16 @@ var LinkDef = action(
 
 var BlockQuote = action(
     indented(seq(ch('>'),
-                 choice(seq(Bracketed, Bracketed),
+                 choice(seq(Bracketed, opt(Bracketed)),
                         WS),
                  trimRight(joined(rep1(ws(WholeLine)))))),
     function(arr) {
+        var cite = arr[1][1][0],
+            ref = arr[1][1][1];
+        if (cite) cite = cite.trim();
+        if (ref) ref = ref.trim();
         return new el.BlockQuote(arr[0], arr[1][2],
-                                 arr[1][1][0], arr[1][1][1]);
+                                 cite, ref);
     });
 
 var HTML = action(indented(seq(between('<html>',

@@ -58,10 +58,8 @@ function LinkDef(label, url) {
 function BlockQuote(indent, text, cite, ref) {
     this.indent = indent;
     this.text = text;
-    if (cite && ref) {
-        this.cite = cite;
-        this.ref = ref;
-    }
+    if (cite) this.cite = cite;
+    if (ref) this.ref = ref;
 }
 function HTML(indent, html) {
     this.indent = indent;
@@ -184,7 +182,10 @@ BlockQuote.prototype.toHTML = function() {
         + (this.url
            ? '<br><span class="cite">&mdash;<a href="' + this.url + '">'
            + this.cite + '</a></span>'
-           : '')
+           : (this.cite
+              ? '<br><span class="cite">&mdash;' + this.cite +
+              '</span>'
+              : ''))
         + '</blockquote>';
 };
 

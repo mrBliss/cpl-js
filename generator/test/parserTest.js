@@ -225,11 +225,14 @@ exports.testBlockQuote = function(test) {
             text: 'Bla di bla',
             cite: 'Bla',
             ref: 'labl'});
+    parses(test, parser.BlockQuote,
+           '>[Bla] Bla di bla\n',
+           {indent: 0,
+            text: 'Bla di bla',
+            cite: 'Bla'});
     doesntParse(test, parser.BlockQuote, '>Bla di bla\n');
     doesntParse(test, parser.BlockQuote, '> Bla di bla');
     doesntParse(test, parser.BlockQuote, '>[ Bla di bla\n');
-    doesntParse(test, parser.BlockQuote, '>[Bla] Bla di bla\n');
-    doesntParse(test, parser.BlockQuote, '>[Bla][bla Bla di bla\n');
     test.done();
 };
 
