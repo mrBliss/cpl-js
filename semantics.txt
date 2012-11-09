@@ -1278,7 +1278,7 @@ A: It's true that nearly all, if not all, functional languages support
       and will quickly fall back to the default way.
 
 
-   Here's how to make a property mutable: TODO this block seems to have shifted place
+   Here's how to make a property mutable:
 
    ```JavaScript
     var obj = {x: 1};
@@ -1288,94 +1288,94 @@ A: It's true that nearly all, if not all, functional languages support
     });
     obj.x = 3;
     obj.x; // 1
-    ```
+   ```
 
-    You can still assign a new value to the property, it just won't have any
-    effect. Of course, this in now way comes close to Haskell's, Scala's and
-    Clojure's immutable datastructures!
+   You can still assign a new value to the property, it just won't have any
+   effect. Of course, this in now way comes close to Haskell's, Scala's or
+   Clojure's immutable datastructures.
 
-    ### Higher-order functions, recursion & lists ###
+   ### Higher-order functions, recursion & lists ###
 
-    If there even was an accepted definition of functional programming,
-    JavaScript probably wouldn't satisfy the requirements, but this won't
-    prevent programmers from writing JavaScript programs in a functional
-    style. Thanks to Scheme's influence, JavaScript is equipped with
-    first-class functions, which allow the programmer to write some of the
-    typical higher-order functions that are almost invariably present in a
-    functional language.
+   If there even was an accepted definition of functional programming,
+   JavaScript probably wouldn't satisfy the requirements, but this won't
+   prevent programmers from writing JavaScript programs in a functional
+   style. Thanks to Scheme's influence, JavaScript is equipped with
+   first-class functions, which allow the programmer to write some of the
+   typical higher-order functions that are almost invariably present in a
+   functional language.
 
-    Disclaimer: the following functions are in no way optimized or robust
-    enough for general use, they just serve to illustrate programming in a
-    functional style.
+   Disclaimer: the following functions are in no way optimized or robust
+   enough for general use, they just serve to illustrate programming in a
+   functional style.
 
-    Let's start off with some primitives, they should be familiar to
-    programmers that have dabbled in Lisp or Haskell.
+   Let's start off with some primitives, they should be familiar to
+   programmers that have dabbled in Lisp or Haskell.
 
-    ```JavaScript
-    // Make a list with x as head and xs as tail
-    var cons = function(x, xs) {
-        // Make a copy of xs
-        var xs2 = xs.slice(0);
-        xs2.unshift(x);
-        return xs2;
-    };
-    // Return the first element of xs
-    var head = function(xs) {
-        return xs[0];
-    };
-    // Return all but the first element of xs
-    var tail = function(xs) {
-        return xs.slice(1);
-    };
-    // Return true when xs is an empty list
-    var isEmpty = function(xs) {
-        return xs.length == 0;
-    };
-    ```
+   ```JavaScript
+   // Make a list with x as head and xs as tail
+   var cons = function(x, xs) {
+       // Make a copy of xs
+       var xs2 = xs.slice(0);
+       xs2.unshift(x);
+       return xs2;
+   };
+   // Return the first element of xs
+   var head = function(xs) {
+       return xs[0];
+   };
+   // Return all but the first element of xs
+   var tail = function(xs) {
+       return xs.slice(1);
+   };
+   // Return true when xs is an empty list
+   var isEmpty = function(xs) {
+       return xs.length == 0;
+   };
+   ```
 
-    Using these primitives, we can easily define our first /higher-order
-    function/. A higher-order function is a function that takes a function as
-    an argument or returns a function. The function defined below, `map` takes
-    two arguments: a function `f` and an array `xs`. `map` will apply `f` to
-    every element in `xs` and return a new array containing the return values
-    of these applications.
+   Using these primitives, we can easily define our first /higher-order
+   function/. A higher-order function is a function that takes a function as
+   an argument or returns a function. The function defined below, `map` takes
+   two arguments: a function `f` and an array `xs`. `map` will apply `f` to
+   every element in `xs` and return a new array containing the return values
+   of these applications.
 
-    ```JavaScript
-    var map = function(f, xs) {
-        if (isEmpty(xs))
-            return [];
-        else
-            return cons(f(head(xs)), map(f, tail(xs)));
-    };
-    map(function(x) { return x + 1; }, [1, 2, 3]); // [2, 3, 4]
-    ```
+   ```JavaScript
+   var map = function(f, xs) {
+       if (isEmpty(xs))
+           return [];
+       else
+           return cons(f(head(xs)), map(f, tail(xs)));
+   };
+   map(function(x) { return x + 1; }, [1, 2, 3]); // [2, 3, 4]
+   ```
 
-    On the last line of the example above, you can see the `map` function in
-    use: we increment each element of a list with one. You will probably have
-    noticed that declaring the anonymous function to increment a value with
-    one takes much space. Just to declare the simplest anonymous function, the
-    identity function, takes at least 21 characters in JavaScript:
-    `function(x){return x}`, compare this with for example Haskell: `\x->x`,
-    only 5 characters! This unwieldiness of the `function` keyword is one of
-    JavaScript's warts, which will be hard to ignore when writing programs
-    using higher-order functions.
+   On the last line of the example above, you can see the `map` function in
+   use: we increment each element of a list with one. You will probably have
+   noticed that declaring the anonymous function to increment a value with
+   one takes much space. Just to declare the simplest anonymous function, the
+   identity function, takes at least 21 characters in JavaScript:
+   `function(x){return x}`, compare this with for example Haskell: `\x->x`,
+   only 5 characters! This unwieldiness of the `function` keyword is one of
+   JavaScript's warts, which will be hard to ignore when writing programs
+   using higher-order functions.
 
-    Version 1.6 of JavaScript provides a built-in `map` function declared on
-    the prototype of `Array`:
+   Version 1.6 of JavaScript provides a built-in `map` function declared on
+   the prototype of `Array`:
 
-    ```JavaScript
-    [1, 2, 3].map(function(x) { return x + 1; }); // [2, 3, 4]
-    ```
+   ```JavaScript
+   [1, 2, 3].map(function(x) { return x + 1; }); // [2, 3, 4]
+   ```
 
-    In addition to `map`, `forEach` (not really functional), `every`, `some`,
-    and `filter` are also available. In even more recent versions of
-    JavaScript, `reduce` and `reduceRight` are available. These should ring a
-    bell if you ever programmed in e.g. Haskell or Clojure.
+   In addition to `map`, `forEach` (not really functional), `every`, `some`,
+   and `filter` are also available. In even more recent versions of
+   JavaScript, `reduce` and `reduceRight` are available. These should ring a
+   bell if you ever programmed in e.g. Haskell or Clojure.
 
 
-    TODO partial application
+   TODO partial application
 
-    TODO list some frameworks (e.g. underscore.js)
+   TODO list some frameworks (e.g. underscore.js)
 
 
 
