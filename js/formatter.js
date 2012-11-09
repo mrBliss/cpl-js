@@ -121,6 +121,16 @@ $(document).ready(function () {
         });
     });
 
+    // When clicking on a link to a bibliography item, highlight the
+    // item
+    $('a.ref[href^="#bib-"]').click(function(e) {
+        var li = $('li#' + this.href.split('#')[1]);
+        // Lower the opacity
+        li.css({opacity: 0.1});
+        // Bring it back to normal
+        li.animate({opacity: 1}, 1000);
+    });
+
     // Equality tables
     // Adapted from https://github.com/dorey/JavaScript-Equality-Table
     function makeEqualityTable(cmpStr, table) {
