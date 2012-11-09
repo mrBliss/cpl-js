@@ -116,13 +116,13 @@ exports.fillInReferences = function(refs, bibIndex) {
 
 exports.fillInLinks = function(links) {
     return function(s) {
-        // [text][label]
+        // [text][label] or [text][url]
         return s.replace(/\[[^\]]+\]\[[^\]]+\]/g, function($1) {
             var m = $1.match(/\[([^\]]+)\]\[([^\]]+)\]/);
             if (m && m[1] && m[2]) {
                 var text = m[1],
                     label = m[2],
-                    url = links[label];
+                    url = label.match(/^http/) ? label : links[label];
                 if (!url) {
                     console.log('WARNING: unresolved link: ' + label);
                     return '??';
