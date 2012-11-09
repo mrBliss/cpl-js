@@ -71,6 +71,7 @@
 <ol>
 <li><a href="#immutability">Immutability</a></li>
 <li><a href="#higher-order-functions--recursion---lists">Higher-order functions, recursion & lists</a></li>
+<li><a href="#libraries">Libraries</a></li>
 </ol>
 </li>
 <li><a href="#monkey-patching">Monkey-patching</a></li>
@@ -701,7 +702,7 @@ g(4, 0); // -1</pre>
 <p>It might come as a surprise, but in JavaScript, properties can be made immutable. As you will see, this requires a lot more effort. This clearly indicates the language designer&rsquo;s intention, to discourage users from using the feature.</p>
 <div class="question">How do you mean, &ldquo;This clearly indicates the language designer&rsquo;s intention, to discourage users from using the feature&rdquo;?</div>
 <div class="answer">
-<p>When something requires more code, and thus more effort, programmers will not be inclined to continue to make the extra effort every time, and will quickly fall back to the default way.</p></div>
+<p>When doing something in a particular way requires more code than in the default way, and thus more effort, programmers will not be inclined to make the extra effort, and will quickly fall back to the default way.</p></div>
 <p>Here&rsquo;s how to make a property mutable:</p>
 <pre> var obj = {x: 1};
  // Make obj's x property immutable
@@ -744,11 +745,14 @@ var isEmpty = function(xs) {
 map(function(x) { return x + 1; }, [1, 2, 3]); // [2, 3, 4]</pre>
 <p>The <code>map</code> function is defined recursively. Functional programmers prefer recursion to iteration, mostly because iteration involves loop indices, or some other form of state, but elegance also plays a role.</p>
 <blockquote>To iterate is human, to recurse divine.<br><span class="cite">&mdash;L. Peter Deutsch</span></blockquote>
-<p>Recursion comes at a cost, namely the stack space that is consumed by the recursive function calls. When passed a very large list, the <code>map</code> function will exhaust the stack and cause a stack overflow error. The solution for this is <em>tail call optimisation</em>. When a language, or rather a language implementation supports tail call optimisation, function calls in tail position<span class="footnote">A statement or expression is in tail position when it&rsquo;s the last thing to be executed or evaluated before the function returns.</span> are eliminated and replaced by jumps to the function, effectively transforming tail recursive programs<span class="footnote">The example above is actually not <em>tail</em> recursive, but could be made tail recursive, e.g. by the use of an accumulator.</span> into equivalent programs using a loop. Although the Scheme<span class="footnote">Remember that Scheme was one of the main influences on JavaScript.</span> standards require implementations to support tail call optimization, JavaScript standards don&rsquo;t require it.</p>
+<div class="question">Doesn&rsquo;t recursion lead to stack overflow errors when it goes on for too long?</div>
+<div class="answer">
+<p>That&rsquo;s true, recursion comes at a cost, namely the stack space that is consumed by the recursive function calls. When passed a very large list, the <code>map</code> function will exhaust the stack and cause a stack overflow error. The solution for this problem is <em>tail call optimisation</em>. When a language, or rather a language implementation, supports tail call optimisation, function calls in tail position<span class="footnote">A statement or expression is in tail position when it&rsquo;s the last thing to be executed or evaluated before the function returns.</span> are eliminated and replaced by jumps to the function, effectively transforming tail recursive programs<span class="footnote">The example above is actually not <em>tail</em> recursive, but could be made tail recursive, e.g. by the use of an accumulator.</span> into equivalent programs that use loops. Although the Scheme<span class="footnote">Remember that Scheme was one of the main influences on JavaScript.</span> standards require implementations to support tail call optimization, JavaScript standards don&rsquo;t require it.</p>
+<p>Because of this lack of tail call optimisation, it&rsquo;s recommended to write programs using loops instead of recursion in JavaScript.</p></div>
 <p>On the last line of the example above, you can see the <code>map</code> function in use: we increment each element of a list with one. You will probably have noticed that declaring the anonymous function that adds <code>1</code> to a value takes much space. Just to declare the simplest anonymous function, e.g. the identity function, takes at least 21 characters in JavaScript: <code>function(x){return x}</code>, compare this with, for example, Haskell: <code>\x->x</code>, only 5 characters! The unwieldiness of the <code>function</code> keyword is one of JavaScript&rsquo;s warts when it comes to writing programs using higher-order functions.</p>
 <p>Version 1.6 of JavaScript provides a built-in <code>map</code> function declared on the prototype of <code>Array</code>:</p>
 <pre>[1, 2, 3].map(function(x) { return x + 1; }); // [2, 3, 4]</pre>
-<p>In addition to <code>map</code>, <code>forEach</code>, <code>every</code>, <code>some</code>, and <code>filter</code> are also available. In even more recent versions of JavaScript, <code>reduce</code> and <code>reduceRight</code> are available. These will ring a bell with programmers with Haskell or Clojure experience.</p>
+<p>In addition to <code>map</code>, <code>forEach</code>, <code>every</code>, <code>some</code>, and <code>filter</code> are also available. In even more recent versions of JavaScript, <code>reduce</code> and <code>reduceRight</code> are available. These will ring a bell with programmers with Haskell or Clojure experience. This demonstrates that functional programming, albeit in limited form, is slowly creeping into mainstream languages.</p>
 <p>Let&rsquo;s look at another example, the <code>partial</code> function. Invoking <code>partial</code> on a function <code>f</code> with a number of arguments will return a new function, let&rsquo;s call this function <code>g</code>. When <code>g</code> is invoked, the following things will happen: the original arguments are concatenated with the new arguments, and <code>f</code> is invoked with the concatenated arguments. Three elements come together in this example: prototypes, the <code>arguments</code> object and higher-order functions.</p>
 <pre>Function.prototype.partial = function() {
     var args = Array.prototype.slice.call(arguments);
@@ -764,7 +768,13 @@ function add(x, y) { return x + y; };
 var inc = add.partial(1);
 inc(2); // 3</pre>
 <p>The example was taken from <a href="#bib-17" class="ref"><span class="bib">17</span> Functional Programming in JavaScript</a>.</p>
-<p>TODO list some frameworks (e.g. underscore.js)</p></div>
+<h5 id="libraries">I.3.3. Libraries</h5>
+<p>As demonstrated in the previous section, programming in a functional style is certainly possible in JavaScript. Numerous programmers have discovered this and have even made libraries providing functions that promote programming in a functional style. Here are some interesting ones:</p>
+<ul>
+<li><a href="http://underscorejs.org" target="_blank">Underscore.js</a></li>
+<li><a href="http://osteele.com/sources/javascript/functional/" target="_blank">Functional JavaScript</a></li>
+<li><a href="http://gkz.github.com/prelude-ls/" target="_blank">prelude.ls</a></li>
+</ul></div>
 <h4 id="monkey-patching">I.4. Monkey-patching</h4>
 <p>TODO</p>
 

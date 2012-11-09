@@ -1328,9 +1328,9 @@ A: It's true that nearly all, if not all, functional languages support
    Q: How do you mean, "This clearly indicates the language designer's
       intention, to discourage users from using the feature"?
 
-   A: When something requires more code, and thus more effort, programmers
-      will not be inclined to continue to make the extra effort every time,
-      and will quickly fall back to the default way.
+   A: When doing something in a particular way requires more code than in the
+      default way, and thus more effort, programmers will not be inclined to
+      make the extra effort, and will quickly fall back to the default way.
 
 
    Here's how to make a property mutable:
@@ -1411,20 +1411,27 @@ A: It's true that nearly all, if not all, functional languages support
 
    >[L. Peter Deutsch] To iterate is human, to recurse divine.
 
-   Recursion comes at a cost, namely the stack space that is consumed by the
-   recursive function calls. When passed a very large list, the `map` function
-   will exhaust the stack and cause a stack overflow error. The solution for
-   this is /tail call optimisation/. When a language, or rather a language
-   implementation supports tail call optimisation, function calls in tail
-   position<foot>A statement or expression is in tail position when it's the
-   last thing to be executed or evaluated before the function returns.</foot>
-   are eliminated and replaced by jumps to the function, effectively
-   transforming tail recursive programs<foot>The example above is actually not
-   /tail/ recursive, but could be made tail recursive, e.g. by the use of an
-   accumulator.</foot> into equivalent programs using a loop. Although the
-   Scheme<foot>Remember that Scheme was one of the main influences on
-   JavaScript.</foot> standards require implementations to support tail call
-   optimization, JavaScript standards don't require it.
+   Q: Doesn't recursion lead to stack overflow errors when it goes on for too
+      long?
+
+   A: That's true, recursion comes at a cost, namely the stack space that is
+      consumed by the recursive function calls. When passed a very large list,
+      the `map` function will exhaust the stack and cause a stack overflow
+      error. The solution for this problem is /tail call optimisation/. When a
+      language, or rather a language implementation, supports tail call
+      optimisation, function calls in tail position<foot>A statement or
+      expression is in tail position when it's the last thing to be executed
+      or evaluated before the function returns.</foot> are eliminated and
+      replaced by jumps to the function, effectively transforming tail
+      recursive programs<foot>The example above is actually not /tail/
+      recursive, but could be made tail recursive, e.g. by the use of an
+      accumulator.</foot> into equivalent programs that use loops. Although
+      the Scheme<foot>Remember that Scheme was one of the main influences on
+      JavaScript.</foot> standards require implementations to support tail
+      call optimization, JavaScript standards don't require it.
+
+      Because of this lack of tail call optimisation, it's recommended to
+      write programs using loops instead of recursion in JavaScript.
 
    On the last line of the example above, you can see the `map` function in
    use: we increment each element of a list with one. You will probably have
@@ -1446,7 +1453,9 @@ A: It's true that nearly all, if not all, functional languages support
    In addition to `map`, `forEach`, `every`, `some`, and `filter` are also
    available. In even more recent versions of JavaScript, `reduce` and
    `reduceRight` are available. These will ring a bell with programmers with
-   Haskell or Clojure experience.
+   Haskell or Clojure experience. This demonstrates that functional
+   programming, albeit in limited form, is slowly creeping into mainstream
+   languages.
 
    Let's look at another example, the `partial` function. Invoking `partial`
    on a function `f` with a number of arguments will return a new function,
@@ -1474,8 +1483,16 @@ A: It's true that nearly all, if not all, functional languages support
 
    The example was taken from #[FuncProgJS].
 
-   TODO list some frameworks (e.g. underscore.js)
+   ### Libraries ###
 
+   As demonstrated in the previous section, programming in a functional style
+   is certainly possible in JavaScript. Numerous programmers have discovered
+   this and have even made libraries providing functions that promote
+   programming in a functional style. Here are some interesting ones:
+
+   * [Underscore.js][http://underscorejs.org]
+   * [Functional JavaScript][http://osteele.com/sources/javascript/functional/]
+   * [prelude.ls][http://gkz.github.com/prelude-ls/]
 
 
 ## Monkey-patching ##
