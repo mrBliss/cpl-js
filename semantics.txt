@@ -69,7 +69,7 @@ A: Of course, OOP is broader than "everything is an object". Most definitions
    JavaScript often has a different way of doing things compared to other
    languages, this will be a recurring theme.
 
-   ### Prototype-based programming ###
+   ### Prototype-based programming ###[proto]
 
    Q: What entails prototype-based inheritance?
 
@@ -1497,4 +1497,70 @@ A: It's true that nearly all, if not all, functional languages support
 
 ## Monkey-patching ##
 
-TODO
+Q: When talking about JavaScript's dynamic nature, you said JavaScript was
+   comparable to Ruby in this aspect. Does JavaScript also support monkey
+   patching?
+
+A: Yes, it's also possible do monkey patching in JavaScript. In Ruby, classes
+   can be modified at run-time. As seen in #[proto], JavaScript allows
+   objects, and by consequence classes too,<foot>Remember that classes in
+   JavaScript are emulated/implemented using objects.</foot> to be modified at
+   run-time. This is just the way JavaScript works (TODO refer to line-by-line
+   execution).
+
+   Monkey patching is often used to modify the behaviour of third-party or
+   even standard libraries without requiring access to their source. Fixing
+   bugs in libraries, mocking test objects, changing the behaviour of a
+   function to suit your program, extending objects with useful methods, ...
+   are all reasons to monkey patch.
+
+   In JavaScript, you can simply modify properties of objects. A more
+   effective and also more radical approach is to modify the prototypes of
+   objects.
+
+   Let's extend JavaScript's built-in object with some methods:
+
+   ```JavaScript
+   // Return the last element
+   Array.prototype.last = function() {
+       return this[this.length - 1];
+   };
+   [1, 2, 3].last(); // 3
+
+   // Capitalize the string
+   String.prototype.capitalize = function() {
+       var newStr = '';
+       if (this.length == 0)
+           return newStr;
+
+       newStr += this[0].toUpperCase();
+       for (var i = 1; i < this.length; i++)
+           newStr += this[i].toLowerCase();
+
+       return newStr;
+   };
+   'brendan'.capitalize(); // 'Brendan'
+
+   // Merge two hash maps together in a new one
+   Object.prototype.merge = function(obj) {
+       var newObj = {};
+       for (var k in this) {
+           newObj[k] = this[k];
+       }
+       for (var k in obj) {
+           newObj[k] = obj[k];
+       }
+       return newObj;
+   };
+   {a: 1}.merge({b: 2}); // { a: 1, b: 2, merge: [Function] }
+   ```
+
+   All the methods that we added with monkey patches are quite useful. They
+   seem to work correctly except for the last one: the `merge` function
+   appears to have sneaked in the hash map we got back after merging the two
+   hash maps. How did this happen? By adding the `merge` method to the
+   prototype of `Object`, the top of the inheritance chain, /every/ object
+   will inherit this property and thus have a `merge` property with as value
+   the newly defined function. This is obviously an unintended side-effect.
+
+   It turns out that we can actually hide this `merge` property. CONTINUE

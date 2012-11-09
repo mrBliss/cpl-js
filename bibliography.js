@@ -206,4 +206,9 @@ var entries = [
         published: 'September 14, 2012',
         title: 'Functional Programming in JavaScript',
         url: 'http://dailyjs.com/2012/09/14/functional-programming/'
+    }),
+    new Wikipedia('MonkeyPatch', {
+        title: 'Monkey patch',
+        retrieved: 'November 9, 2012',
+        url: 'http://en.wikipedia.org/wiki/Monkey_patch'
     })];
