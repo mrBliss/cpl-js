@@ -200,4 +200,10 @@ var entries = [
         year: 2012,
         title: 'Node.js v0.8.14 Manual & Documentation - Modules',
         url: 'http://nodejs.org/api/modules.html'
+    }),
+    new Blog('FuncProgJS', {
+        authors: [['Smith', 'Nathaniel']],
+        published: 'September 14, 2012',
+        title: 'Functional Programming in JavaScript',
+        url: 'http://dailyjs.com/2012/09/14/functional-programming/'
     })];
