@@ -16,8 +16,11 @@ exports.toRoman = function(n) {
     }
 };
 
-exports.tocBuilder = function(toc) {
-    var levels = [0, 0, 0, 0, 0, 0];
+exports.emptyTocLevels = function () {
+    return [0, 0, 0, 0, 0, 0];
+}
+
+exports.tocBuilder = function(toc, levels) {
     function numberString() {
         var s = exports.toRoman(levels[0]) + '.';
         for (var i = 1; i < levels.length; i++) {
@@ -42,10 +45,10 @@ exports.tocBuilder = function(toc) {
         }
     };
 };
-exports.toHTML = function(toc) {
+exports.tocToHTML = function(toc) {
     var html = '';
     var prevLevel = 1, level;
-    for (var k in toc) {
+    Object.keys(toc).sort().forEach(function(k) {
         var t = toc[k];
         level = k.split(',').length;
         if (prevLevel < level && html != '') {
@@ -63,9 +66,9 @@ exports.toHTML = function(toc) {
                 .replace(/-+/, '-');
         html += '<li><a href="#' + anchor +'">' + t[1].replace(/`/g, '') + '</a>';
         prevLevel = level;
-    };
+    });
     html += '</li>\n</ol>\n</li>\n';
-    for (i = level; i > 2; i--) {
+    for (var i = level; i > 2; i--) {
         html += '</ol>\n</li>\n';
     }
     return html;

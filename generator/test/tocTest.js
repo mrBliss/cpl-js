@@ -1,6 +1,6 @@
-var toc = require('../lib/toc.js'),
-    toRoman = toc.toRoman,
-    toHTML = toc.toHTML;
+var refs = require('../lib/refs.js'),
+    toRoman = refs.toRoman,
+    tocToHTML = refs.tocToHTML;
 
 exports.testToRoman = function(test) {
     var nums = ['I', 'II', 'III', 'IV', 'V', 'VI', 'VII', 'VIII', 'IX',
@@ -12,7 +12,7 @@ exports.testToRoman = function(test) {
     test.done();
 };
 
-exports.testToHTML = function(test) {
+exports.testTocToHTML = function(test) {
     var toc1 = {
         '1': [ 'I.', 'Bla' ],
         '1,1': [ 'I.1.', 'Foo Bar' ],
@@ -43,7 +43,7 @@ exports.testToHTML = function(test) {
             + '<li><a href="#bar-bar">Bar Bar</a></li>\n'
             + '</ol>\n'
             + '</li>\n';
-    test.equal(toHTML(toc1), html1);
+    test.equal(tocToHTML(toc1), html1);
 
     var toc2 = {
         '1': [ 'I.', 'Bla' ],
@@ -64,6 +64,6 @@ exports.testToHTML = function(test) {
             + '</li>\n'
             + '</ol>\n'
             + '</li>\n';
-    test.equal(toHTML(toc2), html2);
+    test.equal(tocToHTML(toc2), html2);
     test.done();
 };
