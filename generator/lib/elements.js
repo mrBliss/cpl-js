@@ -153,11 +153,26 @@ Title.prototype.toHTML = function() {
         + '">' + this.number + ' ' + this.text + '</h' + hLevel + '>';
 };
 
+// Source: https://github.com/janl/mustache.js
+var entityMap = {
+    "&": "&amp;",
+    "<": "&lt;",
+    ">": "&gt;",
+    '"': '&quot;',
+    "'": '&#39;',
+    "/": '&#x2F;'
+};
+function escapeHTML(html) {
+    return String(html).replace(/[&<>"'\/]/g, function (s) {
+      return entityMap[s];
+    });
+}
+
 CodeBlock.prototype.toHTML = function() {
     var className = (this.lang != 'JavaScript'
                      ? ' class="' + this.lang + '"'
                      : '');
-    return '<pre' + className + '>' + this.code + '</pre>';
+    return '<pre' + className + '>' + escapeHTML(this.code) + '</pre>';
 };
 
 
@@ -191,7 +206,7 @@ BlockQuote.prototype.toHTML = function() {
 
 HTML.prototype.toHTML = function() {
     return this.html;
-}
+};
 
 Question.prototype.toHTML = function() {
     return '<div class="question">' + this.text + '</div>';
