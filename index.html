@@ -813,9 +813,37 @@ Object.prototype.merge = function(obj) {
     }
     return newObj;
 };
-{a: 1}.merge({b: 2}); // { a: 1, b: 2, merge: [Function] }</pre>
+({a: 1}).merge({b: 2}); // { a: 1, b: 2, merge: [Function] }</pre>
 <p>All the methods that we added with monkey patches are quite useful. They seem to work correctly except for the last one: the <code>merge</code> function appears to have sneaked in the hash map we got back after merging the two hash maps. How did this happen? By adding the <code>merge</code> method to the prototype of <code>Object</code>, the top of the inheritance chain, <em>every</em> object will inherit this property and thus have a <code>merge</code> property with as value the newly defined function. This is obviously an unintended side-effect.</p>
-<p>It turns out that we can actually hide this <code>merge</code> property. CONTINUE</p></div>
+<p>It turns out that we can actually hide this <code>merge</code> property, by making it <em>un</em>enumerable.</p>
+<pre>Object.defineProperty(Object.prototype, 'merge', {
+        enumerable: false
+});
+({a: 1}).merge({b: 2}); // { a: 1, b: 2 }</pre>
+<div class="question">The apparent problem seems to be solved by hiding the properties that were added as monkey patches. Are there any other drawbacks to monkey patching?</div>
+<div class="answer">
+<p>The common pitfalls of monkey patching still apply:</p>
+<ul>
+<li>Patching a method in a single place will affect the whole program, which can cause some unintended behaviour. However, it is possible to revert or remove the monkey patched methods after using them.<span class="footnote">Users familiar with Lisp macros will see in the example below a perfect opportunity for a <code>with-patches</code> macro. The application and removal and the patches should be put in a try- and a finally-clause respectively.</span></li>
+</ul>
+<pre>[1, 2, 3].last(); // no method 'last'
+Array.prototype.last = function() {
+    return this[this.length - 1];
+};
+[1, 2, 3].last(); // 3
+delete Array.prototype.last; // the delete operator deletes a property
+[1, 2, 3].last(); // no method 'last'</pre>
+<ul>
+<li>When a single method is monkey patched in two different places in your program, it&rsquo;s not always clear which monkey patch <em>wins</em>.</li>
+</ul>
+<ul>
+<li>Monkey patching third-party libraries or the built-in objects, will inevitably create discrepancies between the documented and the actual behaviour.</li>
+</ul>
+<p>Source: <a href="#bib-30" class="ref"><span class="bib">30</span> Monkey patch</a></p></div>
+<div class="question">Given the pitfalls just listed, is monkey patching still encouraged in JavaScript or rather frowned upon?</div>
+<div class="answer">
+<p>If done with care and for the right reasons, monkey patching is a defensible solution. Fixing a bug in a third-party library could be a valid reason, provided that the monkey patch will only be applied to faulty versions of the library.</p></div></div>
+<p>TODO bad parts (eval, with, etc.), not semantics: multithreading, event-driven, execution engines (V8, JavaScriptCore: mention Ruby DSL), node.js</p>
 
     <div id="bibliography">
       <h3>Bibliography</h3>

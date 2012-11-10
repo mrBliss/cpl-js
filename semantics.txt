@@ -1552,7 +1552,7 @@ A: Yes, it's also possible do monkey patching in JavaScript. In Ruby, classes
        }
        return newObj;
    };
-   {a: 1}.merge({b: 2}); // { a: 1, b: 2, merge: [Function] }
+   ({a: 1}).merge({b: 2}); // { a: 1, b: 2, merge: [Function] }
    ```
 
    All the methods that we added with monkey patches are quite useful. They
@@ -1563,4 +1563,58 @@ A: Yes, it's also possible do monkey patching in JavaScript. In Ruby, classes
    will inherit this property and thus have a `merge` property with as value
    the newly defined function. This is obviously an unintended side-effect.
 
-   It turns out that we can actually hide this `merge` property. CONTINUE
+   It turns out that we can actually hide this `merge` property, by making it
+   /un/enumerable.
+
+   ```JavaScript
+   Object.defineProperty(Object.prototype, 'merge', {
+           enumerable: false
+   });
+   ({a: 1}).merge({b: 2}); // { a: 1, b: 2 }
+   ```
+
+   Q: The apparent problem seems to be solved by hiding the properties that
+      were added as monkey patches. Are there any other drawbacks to monkey
+      patching?
+
+   A: The common pitfalls of monkey patching still apply:
+
+      * Patching a method in a single place will affect the whole program,
+        which can cause some unintended behaviour. However, it is possible to
+        revert or remove the monkey patched methods after using
+        them.<foot>Users familiar with Lisp macros will see in the example
+        below a perfect opportunity for a `with-patches` macro. The
+        application and removal and the patches should be put in a try- and a
+        finally-clause respectively.</foot>
+
+        ```JavaScript
+        [1, 2, 3].last(); // no method 'last'
+        Array.prototype.last = function() {
+            return this[this.length - 1];
+        };
+        [1, 2, 3].last(); // 3
+        delete Array.prototype.last; // the delete operator deletes a property
+        [1, 2, 3].last(); // no method 'last'
+        ```
+
+      * When a single method is monkey patched in two different places in your
+        program, it's not always clear which monkey patch /wins/.
+
+      * Monkey patching third-party libraries or the built-in objects, will
+        inevitably create discrepancies between the documented and the actual
+        behaviour.
+
+      Source: #[MonkeyPatch]
+
+   Q: Given the pitfalls just listed, is monkey patching still encouraged in
+      JavaScript or rather frowned upon?
+
+   A: If done with care and for the right reasons, monkey patching is a
+      defensible solution. Fixing a bug in a third-party library could be a
+      valid reason, provided that the monkey patch will only be applied to
+      faulty versions of the library.
+
+
+TODO bad parts (eval, with, etc.), not semantics: multithreading,
+event-driven, execution engines (V8, JavaScriptCore: mention Ruby DSL),
+node.js
