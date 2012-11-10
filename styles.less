@@ -2,8 +2,7 @@
 @bg: #ffffff;
 @linkBg: #EEEEF0;
 @text: #222525;
-@highlight1: #222222;
-@highlight2: #06799F;
+@highlight: #222222;
 @border: #CCCCCC;
 @codeBg: darken(@bg, 1%);
 
@@ -35,7 +34,7 @@ body {
 
 a {
     &:link {
-        color: @highlight1;
+        color: @highlight;
     }
     &:hover {
         color: lighten(@text, 15%);
@@ -150,7 +149,7 @@ h4 + div.question, h5 + div.question, h6 + div.question, div.editor + div.questi
     margin-top: 1em;
 }
 strong {
-    color: @highlight2;
+    color: @text;
 }
 
 a.ref, em {
