@@ -95,17 +95,18 @@
 <p>Objects in JavaScript are in fact containers of properties, where each property has a name and a value. By assigning a function to a property&rsquo;s value, one can add a method to the object. This demonstrates the importance of the presence of first-class functions. Objects in JavaScript can be compared with untyped hashmaps from strings to values from any kind, similar to Python&rsquo;s dicts, Ruby&rsquo;s hashes, &hellip; The name of a property can be any string, but the quotes can be dropped if the name of the property is a valid JavaScript identifier. The quotes are required when the property name is a reserved keyword, an empty string, or other strings not constituting valid JavaScript identifiers.</p>
 <pre>var emptyObject = {};
 var person = {
-    name: "Erin",
+    name: &quot;Erin&quot;,
     age: 28,
-    "place-of-birth": "Gibraltar", // hyphens are not allowed in JavaScript identifiers
-    walk: function () { return "Do bi do ... walking, walking, walking"; }
+    &quot;place-of-birth&quot;: &quot;Gibraltar&quot;, &#x2F;&#x2F; hyphens are not allowed in JavaScript identifiers
+    walk: function () { return &quot;Do bi do ... walking, walking, walking&quot;; }
 };</pre>
 <p>Property lookup is done via the <code>.</code> notation. When the property name is not a valid JavaScript identifier, one has to use the bracket notation. Looking up a property of which the value is a function, just returns that function. To actually invoke it, terminate the expression with <code>()</code>.</p>
-<pre>person.name; // "Erin"
-person["place-of-birth"]; // "Gibraltar"
-person.walk; // [Function]
-person.walk(); // "Do bi do ... walking, walking, walking"</pre>
-<p>This notation of objects is compact, easy to parse and parse, and has become a popular general data-interchange format, called JSON (JavaScript Object Notation). TODO expand on JSON</p></div>
+<pre>person.name; &#x2F;&#x2F; &quot;Erin&quot;
+person[&quot;place-of-birth&quot;]; &#x2F;&#x2F; &quot;Gibraltar&quot;
+person.walk; &#x2F;&#x2F; [Function]
+person.walk(); &#x2F;&#x2F; &quot;Do bi do ... walking, walking, walking&quot;</pre>
+<p>This notation of objects is compact, easy to parse and parse, and has become a popular general data-interchange format, called JSON (JavaScript Object Notation). TODO expand on JSON</p>
+<p>JavaScript has no separate hash map type. Since objects function as hash maps, they are often (ab)used as hash maps. Conflating objects with hash maps can have some unwanted consequences, see the examples in <a href="#monkey-patching" class="ref">Monkey-patching</a>.<span class="footnote">The next JavaScript standard will contain a separate <code>Map</code> type.</span></p></div>
 <div class="question">Object-oriented programming includes more than &ldquo;everything is an object&rdquo;. What about polymorphism, inheritance, etc.?</div>
 <div class="answer">
 <p>Of course, OOP is broader than &ldquo;everything is an object&rdquo;. Most definitions of object-oriented programming include features such as modularity, encapsulation, polymorphism, inheritance, &hellip;</p>
@@ -119,21 +120,21 @@ person.walk(); // "Do bi do ... walking, walking, walking"</pre>
 <div class="question">Could you show how it&rsquo;s done in JavaScript?</div>
 <div class="answer">
 <p>In JavaScript, objects can be created via object literals. In this case, <code>Object</code> will be their prototype.</p>
-<pre>var o = {foo: "bar"};
-// Object.getPrototypeOf(x) returns the prototype of x
-Object.getPrototypeOf(o); // {}, which is an empty Object</pre>
+<pre>var o = {foo: &quot;bar&quot;};
+&#x2F;&#x2F; Object.getPrototypeOf(x) returns the prototype of x
+Object.getPrototypeOf(o); &#x2F;&#x2F; {}, which is an empty Object</pre>
 <p>Another way to create objects in JavaScript, is via the <code>new</code> keyword, which you probably know from C++, Java, etc. The <code>new</code> keyword should be followed by a function call. The function after the <code>new</code> keyword is called the constructor. Objects created this way will have their constructor&rsquo;s prototype as their prototype.</p>
-<pre>// Car is a constructor
+<pre>&#x2F;&#x2F; Car is a constructor
 function Car(make) {
     this.make = make;
 };
-Object.getPrototypeOf(Car); // [Function: Empty] is the prototype of a function
-// Define a new method for Car
+Object.getPrototypeOf(Car); &#x2F;&#x2F; [Function: Empty] is the prototype of a function
+&#x2F;&#x2F; Define a new method for Car
 Car.prototype.drive = function() {
-    println("Vroom");
+    println(&quot;Vroom&quot;);
 };
-var myCar = new Car("BMW");
-Object.getPrototypeOf(myCar); // { drive: [Function] }, the prototype of Car</pre>
+var myCar = new Car(&quot;BMW&quot;);
+Object.getPrototypeOf(myCar); &#x2F;&#x2F; { drive: [Function] }, the prototype of Car</pre>
 <p>Notice that the name of the constructor function is capitalized. This is a convention carried over from Java.</p>
 <div class="question">If the naming is only a convention, how then differs a constructor from a regular function?</div>
 <div class="answer">
@@ -142,23 +143,23 @@ Object.getPrototypeOf(myCar); // { drive: [Function] }, the prototype of Car</pr
 <div class="answer">
 <p>If we were to define the methods in the constructor, copies of these methods would be created for every object created via the constructor. The methods defined on the prototype don&rsquo;t have to be copied, but are inherited.</p></div>
 <p>Here&rsquo;s another example of inheritance in JavaScript.</p>
-<pre>// Create a new object that inherits from obj
+<pre>&#x2F;&#x2F; Create a new object that inherits from obj
 function inherit(obj) {
-    function f() {}; // Dummy constructor
-    // The new object's prototype is obj
+    function f() {}; &#x2F;&#x2F; Dummy constructor
+    &#x2F;&#x2F; The new object&#39;s prototype is obj
     f.prototype = obj;
-    // Make the new object
+    &#x2F;&#x2F; Make the new object
     return new f();
 }
-// Create a new object from scratch
-var a = {x: "a's x"};
-// Create a new object by cloning an existing object
+&#x2F;&#x2F; Create a new object from scratch
+var a = {x: &quot;a&#39;s x&quot;};
+&#x2F;&#x2F; Create a new object by cloning an existing object
 var b = inherit(a);
-// Change the value of b's x property
-b.x = "b's x";
-// This change only affects b
-a.x; // "a's x"
-b.x; // "b's x"</pre></div>
+&#x2F;&#x2F; Change the value of b&#39;s x property
+b.x = &quot;b&#39;s x&quot;;
+&#x2F;&#x2F; This change only affects b
+a.x; &#x2F;&#x2F; &quot;a&#39;s x&quot;
+b.x; &#x2F;&#x2F; &quot;b&#39;s x&quot;</pre></div>
 <div class="question">What are the pros and cons of prototype-based programming?</div>
 <div class="answer">
 <p>Prototype-based programming gives the programmer more flexibility and freedom to define and redefine the fields and methods of objects dynamically. Instead of focusing on building a brittle taxonomy of classes, as in class-based programming, the focus lies on making a set of objects with the desired behaviour, reusing them via cloning, and modifying their behaviour when it&rsquo;s required. When building a taxonomy, it is often the case that some class at the bottom of the chain inherited some unwanted fields or methods, as it is not always possible to classify everything in a consistent taxonomy. Prototype-based programming gives you the freedom to clone and override the fields and methods of other objects at will.</p>
@@ -169,47 +170,47 @@ b.x; // "b's x"</pre></div>
     this.make = make;
 };
 Car.prototype.drive = function() {
-    println("Vroom");
+    println(&quot;Vroom&quot;);
 };
-// Constructor for the subclass SportsCar
+&#x2F;&#x2F; Constructor for the subclass SportsCar
 function SportsCar(make) {
     this.make = make;
 };
-// The prototype of SportsCar is a regular Car
-SportsCar.prototype = new Car();
-// We change the constructor, because we inherited Car's constructor
+&#x2F;&#x2F; The prototype of SportsCar is a regular Car
+SportsCar.prototype = new Car;
+&#x2F;&#x2F; We change the constructor, because we inherited Car&#39;s constructor
 SportsCar.prototype.constructor = SportsCar;
 SportsCar.prototype.driveFast = function() {
     this.drive(); this.drive();
 };
 
-// Instantiate a new SportsCar
-var mySportsCar = new SportsCar("BMW");
+&#x2F;&#x2F; Instantiate a new SportsCar
+var mySportsCar = new SportsCar(&quot;BMW&quot;);
 mySportsCar.driveFast();
-// Vroom
-// Vroom</pre>
+&#x2F;&#x2F; Vroom
+&#x2F;&#x2F; Vroom</pre>
 <p>The steps to create a subclass are often put together in a single function, allowing easy class-based inheritance.</p>
 <p>Traits are also easy to emulate, although we don&rsquo;t have access to the super objects anymore. Abstract members can also be emulated, but will not be checked at compile-time for presence.</p>
 <p>The methods are simply copied over from the trait object to the other object.</p>
-<pre>// The Trait we define
+<pre>&#x2F;&#x2F; The Trait we define
 var HasTires = {
     tiresOk: true,
     puncture: function() {
         this.tiresOk = false;
     }
 };
-// Add the properties of the trait to the prototype of obj
+&#x2F;&#x2F; Add the properties of the trait to the prototype of obj
 var mixin = function(obj, trait) {
     for (var prop in trait) {
         obj.prototype[prop] = trait[prop];
     }
 };
-// We'll continue with the SportsCar defined above
+&#x2F;&#x2F; We&#39;ll continue with the SportsCar defined above
 mixin(SportsCar, HasTires);
-// The already defined mySportsCar now has the functionality defined in
-//  the HasTires trait
+&#x2F;&#x2F; The already defined mySportsCar now has the functionality defined in
+&#x2F;&#x2F;  the HasTires trait
 mySportsCar.puncture();
-mySportsCar.tiresOk; // false</pre>
+mySportsCar.tiresOk; &#x2F;&#x2F; false</pre>
 <p>Of course, freedom comes with a price. One of the disadvantages are the slower field and method accesses/dispatches and to a lesser extend the memory overhead. Objects cloned from others object don&rsquo;t clone the fields and methods. It would be wasteful to clone this reusable data. Instead, the cloned object keeps track of its prototype. Whenever an inherited field or method of the new object, i.e. a field or method defined in the prototype (or a prototype of the prototype), is accessed, the new object delegates the call to the prototype. This delegation will go on until a definition is found in one of the ancestor prototypes. The longer this <em>chain</em> of prototypes, the costlier a field access or method call.</p>
 <p>Another disadvantage is that it becomes harder to figure out which fields and methods an object has, and where they were defined. When using classes, knowing the class of an object is enough to know which fields and methods an object has (this, of course, includes looking at superclasses). A class functions as the type of the object, but in JavaScript, properties can be added and removed from objects at run-time.</p></div></div>
 <h5 id="invoking-functions">I.1.3. Invoking functions</h5>
@@ -234,12 +235,12 @@ mySportsCar.tiresOk; // false</pre>
 <pre>function f() {
     return this.x;
 }
-// Function invocation
+&#x2F;&#x2F; Function invocation
 var x = 1;
-f(); // 1
-// Method invocation
+f(); &#x2F;&#x2F; 1
+&#x2F;&#x2F; Method invocation
 var o = {x: 2, f: f};
-o.f(); // 2</pre>
+o.f(); &#x2F;&#x2F; 2</pre>
 <h6 id="constructor-invocation">I.1.3.3. Constructor invocation</h6>
 <p>When a function or method invocation is preceded by the <code>new</code> keyword, it is a constructor invocation.</p>
 <p>A few things are different for constructor invocations:</p>
@@ -261,22 +262,22 @@ o.f(); // 2</pre>
 function f(x, y) {
     return [this, x, y];
 }
-f.call({a: 'foo'},  1, 2); // [ { a: 'foo' }, 1, 2 ]
-f.apply({a: 'foo'}, [1, 2]); // [ { a: 'foo' }, 1, 2 ]</pre>
+f.call({a: &#39;foo&#39;},  1, 2); &#x2F;&#x2F; [ { a: &#39;foo&#39; }, 1, 2 ]
+f.apply({a: &#39;foo&#39;}, [1, 2]); &#x2F;&#x2F; [ { a: &#39;foo&#39; }, 1, 2 ]</pre>
 <div class="question">Can you give me a use case of these <code>call</code>- and <code>apply</code>-methods?</div>
 <div class="answer">
 <p>A possible use case is the reuse of methods. Let&rsquo;s say we have an object (or a class) A with some methods. We also have some other, totally unrelated object B. There might be a method defined on A that we wish to invoke on B too, instead of copying the method from object A to object B, or making A B&rsquo;s prototype, we can simply invoke the method on object B.</p>
 <p>Essentially, we bypass the inheritance tree, and are able to reuse methods defined for other objects.</p>
-<pre>// Object/Class A
+<pre>&#x2F;&#x2F; Object&#x2F;Class A
 var Person = function(name) { this.name = name; };
 Person.prototype.introduce = function() {
-    return "Hello, my name is " + this.name;
+    return &quot;Hello, my name is &quot; + this.name;
 };
-// Object B. We don't want B to inherit from A. We could add the
-// `introduce`-method as a property to B, but indirect invocation is much
-// cheaper that copying the method, and then performing a method
-// invocation.
-var car = {name: 'Mater', town: 'Radiator Springs'};
+&#x2F;&#x2F; Object B. We don&#39;t want B to inherit from A. We could add the
+&#x2F;&#x2F; `introduce`-method as a property to B, but indirect invocation is much
+&#x2F;&#x2F; cheaper that copying the method, and then performing a method
+&#x2F;&#x2F; invocation.
+var car = {name: &#39;Mater&#39;, town: &#39;Radiator Springs&#39;};
 Person.prototype.introduce.call(car);</pre></div>
 <h5 id="encapsulation">I.1.4. Encapsulation</h5>
 <p>Another example of JavaScript&rsquo;s <em>exotic</em> way of doing things is encapsulation. Most classical OO languages support visibility modifiers to control the accessibility of fields and methods by other classes. In JavaScript, there are no such modifiers, but encapsulation is still achievable, via the use of closures.</p>
@@ -289,8 +290,8 @@ Person.prototype.introduce.call(car);</pre></div>
 }
 ..
 A a = new A();
-a.inc(); // OK
-a.counter; // Error: not visible!
+a.inc(); &#x2F;&#x2F; OK
+a.counter; &#x2F;&#x2F; Error: not visible!
 ..</pre>
 <pre>var a = (function () {
     var counter = 0;
@@ -300,78 +301,78 @@ a.counter; // Error: not visible!
         },
     };
 })();
-a.inc(); // OK
-a.counter; // Error: not visible!</pre>
+a.inc(); &#x2F;&#x2F; OK
+a.counter; &#x2F;&#x2F; Error: not visible!</pre>
 <div class="question">What is a closure?</div>
 <div class="answer">
 <p>Before explaining what a closure is, you have to know some things about JavaScript&rsquo;s scoping rules.</p>
 <h6 id="function-global-scope">I.1.4.1. Function & global scope</h6>
 <p>JavaScript&rsquo;s scoping rules differ from common languages like C and Java. In C and Java, curly braces (<code>{&hellip;}</code>) delimit different scopes. The body of a function, a while-loop, a for-loop, a class (in the case of Java), all have a separate scope (known as <em>block scope</em>). In JavaScript, there are only two kinds of scope: the global scope and function scope.</p>
 <p>Let&rsquo;s see some examples of these differing scoping rules</p>
-<pre class="Java">for (int i = 0; i < 10; i++) {
-    // ...
+<pre class="Java">for (int i = 0; i &lt; 10; i++) {
+    &#x2F;&#x2F; ...
 }
-System.out.println(i); // Error: i is undefined here,
-// it is only accessible within the scope of the for-loop
+System.out.println(i); &#x2F;&#x2F; Error: i is undefined here,
+&#x2F;&#x2F; it is only accessible within the scope of the for-loop
 
 int a = 10;
 {
-    // A new scope
+    &#x2F;&#x2F; A new scope
     a = 3;
 }
-System.out.println(a); // 10</pre>
-<pre>for (var i = 0; i < 10; i++) {
-    // ...
+System.out.println(a); &#x2F;&#x2F; 10</pre>
+<pre>for (var i = 0; i &lt; 10; i++) {
+    &#x2F;&#x2F; ...
 }
-println(i); // 10
+println(i); &#x2F;&#x2F; 10
 
 var a = 10;
 {
-    // No new scope
+    &#x2F;&#x2F; No new scope
     a = 3;
 }
-println(a); // 3</pre>
+println(a); &#x2F;&#x2F; 3</pre>
 <p>By default all variables will be defined in the global scope, i.e. they will be global variables. This sends cold shivers down many a programmer&rsquo;s spine. The only way to delimit the scope of variable definitions is by wrapping them in a function.</p>
 <pre>var x = 3;
 (function() {
     var x = 10;
-    // x = 10
-})(); // This function is invoked immediately after definition
-println(x); // 3</pre>
+    &#x2F;&#x2F; x = 10
+})(); &#x2F;&#x2F; This function is invoked immediately after definition
+println(x); &#x2F;&#x2F; 3</pre>
 <h6 id="variable-hoisting">I.1.4.2. Variable hoisting</h6>
 <p>In this intermezzo, another peculiarity of JavaScript&rsquo;s scoping rules is introduced, <em>variable hoisting</em>.</p>
 <pre>var f = function() {
     return y;
 };
-// ...
+&#x2F;&#x2F; ...
 var y = 3;
-f(); // 3</pre>
+f(); &#x2F;&#x2F; 3</pre>
 <p>In the example above, we define the function <code>f</code> which returns the value of the undefined variable <code>y</code> when called. A bit later in the program, but still in the same scope (global or function), we define the variable <code>y</code>. Finally, we invoke <code>f</code>, which returns <code>3</code>. Shouldn&rsquo;t the definition of <code>f</code> fail with an error message complaining about the undefined variable <code>y</code>? What actually happens, is that all variable declarations in the current scope are moved to the beginning of the scope. Only the declarations, not the initialisations.</p>
 <p>What happens under the hood is the following:</p>
 <pre>var f, y;
 f = function() {
     return y;
 };
-// ...
+&#x2F;&#x2F; ...
 y = 3;
-f(); // 3</pre>
+f(); &#x2F;&#x2F; 3</pre>
 <p>In this case, some people might consider variable hoisting to be advantageous, but that&rsquo;s not always the case, see the following example:</p>
 <pre>var x = 0;
 function f() {
-    println("A: " + x);
+    println(&quot;A: &quot; + x);
     var x = 1;
-    println("B: " + x);
+    println(&quot;B: &quot; + x);
 }
 f();
-// A: undefined
-// B: 1</pre>
+&#x2F;&#x2F; A: undefined
+&#x2F;&#x2F; B: 1</pre>
 <p>Most programmers would expect the first <code>println</code>-statement to print out <code>A: 0</code>. What actually happens is the following:</p>
 <pre>var x = 0;
 function f() {
-    var x; // x is now declared, but uninitialised, i.e. `undefined`
-    println("A: " + x);
+    var x; &#x2F;&#x2F; x is now declared, but uninitialised, i.e. `undefined`
+    println(&quot;A: &quot; + x);
     x = 1;
-    println("B: " + x);
+    println(&quot;B: &quot; + x);
 }
 f();</pre>
 <p>This phenomenon is called <em>variable hoisting</em>. The variable declarations are hoisted to the top of the scope, but the initialisations are left in place.</p>
@@ -383,15 +384,15 @@ f();</pre>
 <p>We assume you&rsquo;re already familiar with lexical and dynamic scoping, so we&rsquo;ll quickly glance over it.</p>
 <p>In the case of lexical scoping, functions are invoked in the scope that was active during the definition of the function. In the case of dynamic scoping, functions are invoked in the scope active during the invocation of the function. Let&rsquo;s show difference with an example.</p>
 <pre>var f = (function() {
-    var z = 'lexical';
+    var z = &#39;lexical&#39;;
     return function() {
         return z;
     };
 })();
 
-var z = 'dynamic';
-f(); // 'lexical' when lexically scoped,
-     // 'dynamic' in the other case</pre>
+var z = &#39;dynamic&#39;;
+f(); &#x2F;&#x2F; &#39;lexical&#39; when lexically scoped,
+     &#x2F;&#x2F; &#39;dynamic&#39; in the other case</pre>
 <p>JavaScript is lexically scoped, as is Scheme, one of JavaScript&rsquo;s biggest influences TODO ref scheme. The return value of <code>f</code> in the example above will be &lsquo;lexical&rsquo;.</p>
 <h6 id="closures">I.1.4.4. Closures</h6>
 <p>Let&rsquo;s have another look of the example that we showed you to demonstrate encapsulation.</p>
@@ -403,30 +404,30 @@ f(); // 'lexical' when lexically scoped,
         },
     };
 })();
-a.inc(); // OK
-a.counter; // Error: not visible!</pre>
+a.inc(); &#x2F;&#x2F; OK
+a.counter; &#x2F;&#x2F; Error: not visible!</pre>
 <p>As JavaScript is lexically scoped, functions have to capture the scope that was active during their definition. Essentially, what happens is that all variables defined in a scope outside the defined function but referenced from within the scope of the function, known as <em>free variables</em>, have to be captured. In the example above, the function defined on line 4 references a variable <code>counter</code> (line 5), that was defined in another scope (line 2). The free variables are <em>closed</em>-over, they are <em>captured</em> by the closure. One can think of a closure as a pair of a function, i.e. code, and its environment, i.e. data.</p>
 <p>Encapsulation can be achieved by defining the variables meant to be private in a function (scope) A, and defining a new function B within A, that references these variables. The closure of function B will capture these private variables. By holding onto function B, but discarding function (scope) A, only B will be able to access these private variable,<span class="footnote">Unless function B leaks them via its properties.</span> effectively achieving encapsulation.</p>
 <p>The following example<span class="footnote">Taken from the <a href="http://www.dartlang.org/docs/dart-up-and-running/ch02.html#for-loops" target="_blank">Dart Language Tour</a>.</span> demonstrates a common pitfall with closures (and scope) in JavaScript:</p>
 <pre>var closures = [];
-for (var i = 0; i <= 1; i++) {
-    var f = function() { println(i); } // f will print i when invoked
+for (var i = 0; i &lt;= 1; i++) {
+    var f = function() { println(i); } &#x2F;&#x2F; f will print i when invoked
     closures.push(f);
 }
-closures[0](); // 2, why not 0?
-closures[1](); // 2, why not 1?</pre>
+closures[0](); &#x2F;&#x2F; 2, why not 0?
+closures[1](); &#x2F;&#x2F; 2, why not 1?</pre>
 <p>What happens is that the <em>variable</em> is captured by the closure, not the <em>value</em> of the variable during the capture. Because JavaScript has no separate scope for the body of a for-loop, the variable <code>i</code> is in scope during the whole example. The for-loop stops when variable <code>i</code> is greater than <code>1</code>, i.e. <code>2</code>, this explains why both closures print the number <code>2</code>.</p>
 <p>The solution to this problem is to wrap the definition of <code>f</code> in another function which takes the variables that will be captured as arguments, effectively creating a new scope/closure, and invoking it immediately with the variable to capture as argument. Function arguments are passed by value, not by reference.</p>
 <pre>var closures = [];
-for (var i = 0; i <= 1; i++) {
+for (var i = 0; i &lt;= 1; i++) {
     var f = (function(i) {
         return function() {
             println(i);
         };})(i);
     closures.push(f);
 }
-closures[0](); // 0
-closures[1](); // 1</pre></div>
+closures[0](); &#x2F;&#x2F; 0
+closures[1](); &#x2F;&#x2F; 1</pre></div>
 <div class="question">What are the advantages of implementing encapsulation via closures?</div>
 <div class="answer">
 <p>Actually, one could call it <em>emulating</em> encapsulation via closures. Because of the absence of built-in encapsulation via visibility-modifiers, JavaScript programmers are required to implement encapsulation manually via closures. So one could call it a disadvantage of JavaScript, although some people argue against encapsulation.</p>
@@ -435,47 +436,47 @@ closures[1](); // 1</pre></div>
 <h5 id="polymorphism">I.1.5. Polymorphism</h5>
 <p>Polymorphism in JavaScript is achieved through inheritance or duck typing.</p>
 <p>Example of polymorphism through inheritance:</p>
-<pre>// Superclass Animal
+<pre>&#x2F;&#x2F; Superclass Animal
 var Animal = function(name) { this.name = name; };
-// Default implementation of makeNoise
-Animal.prototype.makeNoise = function() { return "Silence"; };
+&#x2F;&#x2F; Default implementation of makeNoise
+Animal.prototype.makeNoise = function() { return &quot;Silence&quot;; };
 
-// Subclass Dog
+&#x2F;&#x2F; Subclass Dog
 var Dog = function(name) { this.name = name; };
 Dog.prototype = new Animal();
-// Override makeNoise
-Dog.prototype.makeNoise = function() { return "Bark"; };
+&#x2F;&#x2F; Override makeNoise
+Dog.prototype.makeNoise = function() { return &quot;Bark&quot;; };
 
-// Subclass Turtle
+&#x2F;&#x2F; Subclass Turtle
 var Turtle = function(name) { this.name = name; };
-// Don't override makeNoise
+&#x2F;&#x2F; Don&#39;t override makeNoise
 Turtle.prototype = new Animal();
 
-var animals = [new Dog("Pluto"), new Turtle("Jeffrey")];
+var animals = [new Dog(&quot;Pluto&quot;), new Turtle(&quot;Jeffrey&quot;)];
 
-for (var i = 0; i < animals.length; i++) {
+for (var i = 0; i &lt; animals.length; i++) {
     println(animals[i].makeNoise());
 }
-// Bark
-// Silence</pre>
+&#x2F;&#x2F; Bark
+&#x2F;&#x2F; Silence</pre>
 <p>Example of polymorphism through duck-typing:</p>
 <pre>var Dog = function(name) {
     this.name = name;
-    this.makeNoise = function() { return "Bark"; };
+    this.makeNoise = function() { return &quot;Bark&quot;; };
 };
 
 var Turtle = function(name) {
     this.name = name;
-    this.makeNoise = function() { return "Silence";};
+    this.makeNoise = function() { return &quot;Silence&quot;;};
 };
 
-var animals = [new Dog("Pluto"), new Turtle("Jeffrey")];
+var animals = [new Dog(&quot;Pluto&quot;), new Turtle(&quot;Jeffrey&quot;)];
 
-for (var i = 0; i < animals.length; i++) {
+for (var i = 0; i &lt; animals.length; i++) {
     println(animals[i].makeNoise());
 }
-// Bark
-// Silence</pre>
+&#x2F;&#x2F; Bark
+&#x2F;&#x2F; Silence</pre>
 <blockquote>Duck-typing is a style of dynamic typing in which an object&rsquo;s methods and properties determine the valid semantics, rather than its inheritance from a particular class or implementation of a specific interface.<br><span class="cite">&mdash;<a href="http://en.wikipedia.org/wiki/Duck_typing">Wikipedia on Duck typing</a></span></blockquote>
 <p>In the example above, all objects have the required <code>makeNoise</code> function as a property, thus satisfy the required <em>semantics</em>.</p>
 <div class="question">Which of the two is preferable, polymorphism through inheritance, or through duck typing?</div>
@@ -491,21 +492,21 @@ for (var i = 0; i < animals.length; i++) {
 <div class="answer">
 <p>The <code>arguments</code> object allows the programmer to define methods expecting a variable number of arguments.</p>
 <p>Example:</p>
-<pre>// Sums all its arguments. The argument list is empty, because we'll
-// use the arguments object.
+<pre>&#x2F;&#x2F; Sums all its arguments. The argument list is empty, because we&#39;ll
+&#x2F;&#x2F; use the arguments object.
 function addAll() {
     var args = Array.prototype.slice.call(arguments);
     var total = 0;
-    // args.shift() removes the first element from the array, and
-    // returns that element.
-    while (args.length > 0) total += args.shift();
+    &#x2F;&#x2F; args.shift() removes the first element from the array, and
+    &#x2F;&#x2F; returns that element.
+    while (args.length &gt; 0) total += args.shift();
     return total;
 }</pre>
 <p>Even when expecting a fixed number of arguments, the programmer can benefit from access to the <code>arguments</code> object. For instance when implementing a decorator.</p>
 <pre>function decorate(toDecorate, decorator) {
     return function() {
-        // Both the decorator and the function to decorate can be
-        // called with the same arguments.
+        &#x2F;&#x2F; Both the decorator and the function to decorate can be
+        &#x2F;&#x2F; called with the same arguments.
         decorator.apply(null, arguments);
         return toDecorate.apply(null, arguments);
     };
@@ -513,45 +514,45 @@ function addAll() {
 
 function argsPrinter() {
     var args = Array.prototype.slice.call(arguments);
-    println("Arguments: " + args.join(", "));
+    println(&quot;Arguments: &quot; + args.join(&quot;, &quot;));
 };
 
 function add(x, y) { return x + y; };
 
 decorate(add, argsPrinter)(1, 2);
-// Arguments: 1, 2
-// => 3</pre>
+&#x2F;&#x2F; Arguments: 1, 2
+&#x2F;&#x2F; =&gt; 3</pre>
 <p>The reason that the arguments object isn&rsquo;t a proper `Array´, is <em>probably</em> the following:</p>
 <blockquote>The concept of the <code>arguments</code> object has been on the language since the very beginning, it&rsquo;s even described in the ECMAScript First Edition Standard. In that version of ECMAScript, the <code>Array.prototype</code> was really basic, array objects contained <em>only 4 methods</em>: <code>toString</code>, <code>join</code>, <code>reverse</code> and <code>sort</code>. I think that&rsquo;s one of the major reasons about they make <code>arguments</code> to inherit from <code>Object.prototype</code>, at that time those <code>Array</code> methods didn&rsquo;t look too <em>useful</em>. But the <code>Array.prototype</code> object was extended in the next versions of the standard, now on ES5, <code>Array</code> objects have methods such as <code>map</code>, <code>reduce</code>, <code>every</code>, <code>some</code>, etc, that are <em>really powerful</em>. [&hellip;]<br><span class="cite">&mdash;<a href="http://stackoverflow.com/a/3242693">CMS's answer on StackOverflow</a></span></blockquote>
 </div>
 <p>JavaScript&rsquo;s loose call convention, and the presence of the <code>arguments</code> object allows the programmer to emulate overloading by doing the resolution at run-time.</p>
 <p>Example:</p>
-<pre class="Java">void overloaded() { return "No args"; }
-void overloaded(int x) { return "A number"; }
-void overloaded(String x) { return "A string"; }
-void overloaded(int x, String y) { return "A number and a string"; }</pre>
+<pre class="Java">void overloaded() { return &quot;No args&quot;; }
+void overloaded(int x) { return &quot;A number&quot;; }
+void overloaded(String x) { return &quot;A string&quot;; }
+void overloaded(int x, String y) { return &quot;A number and a string&quot;; }</pre>
 <pre>function overloaded(arg1, arg2) {
-    // One could also use an if-then-else construction
+    &#x2F;&#x2F; One could also use an if-then-else construction
     switch (arguments.length) {
-    case 0: return "No args"; break;
+    case 0: return &quot;No args&quot;; break;
     case 1: switch (typeof(arg1)) {
-            case 'number': return "A number"; break;
-            case 'string': return "A string"; break;
+            case &#39;number&#39;: return &quot;A number&quot;; break;
+            case &#39;string&#39;: return &quot;A string&quot;; break;
             }
             break;
-    case 2: if (typeof(arg1) == 'number' && typeof(arg2) == 'string')
-                return "A number and a string";
+    case 2: if (typeof(arg1) == &#39;number&#39; &amp;&amp; typeof(arg2) == &#39;string&#39;)
+                return &quot;A number and a string&quot;;
     }
 }
-// Identical for the Java program
+&#x2F;&#x2F; Identical for the Java program
 overloaded();
-// No args
+&#x2F;&#x2F; No args
 overloaded(1);
-// A number
-overloaded("foo");
-// A string
-overloaded(1, "foo");
-// A number and a string</pre>
+&#x2F;&#x2F; A number
+overloaded(&quot;foo&quot;);
+&#x2F;&#x2F; A string
+overloaded(1, &quot;foo&quot;);
+&#x2F;&#x2F; A number and a string</pre>
 <p>These <code>return</code>-statements could of course be replaced with different blocks of code, specific for each case.</p>
 <p>Of course, doing this resolution at run-time has a negative impact on the performance.</p></div>
 <h5 id="modularity">I.1.7. Modularity</h5>
@@ -559,8 +560,8 @@ overloaded(1, "foo");
 <p>Modules often function as a namespace, take for example a look at Java, where packages or classes act as modules.</p>
 <p>Originally, JavaScript was intended to augment static web pages with little scripts, making the page more dynamic. JavaScript was designed with this goal in mind. Little scripts don&rsquo;t need namespaces, packages, or modules. They were often thrown together in a single file. As we saw in <a href="#function-global-scope" class="ref">Function & global scope</a>, variables and functions defined outside the context of a function, become global variables. Every script executed on a web page executes in the same context, the global object. This object is directly accessible via the <code>window</code> variable, the name of this object immediately reveals JavaScript tight coupling with the browser. All globals are properties of this <code>window</code> object.</p>
 <pre>var x = 3;
-x; // 3
-window.x; // 3</pre>
+x; &#x2F;&#x2F; 3
+window.x; &#x2F;&#x2F; 3</pre>
 <p>This global object is the default namespace. Imagine loading some third-party scripts, for example scripts that add ads to your website. They will be executed in the same context as your own scripts. They can call into your code, or override your functions when names conflict. Not only is the global object a problem in terms of namespacing and modularisation, it&rsquo;s also a security issue.</p>
 <p>JavaScript has no concept of a module or any language features for namespacing. But, as we saw a couple of times already, JavaScript provides sufficient means to emulate them.</p>
 <p>The construct we&rsquo;ll use to emulate a module is a closure (see <a href="#closures" class="ref">Closures</a>). Recall that we emulated <a href="#encapsulation" class="ref">Encapsulation</a> via closures. A closures provides us with two useful ingredients: <em>privacy</em> and <em>state</em>. We have control over the visibility of the variables declared in the scope of the closure, as well as their state.</p>
@@ -569,34 +570,36 @@ window.x; // 3</pre>
     var x = 3;
     var _privateVar = 1;
     var f = function(a) { return a * a; };
-    // Other variables and function definitions
+    &#x2F;&#x2F; Here come other variables and function definitions
+    &#x2F;&#x2F; ...
 })();
-f(x); // ReferenceError: f is not defined</pre>
+f(x); &#x2F;&#x2F; ReferenceError: f is not defined</pre>
 <p>Currently, the functionality of our module is only accessible inside the module. The next thing to do is to export the functionality so it can be used by other modules. This is accomplished by letting the closure return an object containing the exported variables and functions. This object acts as a namespace for the exported functionality of the module. These namespace can be nested, by embedding other namespace objects inside them.</p>
 <pre>var myModule = (function() {
     var module = {};
     module.x = 3;
-    var _privateVar = 1; // Not exported
+    var _privateVar = 1; &#x2F;&#x2F; Not exported
     module.f = function(a) { return a * a; };
-    // Other variables and function definitions
+    &#x2F;&#x2F; Here come other variables and function definitions
+    &#x2F;&#x2F; ...
     return module;
 })();
-myModule.f(myModule.x); // 9</pre>
+myModule.f(myModule.x); &#x2F;&#x2F; 9</pre>
 <p>To use functionality from other modules, we just pass the module object as an argument to the closure.</p>
 <pre>var otherModule = (function(m) {
     var module = {};
     module.f = function(a) { return m.f(a) * a; };
     return module;
 })(myModule);
-otherModule.f(myModule.x); // 27</pre>
+otherModule.f(myModule.x); &#x2F;&#x2F; 27</pre>
 <p>This approach is also known as the <em>Module Pattern</em>.</p>
 <p>In Node.js (TODO refer to Node.JS) employs a similar approach, albeit with less boilerplate code. There is a one-to-one mapping of files to modules. The code of every file are executed in a separate context, preventing them from tainting the global namespace. To actually export variables or functions, they have to be attached to <code>exports</code>-object. The <code>exports</code>-object is a free variable within the context of each file. To use the functionality of another module, one has to <code>require</code> the file containing the module. The result of this call to the <code>require</code>-function returns the <code>exports</code>-object of the corresponding module.</p>
-<pre class="NodeJS">// File a.js
+<pre class="NodeJS">&#x2F;&#x2F; File a.js
 var x = 3;
 exports.f = function(a) { return x + a; };
-// File b.js
-var a = require('a.js');
-a.f(5); // 8</pre></div>
+&#x2F;&#x2F; File b.js
+var a = require(&#39;a.js&#39;);
+a.f(5); &#x2F;&#x2F; 8</pre></div>
 <h4 id="dynamic-typing">I.2. Dynamic typing</h4>
 <div class="question">What kind of typing discipline does JavaScript have?</div>
 <div class="answer">
@@ -611,22 +614,22 @@ a.f(5); // 8</pre></div>
 <h5 id="weak-typing">I.2.1. Weak typing</h5>
 <p>JavaScript&rsquo;s type system is also <em>weakly</em> typed. The opposite of weak typing is, <em>strong</em> typing. In weakly typed programs, types can be implicitly converted to other types, whereas these conversion have to be done explicitly in strongly typed language.</p>
 <p>An example will make it much clearer:</p>
-<pre>"12" * 3; // 36</pre>
-<pre class="Java">"12" * 3; // Type Error
-Integer.parseInt("12") * 3; // 36</pre>
+<pre>&quot;12&quot; * 3; &#x2F;&#x2F; 36</pre>
+<pre class="Java">&quot;12&quot; * 3; &#x2F;&#x2F; Type Error
+Integer.parseInt(&quot;12&quot;) * 3; &#x2F;&#x2F; 36</pre>
 <p>In the JavaScript example, <code>12</code>, a string, is implicitly converted to a number to be able to multiply it with <code>3</code>. In strongly typed languages, such as Java, the conversion of string to number has to be done explicitly.</p>
 <div class="question">This looks like a useful feature to me, why aren&rsquo;t most languages weakly typed?</div>
 <div class="answer">
 <p>In the example above, it indeed seems useful. This is not always the case. It&rsquo;s not always obvious when a conversion and which conversion will occur. Take the following example:</p>
-<pre>('10' - 1) * 2; // 18 = 9 * 2
-('10' + 1) * 2; // 202 = 101 * 2</pre>
+<pre>(&#39;10&#39; - 1) * 2; &#x2F;&#x2F; 18 = 9 * 2
+(&#39;10&#39; + 1) * 2; &#x2F;&#x2F; 202 = 101 * 2</pre>
 <p><code>Object</code>s and <code>Array</code>s can also cause some odd interactions:</p>
-<pre>[] + 1; // "1"
-{} + 1; // 1
-[] + []; // ""
-[] + {}; // "[object Object]"
-{} + []; // 0
-{} + {}; // NaN</pre>
+<pre>[] + 1; &#x2F;&#x2F; &quot;1&quot;
+{} + 1; &#x2F;&#x2F; 1
+[] + []; &#x2F;&#x2F; &quot;&quot;
+[] + {}; &#x2F;&#x2F; &quot;[object Object]&quot;
+{} + []; &#x2F;&#x2F; 0
+{} + {}; &#x2F;&#x2F; NaN</pre>
 <p>Source: <a href="https://www.destroyallsoftware.com/talks/wat" target="_blank">Gary Bernhardt&rsquo;s talk, &ldquo;WAT&rdquo;</a></p>
 
 <p>TODO ^^ doesn&rsquo;t work properly in the browser</p>
@@ -684,13 +687,13 @@ Integer.parseInt("12") * 3; // 36</pre>
 <div class="answer">
 <p>This actually proves to be useful in most cases. With one check, you can quickly cover the most common edge cases. If you&rsquo;re working with strings or numbers, you still have to pay attention to <code>0</code> and <code>""</code>, see the following example:</p>
 <pre>function g(x, y) {
-    if (x && y)
+    if (x &amp;&amp; y)
         return x + y;
     else
         return -1;
 }
-g(4, 5); // 9
-g(4, 0); // -1</pre>
+g(4, 5); &#x2F;&#x2F; 9
+g(4, 0); &#x2F;&#x2F; -1</pre>
 <p>The programmer could have had the following behaviour in mind when writing the function <code>g</code> in the example above: &ldquo;when both arguments are non-<code>null</code> and also not <code>undefined</code>, return the sum of them.&rdquo; This, of course, will not function correctly as <code>0</code>, a falsy number, will fail the check. You can see that it&rsquo;s easy to overlook this subtlety.</p></div></div>
 <h4 id="functional-programming">I.3. Functional programming</h4>
 <div class="question">You mentioned that JavaScript has first-class functions, does this mean that JavaScript is a functional language?</div>
@@ -705,33 +708,33 @@ g(4, 0); // -1</pre>
 <p>When doing something in a particular way requires more code than in the default way, and thus more effort, programmers will not be inclined to make the extra effort, and will quickly fall back to the default way.</p></div>
 <p>Here&rsquo;s how to make a property mutable:</p>
 <pre> var obj = {x: 1};
- // Make obj's x property immutable
- Object.defineProperty(obj, 'x', {
+ &#x2F;&#x2F; Make obj&#39;s x property immutable
+ Object.defineProperty(obj, &#39;x&#39;, {
      writable: false
  });
  obj.x = 3;
- obj.x; // 1</pre>
+ obj.x; &#x2F;&#x2F; 1</pre>
 <p>You can still assign a new value to the property, it just won&rsquo;t have any effect. Of course, this in now way comes close to Haskell&rsquo;s, Scala&rsquo;s or Clojure&rsquo;s immutable datastructures.</p>
 <h5 id="higher-order-functions--recursion---lists">I.3.2. Higher-order functions, recursion & lists</h5>
 <p>If there even was an accepted definition of functional programming, JavaScript probably wouldn&rsquo;t satisfy the requirements, but this won&rsquo;t prevent programmers from writing JavaScript programs in a functional style. Thanks to Scheme&rsquo;s influence, JavaScript is equipped with first-class functions, which allow the programmer to write some of the typical higher-order functions that are almost invariably present in a functional language.</p>
 <p>Disclaimer: the following functions are in no way optimized or robust enough for general use, they just serve to illustrate programming in a functional style.</p>
 <p>Let&rsquo;s start off with some primitives, they should be familiar to programmers that have dabbled in Lisp or Haskell.</p>
-<pre>// Make a list with x as head and xs as tail
+<pre>&#x2F;&#x2F; Make a list with x as head and xs as tail
 var cons = function(x, xs) {
-    // Make a copy of xs
+    &#x2F;&#x2F; Make a copy of xs
     var xs2 = xs.slice(0);
     xs2.unshift(x);
     return xs2;
 };
-// Return the first element of xs
+&#x2F;&#x2F; Return the first element of xs
 var head = function(xs) {
     return xs[0];
 };
-// Return all but the first element of xs
+&#x2F;&#x2F; Return all but the first element of xs
 var tail = function(xs) {
     return xs.slice(1);
 };
-// Return true when xs is an empty list
+&#x2F;&#x2F; Return true when xs is an empty list
 var isEmpty = function(xs) {
     return xs.length == 0;
 };</pre>
@@ -742,7 +745,7 @@ var isEmpty = function(xs) {
     else
         return cons(f(head(xs)), map(f, tail(xs)));
 };
-map(function(x) { return x + 1; }, [1, 2, 3]); // [2, 3, 4]</pre>
+map(function(x) { return x + 1; }, [1, 2, 3]); &#x2F;&#x2F; [2, 3, 4]</pre>
 <p>The <code>map</code> function is defined recursively. Functional programmers prefer recursion to iteration, mostly because iteration involves loop indices, or some other form of state, but elegance also plays a role.</p>
 <blockquote>To iterate is human, to recurse divine.<br><span class="cite">&mdash;L. Peter Deutsch</span></blockquote>
 <div class="question">Doesn&rsquo;t recursion lead to stack overflow errors when it goes on for too long?</div>
@@ -751,13 +754,13 @@ map(function(x) { return x + 1; }, [1, 2, 3]); // [2, 3, 4]</pre>
 <p>Because of this lack of tail call optimisation, it&rsquo;s recommended to write programs using loops instead of recursion in JavaScript.</p></div>
 <p>On the last line of the example above, you can see the <code>map</code> function in use: we increment each element of a list with one. You will probably have noticed that declaring the anonymous function that adds <code>1</code> to a value takes much space. Just to declare the simplest anonymous function, e.g. the identity function, takes at least 21 characters in JavaScript: <code>function(x){return x}</code>, compare this with, for example, Haskell: <code>\x->x</code>, only 5 characters! The unwieldiness of the <code>function</code> keyword is one of JavaScript&rsquo;s warts when it comes to writing programs using higher-order functions.</p>
 <p>Version 1.6 of JavaScript provides a built-in <code>map</code> function declared on the prototype of <code>Array</code>:</p>
-<pre>[1, 2, 3].map(function(x) { return x + 1; }); // [2, 3, 4]</pre>
+<pre>[1, 2, 3].map(function(x) { return x + 1; }); &#x2F;&#x2F; [2, 3, 4]</pre>
 <p>In addition to <code>map</code>, <code>forEach</code>, <code>every</code>, <code>some</code>, and <code>filter</code> are also available. In even more recent versions of JavaScript, <code>reduce</code> and <code>reduceRight</code> are available. These will ring a bell with programmers with Haskell or Clojure experience. This demonstrates that functional programming, albeit in limited form, is slowly creeping into mainstream languages.</p>
 <p>Let&rsquo;s look at another example, the <code>partial</code> function. Invoking <code>partial</code> on a function <code>f</code> with a number of arguments will return a new function, let&rsquo;s call this function <code>g</code>. When <code>g</code> is invoked, the following things will happen: the original arguments are concatenated with the new arguments, and <code>f</code> is invoked with the concatenated arguments. Three elements come together in this example: prototypes, the <code>arguments</code> object and higher-order functions.</p>
 <pre>Function.prototype.partial = function() {
     var args = Array.prototype.slice.call(arguments);
-    // Capture this into f, so we can refer to it in the nested function
-    // definition, wherein this refers to the defined function.
+    &#x2F;&#x2F; Capture this into f, so we can refer to it in the nested function
+    &#x2F;&#x2F; definition, wherein this refers to the defined function.
     var f = this;
     return function () {
         var innerArgs = Array.prototype.slice.call(arguments);
@@ -766,7 +769,7 @@ map(function(x) { return x + 1; }, [1, 2, 3]); // [2, 3, 4]</pre>
 };
 function add(x, y) { return x + y; };
 var inc = add.partial(1);
-inc(2); // 3</pre>
+inc(2); &#x2F;&#x2F; 3</pre>
 <p>The example was taken from <a href="#bib-17" class="ref"><span class="bib">17</span> Functional Programming in JavaScript</a>.</p>
 <h5 id="libraries">I.3.3. Libraries</h5>
 <p>As demonstrated in the previous section, programming in a functional style is certainly possible in JavaScript. Numerous programmers have discovered this and have even made libraries providing functions that promote programming in a functional style. Here are some interesting ones:</p>
@@ -782,27 +785,27 @@ inc(2); // 3</pre>
 <p>Monkey patching is often used to modify the behaviour of third-party or even standard libraries without requiring access to their source. Fixing bugs in libraries, mocking test objects, changing the behaviour of a function to suit your program, extending objects with useful methods, &hellip; are all reasons to monkey patch.</p>
 <p>In JavaScript, you can simply modify properties of objects. A more effective and also more radical approach is to modify the prototypes of objects.</p>
 <p>Let&rsquo;s extend JavaScript&rsquo;s built-in object with some methods:</p>
-<pre>// Return the last element
+<pre>&#x2F;&#x2F; Return the last element
 Array.prototype.last = function() {
     return this[this.length - 1];
 };
-[1, 2, 3].last(); // 3
+[1, 2, 3].last(); &#x2F;&#x2F; 3
 
-// Capitalize the string
+&#x2F;&#x2F; Capitalize the string
 String.prototype.capitalize = function() {
-    var newStr = '';
+    var newStr = &#39;&#39;;
     if (this.length == 0)
         return newStr;
 
     newStr += this[0].toUpperCase();
-    for (var i = 1; i < this.length; i++)
+    for (var i = 1; i &lt; this.length; i++)
         newStr += this[i].toLowerCase();
 
     return newStr;
 };
-'brendan'.capitalize(); // 'Brendan'
+&#39;brendan&#39;.capitalize(); &#x2F;&#x2F; &#39;Brendan&#39;
 
-// Merge two hash maps together in a new one
+&#x2F;&#x2F; Merge two hash maps together in a new one
 Object.prototype.merge = function(obj) {
     var newObj = {};
     for (var k in this) {
@@ -813,37 +816,41 @@ Object.prototype.merge = function(obj) {
     }
     return newObj;
 };
-({a: 1}).merge({b: 2}); // { a: 1, b: 2, merge: [Function] }</pre>
+({a: 1}).merge({b: 2}); &#x2F;&#x2F; { a: 1, b: 2, merge: [Function] }</pre>
 <p>All the methods that we added with monkey patches are quite useful. They seem to work correctly except for the last one: the <code>merge</code> function appears to have sneaked in the hash map we got back after merging the two hash maps. How did this happen? By adding the <code>merge</code> method to the prototype of <code>Object</code>, the top of the inheritance chain, <em>every</em> object will inherit this property and thus have a <code>merge</code> property with as value the newly defined function. This is obviously an unintended side-effect.</p>
 <p>It turns out that we can actually hide this <code>merge</code> property, by making it <em>un</em>enumerable.</p>
-<pre>Object.defineProperty(Object.prototype, 'merge', {
+<pre>Object.defineProperty(Object.prototype, &#39;merge&#39;, {
         enumerable: false
 });
-({a: 1}).merge({b: 2}); // { a: 1, b: 2 }</pre>
+({a: 1}).merge({b: 2}); &#x2F;&#x2F; { a: 1, b: 2 }</pre>
 <div class="question">The apparent problem seems to be solved by hiding the properties that were added as monkey patches. Are there any other drawbacks to monkey patching?</div>
 <div class="answer">
 <p>The common pitfalls of monkey patching still apply:</p>
 <ul>
 <li>Patching a method in a single place will affect the whole program, which can cause some unintended behaviour. However, it is possible to revert or remove the monkey patched methods after using them.<span class="footnote">Users familiar with Lisp macros will see in the example below a perfect opportunity for a <code>with-patches</code> macro. The application and removal and the patches should be put in a try- and a finally-clause respectively.</span></li>
 </ul>
-<pre>[1, 2, 3].last(); // no method 'last'
+<pre>[1, 2, 3].last(); &#x2F;&#x2F; no method &#39;last&#39;
 Array.prototype.last = function() {
     return this[this.length - 1];
 };
-[1, 2, 3].last(); // 3
-delete Array.prototype.last; // the delete operator deletes a property
-[1, 2, 3].last(); // no method 'last'</pre>
+[1, 2, 3].last(); &#x2F;&#x2F; 3
+delete Array.prototype.last; &#x2F;&#x2F; the delete operator deletes a property
+[1, 2, 3].last(); &#x2F;&#x2F; no method &#39;last&#39;</pre>
 <ul>
 <li>When a single method is monkey patched in two different places in your program, it&rsquo;s not always clear which monkey patch <em>wins</em>.</li>
 </ul>
 <ul>
 <li>Monkey patching third-party libraries or the built-in objects, will inevitably create discrepancies between the documented and the actual behaviour.</li>
 </ul>
-<p>Source: <a href="#bib-30" class="ref"><span class="bib">30</span> Monkey patch</a></p></div>
+<p>Source: <a href="#bib-30" class="ref"><span class="bib">30</span> Monkey patch</a></p>
+<p>The example with the <code>merge</code> monkey patch is actually still not correct, consider the following case:</p>
+<pre>({a: 1, merge: 3}).merge({b: 2});
+&#x2F;&#x2F; TypeError: Property &#39;merge&#39; of object #&lt;Object&gt; is not a function</pre>
+<p>Objects are the easiest way to emulate hash maps in JavaScript, but as soon as the prototype of <code>Object</code> is monkey patched, objects can no longer be used safely as hash maps. As you saw in the example above, keys with the same name as a monkey patched method will break the behaviour of the hash map and the monkey patched method.</p></div>
 <div class="question">Given the pitfalls just listed, is monkey patching still encouraged in JavaScript or rather frowned upon?</div>
 <div class="answer">
 <p>If done with care and for the right reasons, monkey patching is a defensible solution. Fixing a bug in a third-party library could be a valid reason, provided that the monkey patch will only be applied to faulty versions of the library.</p></div></div>
-<p>TODO bad parts (eval, with, etc.), not semantics: multithreading, event-driven, execution engines (V8, JavaScriptCore: mention Ruby DSL), node.js</p>
+<p>TODO bad parts (eval, with, etc.), not semantics: multithreading, event-driven, execution engines (V8, JavaScriptCore: mention Ruby DSL), node.js, JavaScript as assembly of the web</p>
 
     <div id="bibliography">
       <h3>Bibliography</h3>

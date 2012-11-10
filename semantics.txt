@@ -48,11 +48,16 @@ A: Indeed, JavaScript is object-oriented. Typically, in object-oriented
    person.walk; // [Function]
    person.walk(); // "Do bi do ... walking, walking, walking"
    ```
-
    This notation of objects is compact, easy to parse and parse, and has
    become a popular general data-interchange format, called JSON (JavaScript
    Object Notation).
    TODO expand on JSON
+
+   JavaScript has no separate hash map type. Since objects function as hash
+   maps, they are often (ab)used as hash maps. Conflating objects with hash
+   maps can have some unwanted consequences, see the examples in
+   #[monkey-patching].<foot>The next JavaScript standard will contain a
+   separate `Map` type.</foot>
 
 
 Q: Object-oriented programming includes more than "everything is an object".
@@ -214,7 +219,7 @@ A: Of course, OOP is broader than "everything is an object". Most definitions
              this.make = make;
          };
          // The prototype of SportsCar is a regular Car
-         SportsCar.prototype = new Car();
+         SportsCar.prototype = new Car;
          // We change the constructor, because we inherited Car's constructor
          SportsCar.prototype.constructor = SportsCar;
          SportsCar.prototype.driveFast = function() {
@@ -974,7 +979,8 @@ A: Of course, OOP is broader than "everything is an object". Most definitions
        var x = 3;
        var _privateVar = 1;
        var f = function(a) { return a * a; };
-       // Other variables and function definitions
+       // Here come other variables and function definitions
+       // ...
    })();
    f(x); // ReferenceError: f is not defined
    ```
@@ -992,7 +998,8 @@ A: Of course, OOP is broader than "everything is an object". Most definitions
        module.x = 3;
        var _privateVar = 1; // Not exported
        module.f = function(a) { return a * a; };
-       // Other variables and function definitions
+       // Here come other variables and function definitions
+       // ...
        return module;
    })();
    myModule.f(myModule.x); // 9
@@ -1495,7 +1502,7 @@ A: It's true that nearly all, if not all, functional languages support
    * [prelude.ls][http://gkz.github.com/prelude-ls/]
 
 
-## Monkey-patching ##
+## Monkey-patching ##[monkey-patching]
 
 Q: When talking about JavaScript's dynamic nature, you said JavaScript was
    comparable to Ruby in this aspect. Does JavaScript also support monkey
@@ -1606,6 +1613,20 @@ A: Yes, it's also possible do monkey patching in JavaScript. In Ruby, classes
 
       Source: #[MonkeyPatch]
 
+      The example with the `merge` monkey patch is actually still not correct,
+      consider the following case:
+
+      ```JavaScript
+      ({a: 1, merge: 3}).merge({b: 2});
+      // TypeError: Property 'merge' of object #<Object> is not a function
+      ```
+
+      Objects are the easiest way to emulate hash maps in JavaScript, but as
+      soon as the prototype of `Object` is monkey patched, objects can no
+      longer be used safely as hash maps. As you saw in the example above,
+      keys with the same name as a monkey patched method will break the
+      behaviour of the hash map and the monkey patched method.
+
    Q: Given the pitfalls just listed, is monkey patching still encouraged in
       JavaScript or rather frowned upon?
 
@@ -1617,4 +1638,4 @@ A: Yes, it's also possible do monkey patching in JavaScript. In Ruby, classes
 
 TODO bad parts (eval, with, etc.), not semantics: multithreading,
 event-driven, execution engines (V8, JavaScriptCore: mention Ruby DSL),
-node.js
+node.js, JavaScript as assembly of the web
