@@ -183,6 +183,12 @@ var entries = [
         title: 'V8 Introduction',
         url: 'https://developers.google.com/v8/intro'
     }),
+    new Website('V8Design', {
+        siteName: 'Google Developers',
+        year: 2012,
+        title: 'V8 Design Elements',
+        url: 'https://developers.google.com/v8/design'
+    }),
     new Blog('ModulePattern', {
         authors: [['Cherry', 'Ben']],
         published: 'March 12, 2010',
@@ -211,4 +217,32 @@ var entries = [
         title: 'Monkey patch',
         retrieved: 'November 9, 2012',
         url: 'http://en.wikipedia.org/wiki/Monkey_patch'
+    }),
+    new Wikipedia('WikiJIT', {
+        title: 'Just-in-time compilation',
+        retrieved: 'November 10, 2012',
+        url: 'http://en.wikipedia.org/wiki/Just-in-time_compilation'
+    }),
+    new Blog('TraceMonkeyLightspeed', {
+        authors: [['Eich', 'Brendan']],
+        published: 'August 23, 2008',
+        title: 'TraceMonkey: JavaScript Lightspeed',
+        url: 'https://brendaneich.com/2008/08/tracemonkey-javascript-lightspeed/'
+    }),
+    new Blog('TraceMonkey', {
+        authors: [['Resig', 'John']],
+        published: 'August 22, 2008',
+        title: 'TraceMonkey',
+        url: 'http://ejohn.org/blog/tracemonkey/'
+    }),
+    new Wikipedia('ECMAScriptLanguages', {
+        title: 'List of ECMAScript engines',
+        retrieved: 'November 10, 2012',
+        url: 'http://en.wikipedia.org/wiki/List_of_ECMAScript_engines'
+    }),
+    new Blog('MemoryEfficientJS', {
+        authors: [['Osmani', 'Addy']],
+        published: 'November 5, 2012',
+        title: 'Writing Fast, Memory-Efficient JavaScript',
+        url: 'http://coding.smashingmagazine.com/2012/11/05/writing-fast-memory-efficient-javascript/'
     })];
