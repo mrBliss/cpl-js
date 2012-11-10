@@ -23,5 +23,6 @@ exports.testMarkup = function(test) {
                + ' <code>slice</code>-method');
     test.equal(m('`""`'), '<code>""</code>');
     test.equal(m("`''`"), "<code>''</code>");
+    test.equal(m("C~compiler"), "C&nbsp;compiler");
     test.done();
 };

@@ -9,6 +9,7 @@
    * "proper double quotes"
    * ... (&hellip;)
    * <foot>Foo bar</foot> -- "For bar" will be a footnote
+   * C~Compiler -- a non-breaking space
 
  Not done by `markup`, but also available:
 
@@ -57,6 +58,7 @@ exports.markup = function(s) {
     // fix
         .replace(/<code>&rsquo;&rsquo;<\/code>/g, "<code>''</code>")
         .replace(/\.{3}/g, '&hellip;')
+        .replace(/~/g, '&nbsp;')
         .replace(/<foot>(.+?)<\/foot>/g,
                  '<span class="footnote">$1</span>');
 };
