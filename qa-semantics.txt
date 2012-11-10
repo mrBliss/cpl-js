@@ -17,7 +17,7 @@ A: Indeed, JavaScript is object-oriented. Typically, in object-oriented
    property has a name and a value. By assigning a function to a property's
    value, one can add a method to the object. This demonstrates the importance
    of the presence of first-class functions. Objects in JavaScript can be
-   compared with untyped hashmaps from strings to values from any kind,
+   compared with untyped hash maps from strings to values from any kind,
    similar to Python's dicts, Ruby's hashes, ... The name of a property can be
    any string, but the quotes can be dropped if the name of the property is a
    valid JavaScript identifier. The quotes are required when the property name
@@ -55,6 +55,19 @@ A: Indeed, JavaScript is object-oriented. Typically, in object-oriented
    maps can have some unwanted consequences, see the examples in
    #[monkey-patching].<foot>The next JavaScript standard will contain a
    separate `Map` type.</foot>
+
+   As the keys of an object are required to be strings, any key that isn't a
+   string will first be converted to a string. which can cause some surprising
+   results. See the following example.
+
+   ```JavaScript
+   var z = {};
+   z[0] = 3;
+   z[0]; // 3
+   z['0']; // 3
+   z[[0]]; // 3, as [0].toString() == '0'
+   ```
+
 
 
 Q: Object-oriented programming includes more than "everything is an object".
@@ -135,7 +148,7 @@ A: Of course, OOP is broader than "everything is an object". Most definitions
          Object.getPrototypeOf(myCar); // { drive: [Function] }, the prototype of Car
          ```
 
-         Notice that the name of the constructor function is capitalized. This
+         Notice that the name of the constructor function is capitalised. This
          is a convention carried over from Java.
 
          Q: If the naming is only a convention, how then differs a constructor
@@ -809,7 +822,7 @@ A: Of course, OOP is broader than "everything is an object". Most definitions
       `slice`-method on it, like so: `var args =
       Array.prototype.slice.call(arguments);`.<foot>The `slice`-method of
       `Array` copies the elements into a new array, it optionally takes start-
-      and end-indices. See #[indirect-invocation] for more about the
+      and end-indexes. See #[indirect-invocation] for more about the
       `call`-method.</foot>
 
       Q: What's the point of this `arguments` object? And why isn't it a
@@ -927,7 +940,7 @@ A: Of course, OOP is broader than "everything is an object". Most definitions
 
    An important cornerstone of object-oriented programming is code reuse. In
    order to reuse code, it's helpful, or rather often, of paramount importance
-   to organize code into modular components. We'll use the term /module/ for
+   to organise code into modular components. We'll use the term /module/ for
    such a modular component. Such modules should provide a clear interface of
    the offered functionality, as well as the required functionality.
 
@@ -1062,7 +1075,7 @@ A: Unlike for instance Java, a language people would believe to be akin to
       program.
 
       Even though static typing has many advantages, like better
-      documentation, the elimination of type errors at runtime,<foot>Most
+      documentation, the elimination of type errors at run-time,<foot>Most
       (static) type systems are actually unsound and cannot guarantee a
       program is well-typed in all of the cases. For instance /casting/ in
       Java and C is a totally unsafe operation. Even Haskell, a language with
@@ -1315,7 +1328,7 @@ A: It's true that nearly all, if not all, functional languages support
 
    ## Immutability ##
 
-   An important tool to minimize the presence of state in a program is the use
+   An important tool to minimise the presence of state in a program is the use
    of immutable data structures, instead of mutable ones, which are inherently
    stateful. Rather than modifying the data structure in-place, a new copy of
    the data structure is made with the desired modifications.<foot>Copying the
@@ -1337,7 +1350,7 @@ A: It's true that nearly all, if not all, functional languages support
       make the extra effort, and will quickly fall back to the default way.
 
 
-   Here's how to make a property mutable:
+   Here's how to make a property immutable:
 
    ```JavaScript
     var obj = {x: 1};
@@ -1351,7 +1364,11 @@ A: It's true that nearly all, if not all, functional languages support
 
    You can still assign a new value to the property, it just won't have any
    effect. Of course, this in now way comes close to Haskell's, Scala's or
-   Clojure's immutable datastructures.
+   Clojure's immutable data structures.
+
+   In JavaScript 1.8.5, there is a new method available for `Object`s, called
+   `freeze`, which effectively makes an object immutable.
+
 
    ## Higher-order functions, recursion & lists ##
 
@@ -1363,7 +1380,7 @@ A: It's true that nearly all, if not all, functional languages support
    typical higher-order functions that are almost invariably present in a
    functional language.
 
-   Disclaimer: the following functions are in no way optimized or robust
+   Disclaimer: the following functions are in no way optimised or robust
    enough for general use, they just serve to illustrate programming in a
    functional style.
 
@@ -1410,7 +1427,7 @@ A: It's true that nearly all, if not all, functional languages support
    ```
 
    The `map` function is defined recursively. Functional programmers prefer
-   recursion to iteration, mostly because iteration involves loop indices, or
+   recursion to iteration, mostly because iteration involves loop indexes, or
    some other form of state, but elegance also plays a role.
 
    >[L. Peter Deutsch] To iterate is human, to recurse divine.
@@ -1531,8 +1548,8 @@ A: Yes, it's also possible do monkey patching in JavaScript. In Ruby, classes
    };
    [1, 2, 3].last(); // 3
 
-   // Capitalize the string
-   String.prototype.capitalize = function() {
+   // Capitalise the string
+   String.prototype.capitalise = function() {
        var newStr = '';
        if (this.length == 0)
            return newStr;
@@ -1543,7 +1560,7 @@ A: Yes, it's also possible do monkey patching in JavaScript. In Ruby, classes
 
        return newStr;
    };
-   'brendan'.capitalize(); // 'Brendan'
+   'brendan'.capitalise(); // 'Brendan'
 
    // Merge two hash maps together in a new one
    Object.prototype.merge = function(obj) {
@@ -1633,6 +1650,4 @@ A: Yes, it's also possible do monkey patching in JavaScript. In Ruby, classes
       faulty versions of the library.
 
 
-TODO bad parts (eval, with, etc.), not semantics: multithreading,
-event-driven, execution engines (V8, JavaScriptCore: mention Ruby DSL),
-node.js, JavaScript as assembly of the web
+TODO bad parts (eval, with, etc.), JavaScript as assembly of the web

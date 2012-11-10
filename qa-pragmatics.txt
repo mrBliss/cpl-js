@@ -41,7 +41,7 @@ A: This plethora of implementations makes it hard to discuss /the/
 
    A: JIT compilation means that the compiler is run /after/ the program has
       started and that program code is compiled (converted to machine code)
-      /on the fly/ (at runtime, dynamically).
+      /on the fly/ (at run-time, dynamically).
 
       This is in contrast to static compilation, in which source code is
       translated into machine code once (at compile time). Static compilers
@@ -51,7 +51,7 @@ A: This plethora of implementations makes it hard to discuss /the/
       architecture.
 
       The other extreme of compilation is /interpretation/. Code is never
-      compiled and is interpreted as-is at runtime. This means the code
+      compiled and is interpreted as-is at run-time. This means the code
       remains portable across platforms. However, this has the disadvantage
       that performance is much worse, because every instruction is interpreted
       separately and no optimisations can be performed.
@@ -71,7 +71,7 @@ A: This plethora of implementations makes it hard to discuss /the/
       JIT compilers often try to infer the types of variables to eliminate the
       type checks. Although the type of variables can change dynamically, it
       only happens very rarely in practice. For example, the compiler might
-      figure out in advance that `a = b + c;` is either a string
+      figure out in advance that `a~=~b~+~c;` is either a string
       concatenation, or an integer addition. Even if the type would eventually
       change, the JIT compiler will provide an escape hatch that calls in to
       the interpreter, which is able to handle all cases.
@@ -136,7 +136,7 @@ A: A JavaScript engine usually consists of the following parts:
      arrays/dicts. However, some engines choose to implement this differently
      behind the scenes. For example, V8 employs an internal type system called
      /hidden classes/, see #[V8Design].
-   * A runtime profiler: monitors the system being run and identifies 'hot'
+   * A run-time profiler: monitors the system being run and identifies 'hot'
      code. This is code that can/should be optimised.
    * An optimising compiler: (re)compiles and optimises the 'hot' code.
    * Some engines support /deoptimization/: if the assumptions made about
@@ -192,5 +192,200 @@ A: It's not possible to explicitly force garbage collection in JavaScript.
    for the entire lifetime of your application, or, in case of web browsers,
    as long as the page is open.
 
+## Representations ##
 
-TODO implementation of Arrays (objects), implementations of numbers (JIT optimisations)
+Q: Can you tell me some other interesting things about JavaScript engines?
+
+A: Actually, in JavaScript `Object`s, `Array`s and `Number`s are all
+   represented in a peculiar and sometimes rather inefficient fashion.
+
+   ### Numbers ###
+
+   For example, the JavaScript standard declares that a JavaScript `Number` is
+   actually a 64-bit floating point value, following the IEEE 754 standard. As
+   `Number` is the only numeric type of JavaScript, this means that JavaScript
+   doesn't support numbers represented by integers.
+
+
+   Q: Why only one type of numbers and why floating point numbers?
+
+   A: Having only one type of number, instead of a whole host of numbers of
+      different size like in C, simplifies things a bit for programmers. It's
+      also obvious to pick floating point numbers instead of integers as /the/
+      type, as floating point numbers are a superset of integral numbers.
+
+      A possible explanation for this choice is that Brendan Eich, the creator
+      of JavaScript, as he had only limited time to define and implement
+      JavaScript, opted for just one kind of numbers because he was short on
+      time. However, as of yet, integers haven't been added in a later
+      JavaScript standard.
+
+   Luckily, the standard prescribes that positive and negative integers whose
+   magnitude is no greater than 2<sup>53</sup> are representable in the
+   `Number` type.
+
+   Q: Why is that important?
+
+   A: The most common number sizes in programming languages, often called
+      /integer/ and /long/, are commonly 4 bytes and 8 bytes in size. Integers
+      and longs can hold every integral number that fits in their range. In
+      the case of floating point numbers, this isn't true, not every single
+      number in the range of a floating point number can be correctly
+      represent by a 4 or 8 byte floating point number. As a matter of fact,
+      it's impossible, as there are already infinitely many numbers between
+      every two integral numbers. This is a limitation for all programming
+      languages.<foot>Some programming language provide a data type that
+      allows arbitrary precision, like Java's `BigDecimal`.</foot>
+
+      What would be rather problematic is that some of the numbers that aren't
+      representable could be integral numbers. Adding, using floating point
+      arithmetic, two integral numbers that sum to a number that is not
+      exactly representable as a floating point number, would result in an
+      incorrect result. Because the standard requires integral number whose
+      magnitude is no greater than 2<sup>53</sup> to be representable,
+      programmers can do calculations with a safe heart, as long as they stay
+      within these bounds. As integers and longs have often respectively
+      2<sup>31</sup>~-~1 and 2<sup>63</sup>~-~1 as maximum magnitudes,
+      JavaScript has correct integral numbers up to a magnitude that lies
+      between the common long's and integer's magnitude.
+
+   It seems rather wasteful to reserve 64 bits for all numbers, however small
+   they might turn out to be, like the majority of loop indexes. Some
+   operations might also prove to be faster on integers than on floating point
+   numbers.
+
+   Many JavaScript engines try to figure whether a numeric value will remain
+   integral or become a floating point number at some point. When the engine
+   has concluded that a number will remain integral for its lifetime, it will
+   be represented by an integer. Or V8 might try to represent the number as an
+   integer for as long as it can, eventually converting it to a floating point
+   number. V8 will for example represent most loop indices by integers.
+
+
+   ### Objects ###
+
+   As we already mentioned a couple of times, objects in JavaScript are
+   equivalent to hash maps with strings as keys. Performing a lookup in a hash
+   map is, of course, much slower than directly accessing a field of a struct
+   or an object, whose fields or instance variables are located at fixed
+   offsets.
+
+   The V8 engine optimises property lookup in the following way: instead of
+   representing the object as a hash map, it represents it as a /hidden class/
+   with the properties as fields, offering fast lookup times. When a property
+   is added at a later stage, another hidden class is created which will
+   contain the new property, the original class will be updated to refer to
+   the new class whenever the newly added property is accessed. See
+   #[V8Design] for more details.
+
+   ### Arrays ###
+
+   Another peculiarity of JavaScript is the way `Array`s are implemented. As
+   an `Array` is an object, properties can be added and removed. Have a look
+   at the following interactions with an array:
+
+   ```JavaScript
+   var a = [1, 2, 3];
+   // We can add properties
+   a.foo = 3;
+   a.foo; // 3
+   a['foo']; // 3
+   // Without apparent effects on the array
+   a; // [1, 2, 3]
+   a.length; // 3
+   a[0]; // 1
+   // The indexes are in fact converted to strings
+   a['0']; // 1
+   // By deleting an element in the middle of the array, we make it a
+   // sparse array.
+   delete a[1];
+   a; // [1, , 3]
+   a.length; // 2
+   a[1]; // undefined
+   ```
+
+   An `Array` is in fact implemented as an `Object`, the indices are just the
+   keys. And because the keys of an object must be strings, they are first
+   converted to a string.
+
+   In most languages array accesses can be performed in constant time. Let's
+   compare an array lookup in JavaScript with an array lookup in the
+   C~programming language. Array accesses in other languages are often
+   implemented similar to C. In C, accessing an element `x` in array `a` at
+   index `i` is equivalent to accessing a memory location of which the address
+   is determined by adding `i` to `a`, which is actually a pointer. On most
+   computer architectures, this can be achieved with one instruction.
+
+   In JavaScript we have to convert the index to a string, and then perform a
+   lookup in a hash map. This clearly takes a lot more than one instruction!
+   Fortunately, most JavaScript engines optimise `Array`s by representing them
+   as arrays like they are used in C. The indexes won't have to be converted
+   to strings and the lookup can happen almost just as quickly as in C. There
+   is a catch however, as soon as the array is made sparse, i.e. non
+   contiguous, the optimisation has to be undone, because the `Array` starts
+   to behave as a regular object again.
+
+   Q: It seems like the `Object`s, `Array`s, and `Number`s are all designed
+      without performance in mind. If we combine this with the dynamic nature,
+      JavaScript must be very slow language. Is this the case?
+
+   A: The dynamic nature of JavaScript indeed hinders optimisations like
+      inlining. As almost everything can be changed at run-time, including
+      methods and inheritance relations, it is very difficult to optimise
+      JavaScript. But as we mentioned, most JavaScript engines have become
+      very good at optimising JavaScript via the use of JIT compilation.
+      `Object`s, `Array`s, and `Number`s can often be represented by a more
+      optimal format. If the programmer sticks to some guidelines, like
+      keeping `Array`s contiguous, not adding properties to `Object`s after
+      creating them, not changing the type of a variable, i.e. limiting the
+      dynamic nature of JavaScript, JavaScript can be efficiently executed.
+
+      ## Benchmarks ##
+
+      Let's have a look at some performance benchmarks. Keep in mind that it's
+      very difficult to benchmark programming languages. These benchmarks are
+      often unfair as the program used in the benchmark will differ from
+      language to language in the degree of optimisation. Programs written for
+      a benchmark are seldomly written in idiomatic style, and will be
+      optimised much more than real world programs. Benchmarks rarely are an
+      accurate yardstick to measure performance of a programming language for
+      real word programs. But they can give you an idea of the raw speed a
+      programming language can achieve when properly optimised.<foot>Keep in
+      mind that making a programming language or a program faster is the same
+      as decreasing the number of instructions to be executed to accomplish
+      the same results.</foot>
+
+      <html><img src="img/alioth.png" alt="benchmark" title="Benchmark results" width="400" height="300" /></html>
+
+      The results show that in this benchmark C++ is the fastest
+      language,<foot>This will be surprising to most programmers, but again,
+      this benchmark is not representative for all programs. It could be
+      caused by the aggressive inlining that is done for C++.</foot> next
+      comes C, then Java, Common Lisp, Haskell, OCaml, /JavaScript/ (using
+      Google's V8 engine), Smalltalk, PHP, Ruby, Python, and finally Perl.
+      What is remarkable is that except for Common Lisp, JavaScript is the
+      fastest dynamicly typed language. Common Lisp has existed for a much
+      longer time than JavaScript, thus giving more time for compiler writers
+      to optimise. Languages like Ruby, Perl, Python and Smalltalk are all
+      older than JavaScript and have the same dynamic nature, but still prove
+      to be an order of magnitude slower than JavaScript.
+
+
+      Q: How come JavaScript seems to be much faster than the other dynamic
+         languages?
+
+      A: A lot of man-hours have been invested in optimising JavaScript
+         engines, as JavaScript is the lingua franca of the web, and will not
+         be going away any time soon. Every browser contains a JavaScript
+         engine, and one of the ways to lure users over, as the browser market
+         is a competitive one, is to have a faster browser. A performant
+         JavaScript engine is a big part of this. This is actually an example
+         of the free market principles: competition pushes companies, in this
+         case Mozilla, Google, Microsoft, ... to improve their product, the
+         browser, in order to win over customers.
+
+
+
+
+
+TODO Node.js, multithreading, event-driven, mention Ruby offlineasm DSL,
