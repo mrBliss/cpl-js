@@ -245,4 +245,21 @@ var entries = [
         published: 'November 5, 2012',
         title: 'Writing Fast, Memory-Efficient JavaScript',
         url: 'http://coding.smashingmagazine.com/2012/11/05/writing-fast-memory-efficient-javascript/'
+    }),
+    new Blog('JSConcurrency', {
+        authors: [['Sofer', 'Dan']],
+        published: 'May 26, 2010',
+        title: 'Concurrency, JavaScript and JQuery',
+        url: 'http://blog.sofer.com/tech/2010/05/26/concurrency-javascript-jquery.html'
+    }),
+    new Wikipedia('WikiNode.js', {
+        title: 'Node.js',
+        retrieved: 'November 11, 2012',
+        url: 'http://en.wikipedia.org/wiki/Node.js'
+    }),
+    new Blog('CLJSMacros', {
+        authors: [['McKenna', 'Brian']],
+        published: 'July 24, 2011',
+        title: 'Escaping Callback Hell with ClojureScript macros',
+        url: 'http://brianmckenna.org/blog/cps_transform_js'
     })];

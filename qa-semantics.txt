@@ -1374,11 +1374,12 @@ A: It's true that nearly all, if not all, functional languages support
 
    If there even was an accepted definition of functional programming,
    JavaScript probably wouldn't satisfy the requirements, but this won't
-   prevent programmers from writing JavaScript programs in a functional
-   style. Thanks to Scheme's influence, JavaScript is equipped with
-   first-class functions, which allow the programmer to write some of the
-   typical higher-order functions that are almost invariably present in a
-   functional language.
+   prevent programmers from writing JavaScript programs in a functional style.
+   JavaScript is in fact a multi-paradigm language, that supports
+   object-oriented, functional, and imperative styles. Thanks to Scheme's
+   influence, JavaScript is equipped with first-class functions, which allow
+   the programmer to write some of the typical higher-order functions that are
+   almost invariably present in a functional language.
 
    Disclaimer: the following functions are in no way optimised or robust
    enough for general use, they just serve to illustrate programming in a

@@ -1,4 +1,4 @@
-# Implementation #
+# Implementation #[implementation]
 
 Q: How is JavaScript implemented?
 
@@ -384,8 +384,106 @@ A: Actually, in JavaScript `Object`s, `Array`s and `Number`s are all
          case Mozilla, Google, Microsoft, ... to improve their product, the
          browser, in order to win over customers.
 
+## Concurrency & parallelism ##
+
+Q: What kind of concurrency model does JavaScript have?
+
+A: Being intended as a quick and easy scripting language for a web browser,
+   JavaScript didn't come equipped with support for threads or other
+   concurrency primitives. Each JavaScript program in the web browser is
+   executed by a single thread.
+
+   In web browsers it is very common for a user to interact with a page via
+   events, e.g. clicking on an item or typing some text. These events are
+   handled asynchronously. They are all put together in a single queue and are
+   handled sequentially. A callback can be bound to an event. A callback is a
+   function/closure passed as an argument that will be invoked whenever the
+   associated event is triggered, see #[callback-hell]. This is another area
+   where the presence of first-class functions in JavaScript comes in handy.
+
+   ### Node.js ##
+
+   This event-driven model actually inspired Ryan Dahl to create Node.js, a
+   server-side version of JavaScript. He combined Google's V8 JavaScript
+   engine with a self-written C~library libuv that implements non-blocking
+   I/O, based on events. Node.js is intended to write scalable Internet
+   applications, primarily web servers which are particularly event-driven.
+
+   The premise of Node.js is that by performing all I/O operations
+   asynchronously and minimising computations, the application will scale.
+   Node.js programs are single-threaded. The program thread will continuously
+   process incoming events that are triggered by completed I/O operations or
+   incoming requests. Because of the minimal amount of computation, these
+   events can be handled very quickly, allowing a larger number of concurrent
+   operations, as most time is spent waiting on the I/O anyway.
+
+   Q: Does the event-driven model scale well?
+
+   A: The scalability of this model collapses as soon as an event requires a
+      large computation or performs a blocking I/O operation. Another
+      disadvantage of such programs is that they don't profit from multiple
+      cores or processors. To take advantage of multiple cores, multiple
+      processes running the same program have to be started, which is much
+      less efficient than having multiple threads within one
+      process.<foot>Python has a similar problem with the GIL, the global
+      interpreter lock.</foot>
+
+      The event-driven model is still suitable for event-driven programs with
+      non-blocking I/O, such as web servers, the application Node.js's was
+      originally intended for.
+
+   ### Callback hell ###[callback-hell]
+
+   When doing synchronous I/O, the program can be written in typical
+   imperative style. However, when doing I/O asynchronously, programs can no
+   longer be written as sequences of instructions where each instruction can
+   refer to results of previous instructions. Asynchronous operations are
+   performed in the background while the program continues execution. It's
+   obvious that the next statement in the program cannot simply use the result
+   of previously started asynchronous I/O operations, as they are performed in
+   the background. To use such a result, we would have to wait for the
+   asynchronous I/O operation to complete, which essentially makes the program
+   blocking, i.e. synchronous again.
+
+   The solution to this problem is to put the code to be executed after the
+   asynchronous I/O operation completes inside a function, a callback,
+   essentially a /continuation/. This function will then be executed when the
+   result of the I/O operation is available. Compare the synchronous program
+   below with the asynchronous one.
+
+   ```JavaScript
+   // Synchronous, blocking program
+   var x = longSyncComputation();
+   var y = slowSyncFileRead(x);
+   var z = largeSyncFileDownload(y);
+   //...
+   // Asynchronous, non-blocking program
+   longAsyncComputation(function(x) {
+       slowAsyncFileRead(x, function(y) {
+           largeAsyncFileDownload(function(z) {
+               //...
+           });
+       });
+   });
+   ```
+
+   You can already see that the latter example requires much more code and is
+   harder to read. The nesting will keep increasing for every I/O operation
+   you wish to perform. This phenomenon is called /callback hell/. Callbacks
+   force the programmer to manually transform his program to continuation
+   passing style. [Various libraries][async-libs] exist to ease the pain.
+   Programmers familiar with /monads/ will see an excellent opportunity to
+   apply monads. A notation similar to Haskell's `do`-syntax or Scala's
+   `for`-expressions would make the code readable again and resemble the
+   synchronous variant. Lisp macros are also a viable option.<foot>See
+   #[CLJSMacros], a blog post about writing a macro to solve callback hell in
+   ClojureScript, a variant of the Clojure programming language that compiles
+   to JavaScript. TODO refer to compiling to JS</foot>
+
+   [async-libs]: https://github.com/joyent/node/wiki/modules#wiki-async-flow
+   [cljs-macros]: http://brianmckenna.org/blog/cps_transform_js
 
 
 
 
-TODO Node.js, multithreading, event-driven, mention Ruby offlineasm DSL,
+TODO development styles: REPL, TDD, browser testing, ...
