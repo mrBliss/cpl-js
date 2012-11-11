@@ -329,8 +329,8 @@ A: Of course, OOP is broader than "everything is an object". Most definitions
    `undefined`, JavaScript's `void`.
 
    In the case of a regular function invocation, the value of `this` will be
-   the global object. TODO refer to the global object, mention the omission of
-   `var`
+   the global object. See #[scope] and #[modularity] for more about the global
+   object.
 
    ### Method invocation ###
 
@@ -369,7 +369,13 @@ A: Of course, OOP is broader than "everything is an object". Most definitions
    Q: So you're saying, every function can be invoked as a constructor? What
       is the point of that?
 
-   A: TODO
+   A: The ability to invoke every function as a constructor isn't very useful.
+      The `new` keyword is rather dangerous, certainly when it's forgotten.
+      Not prepending a constructor call with `new` will cause the properties
+      defined in the function to be added to the global object instead of a
+      newly created object. A reason for the inclusion of the `new` keyword is
+      the familiarity from other object-oriented languages. And, of course,
+      there still has to be a way to create a new object.
 
    ### Indirect invocation ###[indirect-invocation]
 
@@ -936,7 +942,7 @@ A: Of course, OOP is broader than "everything is an object". Most definitions
 
 
 
-   ## Modularity ##
+   ## Modularity ##[modularity]
 
    An important cornerstone of object-oriented programming is code reuse. In
    order to reuse code, it's helpful, or rather often, of paramount importance
@@ -1029,15 +1035,15 @@ A: Of course, OOP is broader than "everything is an object". Most definitions
 
    This approach is also known as the /Module Pattern/.
 
-   In Node.js (TODO refer to Node.JS) employs a similar approach, albeit with
-   less boilerplate code. There is a one-to-one mapping of files to modules.
-   The code of every file are executed in a separate context, preventing them
-   from tainting the global namespace. To actually export variables or
-   functions, they have to be attached to `exports`-object. The
-   `exports`-object is a free variable within the context of each file. To use
-   the functionality of another module, one has to `require` the file
-   containing the module. The result of this call to the `require`-function
-   returns the `exports`-object of the corresponding module.
+   #[nodejs] employs a similar approach, albeit with less boilerplate code.
+   There is a one-to-one mapping of files to modules. The code of every file
+   are executed in a separate context, preventing them from tainting the
+   global namespace. To actually export variables or functions, they have to
+   be attached to `exports`-object. The `exports`-object is a free variable
+   within the context of each file. To use the functionality of another
+   module, one has to `require` the file containing the module. The result of
+   this call to the `require`-function returns the `exports`-object of the
+   corresponding module.
 
    ```NodeJS
    // File a.js
@@ -1271,8 +1277,8 @@ A: Unlike for instance Java, a language people would believe to be akin to
    * `undefined`
    * `null`
    * `0`
-   * `-0`<foot>(TODO refer number representation) `0` is equal to `-0`! To
-     distinguish between these two values, you can use the following tests:
+   * `-0`<foot>See #[numbers] for more about `Number`s. `0` is equal to `-0`!
+     To distinguish between these two values, you can use the following tests:
      `1 / 0 == Infinity`, `1 / -0 == -Infinity`.</foot>
    * `NaN`
    * `""`

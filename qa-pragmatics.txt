@@ -199,7 +199,7 @@ Q: Can you tell me some other interesting things about JavaScript engines?
 A: Actually, in JavaScript `Object`s, `Array`s and `Number`s are all
    represented in a peculiar and sometimes rather inefficient fashion.
 
-   ### Numbers ###
+   ### Numbers ###[numbers]
 
    For example, the JavaScript standard declares that a JavaScript `Number` is
    actually a 64-bit floating point value, following the IEEE 754 standard. As
@@ -401,13 +401,15 @@ A: Being intended as a quick and easy scripting language for a web browser,
    associated event is triggered, see #[callback-hell]. This is another area
    where the presence of first-class functions in JavaScript comes in handy.
 
-   ### Node.js ##
+   ### Node.js ##[nodejs]
 
    This event-driven model actually inspired Ryan Dahl to create Node.js, a
-   server-side version of JavaScript. He combined Google's V8 JavaScript
-   engine with a self-written C~library libuv that implements non-blocking
-   I/O, based on events. Node.js is intended to write scalable Internet
-   applications, primarily web servers which are particularly event-driven.
+   server-side version of JavaScript.<foot>With Node.js you can run JavaScript
+   programs outside the web browser, like regular programs.</foot> He combined
+   Google's V8 JavaScript engine with a self-written C~library libuv that
+   implements non-blocking I/O, based on events. Node.js is intended to write
+   scalable Internet applications, primarily web servers which are
+   particularly event-driven.
 
    The premise of Node.js is that by performing all I/O operations
    asynchronously and minimising computations, the application will scale.

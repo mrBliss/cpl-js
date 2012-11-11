@@ -251,7 +251,7 @@ mySportsCar.tiresOk; &#x2F;&#x2F; false</pre>
     return x + y;
 }</pre>
 <p>Functions that don&rsquo;t contain an explicit <code>return</code>-statement, will return <code>undefined</code>, JavaScript&rsquo;s <code>void</code>.</p>
-<p>In the case of a regular function invocation, the value of <code>this</code> will be the global object. TODO refer to the global object, mention the omission of <code>var</code></p>
+<p>In the case of a regular function invocation, the value of <code>this</code> will be the global object. See <a href="#function-global-scope" class="ref">Function & global scope</a> and <a href="#modularity" class="ref">Modularity</a> for more about the global object.</p>
 <h5 id="method-invocation">I.3.2. Method invocation</h5>
 <p>A function is considered a method when it&rsquo;s the property of an object. The big difference between function and method invocation, is that in the case of method invocation, <code>this</code> will refer to the object on which the method is called, instead of the global object.</p>
 <pre>function f() {
@@ -274,7 +274,7 @@ o.f(); &#x2F;&#x2F; 2</pre>
 </ul>
 <div class="question">So you&rsquo;re saying, every function can be invoked as a constructor? What is the point of that?</div>
 <div class="answer">
-<p>TODO</p>
+<p>The ability to invoke every function as a constructor isn&rsquo;t very useful. The <code>new</code> keyword is rather dangerous, certainly when it&rsquo;s forgotten. Not prepending a constructor call with <code>new</code> will cause the properties defined in the function to be added to the global object instead of a newly created object. A reason for the inclusion of the <code>new</code> keyword is the familiarity from other object-oriented languages. And, of course, there still has to be a way to create a new object.</p>
 </div>
 <h5 id="indirect-invocation">I.3.4. Indirect invocation</h5>
 <p>The fourth and final kind of invocation, is indirect invocation. As <code>Function</code>s are also <code>Object</code>s in JavaScript, they can have methods. Two of the available methods of <code>Function</code>s are <code>call</code> and <code>apply</code>.<span class="footnote">For readers familiar with Common Lisp (or a <a href="http://en.wikipedia.org/wiki/Lisp-1_vs._Lisp-2#The_function_namespace" target="_blank">Lisp-2</a> to be more precise), <code>call</code> is JavaScript&rsquo;s <code>funcall</code>. For readers familiar with any Lisp dialect, JavaScript&rsquo;s <code>apply</code> is similar to most Lisp&rsquo;s <code>apply</code>.</span></p>
@@ -615,7 +615,7 @@ myModule.f(myModule.x); &#x2F;&#x2F; 9</pre>
 })(myModule);
 otherModule.f(myModule.x); &#x2F;&#x2F; 27</pre>
 <p>This approach is also known as the <em>Module Pattern</em>.</p>
-<p>In Node.js (TODO refer to Node.JS) employs a similar approach, albeit with less boilerplate code. There is a one-to-one mapping of files to modules. The code of every file are executed in a separate context, preventing them from tainting the global namespace. To actually export variables or functions, they have to be attached to <code>exports</code>-object. The <code>exports</code>-object is a free variable within the context of each file. To use the functionality of another module, one has to <code>require</code> the file containing the module. The result of this call to the <code>require</code>-function returns the <code>exports</code>-object of the corresponding module.</p>
+<p><a href="#node-js" class="ref">Node.js</a> employs a similar approach, albeit with less boilerplate code. There is a one-to-one mapping of files to modules. The code of every file are executed in a separate context, preventing them from tainting the global namespace. To actually export variables or functions, they have to be attached to <code>exports</code>-object. The <code>exports</code>-object is a free variable within the context of each file. To use the functionality of another module, one has to <code>require</code> the file containing the module. The result of this call to the <code>require</code>-function returns the <code>exports</code>-object of the corresponding module.</p>
 <pre class="NodeJS">&#x2F;&#x2F; File a.js
 var x = 3;
 exports.f = function(a) { return x + a; };
@@ -700,7 +700,7 @@ Integer.parseInt(&quot;12&quot;) * 3; &#x2F;&#x2F; 36</pre>
 <li><code>undefined</code></li>
 <li><code>null</code></li>
 <li><code>0</code></li>
-<li><code>-0</code><span class="footnote">(TODO refer number representation) <code>0</code> is equal to <code>-0</code>! To distinguish between these two values, you can use the following tests: <code>1 / 0 == Infinity</code>, <code>1 / -0 == -Infinity</code>.</span></li>
+<li><code>-0</code><span class="footnote">See <a href="#numbers" class="ref">Numbers</a> for more about <code>Number</code>s. <code>0</code> is equal to <code>-0</code>! To distinguish between these two values, you can use the following tests: <code>1 / 0 == Infinity</code>, <code>1 / -0 == -Infinity</code>.</span></li>
 <li><code>NaN</code></li>
 <li><code>""</code></li>
 </ul>
@@ -983,7 +983,7 @@ a[1]; &#x2F;&#x2F; undefined</pre>
 <p>Being intended as a quick and easy scripting language for a web browser, JavaScript didn&rsquo;t come equipped with support for threads or other concurrency primitives. Each JavaScript program in the web browser is executed by a single thread.</p>
 <p>In web browsers it is very common for a user to interact with a page via events, e.g. clicking on an item or typing some text. These events are handled asynchronously. They are all put together in a single queue and are handled sequentially. A callback can be bound to an event. A callback is a function/closure passed as an argument that will be invoked whenever the associated event is triggered, see <a href="#callback-hell" class="ref">Callback hell</a>. This is another area where the presence of first-class functions in JavaScript comes in handy.</p>
 <h5 id="node-js">V.6.1. Node.js</h5>
-<p>This event-driven model actually inspired Ryan Dahl to create Node.js, a server-side version of JavaScript. He combined Google&rsquo;s V8 JavaScript engine with a self-written C&nbsp;library libuv that implements non-blocking I/O, based on events. Node.js is intended to write scalable Internet applications, primarily web servers which are particularly event-driven.</p>
+<p>This event-driven model actually inspired Ryan Dahl to create Node.js, a server-side version of JavaScript.<span class="footnote">With Node.js you can run JavaScript programs outside the web browser, like regular programs.</span> He combined Google&rsquo;s V8 JavaScript engine with a self-written C&nbsp;library libuv that implements non-blocking I/O, based on events. Node.js is intended to write scalable Internet applications, primarily web servers which are particularly event-driven.</p>
 <p>The premise of Node.js is that by performing all I/O operations asynchronously and minimising computations, the application will scale. Node.js programs are single-threaded. The program thread will continuously process incoming events that are triggered by completed I/O operations or incoming requests. Because of the minimal amount of computation, these events can be handled very quickly, allowing a larger number of concurrent operations, as most time is spent waiting on the I/O anyway.</p>
 <div class="question">Does the event-driven model scale well?</div>
 <div class="answer">
