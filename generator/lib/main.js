@@ -4,7 +4,7 @@ var parser = require('./parser.js'),
     bib = require('./bibliography.js'),
     fs = require('fs');
 
-function processPage(name, tableOfContents, tocLevels, references, links, bibIndex) {
+function processPage(name, tableOfContents, tocLevels, references, links) {
     var contents = fs.readFileSync('../' + name + '.txt', 'utf8');
     var parsed = parser.parse(parser.Page, contents);
     if (parsed) {
@@ -14,22 +14,23 @@ function processPage(name, tableOfContents, tocLevels, references, links, bibInd
         // Add the labels (from links and titles) to the list of references
         ast.traverse(refs.labelCollector(references, links));
         // Convert pseudo-markdown to HTML
-        var markedUp = ast.transform(markup);
-        // Fill in the references
-        var withRefs = markedUp.transform(refs.fillInReferences(references, bibIndex));
-        // Fill in the links
-        var withLinks = withRefs.transform(refs.fillInLinks(links));
-        // Fill in the block quotes
-        withLinks.traverse(refs.fillInBlockQuoteRefs(links, bibIndex));
-        // Convert to HTML
-        return withLinks.toHTML();
+        return ast.transform(markup);
     } else {
         console.log('ERROR: Couldn\'t parse the ' + name);
         return '';
     }
 }
+function fillInRefs(page, references, bibIndex, links) {
+    // Fill in the references
+    var withRefs = page.transform(refs.fillInReferences(references, bibIndex));
+    // Fill in the links
+    var withLinks = withRefs.transform(refs.fillInLinks(links));
+    // Fill in the block quotes
+    withLinks.traverse(refs.fillInBlockQuoteRefs(links, bibIndex));
+}
 
-var pages = ['qa-semantics', 'qa-pragmatics'],
+
+var pagesNames = ['qa-semantics', 'qa-pragmatics'],
     tableOfContents = {},
     tocLevels = refs.emptyTocLevels(),
     references = {},
@@ -37,13 +38,20 @@ var pages = ['qa-semantics', 'qa-pragmatics'],
     bibliography = bib.makeBibliography(),
     bibIndex = bib.makeBibIndex(bibliography),
     template = fs.readFileSync('../template.html', 'utf8'),
-    html = pages.map(function(page) {
+    pages = pagesNames.map(function(page) {
         return processPage(page, tableOfContents, tocLevels,
-                           references, links, bibIndex);
-        }).join('\n');
+                           references, links);
+        });
+
+pages.forEach(function(page) {
+    fillInRefs(page, references, bibIndex, links);
+});
+
 
 fs.writeFile('../index.html', template
-             .replace('<!--BODY-->', html)
+             .replace('<!--BODY-->', pages.map(function(page) {
+                 return page.toHTML();
+             }).join('\n'))
              .replace('<!--TOC-->', refs.tocToHTML(tableOfContents))
              .replace('<!--BIB-->', bib.toHTML(bibliography)),
              function(err) {
