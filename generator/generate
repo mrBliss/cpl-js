@@ -1,0 +1,4 @@
+#!/bin/bash
+node lib/main.js
+lessc -x ../styles.less > ../styles.css
+echo "Generated styles.css"
