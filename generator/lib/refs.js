@@ -117,7 +117,7 @@ exports.fillInReferences = function(refs, bibIndex) {
     };
 };
 
-exports.fillInLinks = function(links) {
+exports.fillInLinks = function(links, refs) {
     return function(s) {
         // [text][label] or [text][url]
         return s.replace(/\[[^\]]+\]\[[^\]]+\]/g, function($1) {
@@ -125,12 +125,27 @@ exports.fillInLinks = function(links) {
             if (m && m[1] && m[2]) {
                 var text = m[1],
                     label = m[2],
-                    url = label.match(/^http/) ? label : links[label];
+                    isUrl = label.match(/^http/),
+                    url;
+                if (isUrl) {
+                    url = label;
+                } else {
+                    url = links[label];
+                    if (!url) {
+                        var ref = refs[label];
+                        if (ref) {
+                            url = '#' + ref[0];
+                        }
+                    }
+                }
                 if (!url) {
                     console.log('WARNING: unresolved link: ' + label);
                     return '??';
                 } else {
-                    return '<a href="' + url + '" target="_blank">' + text + '</a>';
+                    return '<a href="' + url + '"'
+                        + (url.match(/^#/)
+                           ? '>'
+                           : ' target="_blank">') + text + '</a>';
                 }
             }
             return '';

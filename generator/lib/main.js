@@ -24,7 +24,7 @@ function fillInRefs(page, references, bibIndex, links) {
     // Fill in the references
     var withRefs = page.transform(refs.fillInReferences(references, bibIndex));
     // Fill in the links
-    var withLinks = withRefs.transform(refs.fillInLinks(links));
+    var withLinks = withRefs.transform(refs.fillInLinks(links, references));
     // Fill in the block quotes
     withLinks.traverse(refs.fillInBlockQuoteRefs(links, bibIndex));
 }
