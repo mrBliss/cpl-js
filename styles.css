@@ -57,6 +57,7 @@ div#bibliography{font-size:0.9em;}div#bibliography ol{width:90%;list-style-type:
 div#bibliography .book .title{font-style:italic;}
 div#bibliography .encyc .encyc{font-style:italic;}
 div#bibliography .website .title{font-style:italic;}
+div#bibliography .journal-article .journal,div#bibliography .journal-article .volume{font-style:italic;}
 table.comparisons{font-family:"Quattrocento Sans",Helvetica,Arial,sans-serif;font-size:0.8em;border-spacing:0;margin:-1em auto 3em auto;}table.comparisons td.cell{padding:0.1em;}table.comparisons td.cell div{width:1.5em;height:1.5em;border:2px solid black;-webkit-border-radius:3px;-moz-border-radius:3px;-ms-border-radius:3px;-o-border-radius:3px;border-radius:3px;}
 table.comparisons td.cell.green div{background-color:#5bbe5b;border-color:#0b6c0b;}
 table.comparisons td.cell.red div{background-color:#ed9e98;border-color:#be120d;}

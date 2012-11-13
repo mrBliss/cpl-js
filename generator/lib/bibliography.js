@@ -103,6 +103,26 @@ Blog.prototype.toHTML = function() {
         + '<a href="' + this.url + '">' + this.url + '</a></li>';
 };
 
+var JournalArticle = function(name, fields) {
+    this.name = name;
+    for (var field in fields) {
+        this[field] = fields[field];
+    }
+};
+JournalArticle.prototype = new BibItem;
+JournalArticle.prototype.constructor = JournalArticle;
+JournalArticle.prototype.toHTML = function() {
+    return '<li class="journal-article" id="bib-' + this.number + '">'
+        + '<span class="authors">' + formatAuthors(this.authors) + '</span> '
+        + '<span class="year">(' + this.year + ')</span>. '
+        + '<span class="title">' + this.title + '</span>. '
+        + '<span class="journal">' + this.journal + '</span>, '
+        + '<span class="volume">' + this.volume + '</span>, '
+        + '<span class="pages">' + this.pages + '</span>. '
+        + '<span class="publisher-address">' + this.address + '</span>: '
+        + '<span class="publisher">' + this.publisher + '</span>.</li>';
+};
+
 exports.makeBibliography = function() {
     // Ugly, but easy
     var entries;
