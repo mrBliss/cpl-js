@@ -14,7 +14,7 @@ A: As JavaScript syntax is mostly borrowed from C and Java, syntax you are
    the same name as a keyword. These keywords are a remnant of Java's
    influence.
 
-   ## Semicolons ##
+   ## Semicolons ##[semicolons]
 
    A controversial feature in JavaScript is /semicolon insertion/. In C and
    Java, each statement or expression should be terminated with a semicolon,

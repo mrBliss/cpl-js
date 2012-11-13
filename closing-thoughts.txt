@@ -1,0 +1,17 @@
+#- Closing thoughts #
+
+Most programmers know JavaScript as a weird and ugly language, used to hack
+together little scripts to enhance web pages. When encountered with some of
+JavaScript's unfortunate design choices ([semicolon insertion][semicolons],
+[undefined & null][undefined-null], ...) programmers' perception only evolves
+further in the negative direction.<foot>Also see #[Misunderstood].</foot>
+
+But when taking a longer look at the language, the good parts start to shine
+through: first-class functions, closures, prototypes, ...<foot>Funnily enough
+(or not?), the three enumerated features are all [borrowed from other
+languages][influences].</foot> Combined, they provide the programmer great
+power.
+
+We bet most programmers didn't know JavaScript supports monkey patching,
+traits<foot>Not full-blown traits like in Scala though.</foot>, or
+higher-order functions.

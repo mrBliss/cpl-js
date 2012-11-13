@@ -707,7 +707,6 @@ A: Of course, OOP is broader than "everything is an object". Most definitions
       ```
 
 
-
    Q: What are the advantages of implementing encapsulation via closures?
 
    A: Actually, one could call it /emulating/ encapsulation via closures.

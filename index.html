@@ -30,10 +30,14 @@
           <h2>JavaScript</h2>
         </div>
         <div id="credits">© 2012 Glenn Croes, Philippe De Croock, Thomas Winant</div>
+        <h3 id="preface">Preface</h3>
+<p>The following discussion takes place between a programmer that isn&rsquo;t familiar with JavaScript, and our group, three &lsquo;competent&rsquo; JavaScript programmers.</p>
+<p>Throughout the discussion many code examples will be presented to you. Feel free to edit the code. You can even run the code by pressing the &lsquo;Evaluate&rsquo; button above the code editor.</p>
+<p>Although JavaScript is a small language, you can do a lot of things with it, certainly when combining the small number of powerful features, without even touching on the vast ecosystem. Browser-specific parts (the DOM, events, etc.), popular frameworks (jQuery, Prototype.js, etc.), community practices (TDD, browser testing, etc.), and many other interesting topics aren&rsquo;t covered.</p>
       </div>
       <div id="toc" class="rightCol">
         <ol start="0">
-          <li class="unnumbered"><a href="#preface">Preface</a>
+          <li class="unnumbered"><a href="#preface">Preface</a></li>
             <li><a href="#introduction-history">Introduction & history</a>
 <ol>
 <li><a href="#naming-history">Naming & history</a></li>
@@ -78,14 +82,14 @@
 <ol>
 <li><a href="#weak-typing">Weak typing</a></li>
 <li><a href="#equality">Equality</a></li>
-<li><a href="#-undefined-----null-">undefined & null</a></li>
+<li><a href="#-undefined-null-">undefined & null</a></li>
 <li><a href="#truthiness-and-falsiness">Truthiness and falsiness</a></li>
 </ol>
 </li>
 <li><a href="#functional-programming">Functional programming</a>
 <ol>
 <li><a href="#immutability">Immutability</a></li>
-<li><a href="#higher-order-functions--recursion---lists">Higher-order functions, recursion & lists</a></li>
+<li><a href="#higher-order-functions-recursion-lists">Higher-order functions, recursion & lists</a></li>
 <li><a href="#libraries">Libraries</a></li>
 </ol>
 </li>
@@ -112,8 +116,6 @@
 </ol>
 </li>
 <li><a href="#compiling-to-javascript">Compiling to JavaScript</a></li>
-</ol>
-</li>
 
           <li class="unnumbered"><a href="#closing-thoughts">Closing thoughts</a></li>
           <li class="unnumbered"><a href="#bibliography">Bibliography</a></li>
@@ -121,8 +123,6 @@
       </div>
     </div>
     <span class="spacer"></span>
-    <h3 id="preface">Preface</h3>
-    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enimad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
 
     <h3 id="introduction-history">I. Introduction & history</h3>
 <div class="question">Which programming language are we talking about today?</div>
@@ -823,7 +823,7 @@ Integer.parseInt(&quot;12&quot;) * 3; &#x2F;&#x2F; 36</pre>
 <p>And the following table illustrates the rules of the non-strict equality operator, <code>==</code>.</p>
 <table class="comparisons" id="equality-table"></table>
 <p>Tables adapted from <a href="https://github.com/dorey/JavaScript-Equality-Table" target="_blank">dorey&rsquo;s JavaScript-Equality-Table</a>.</p>
-<h4 id="-undefined-----null-">IV.3. <code>undefined</code> & <code>null</code></h4>
+<h4 id="-undefined-null-">IV.3. <code>undefined</code> & <code>null</code></h4>
 <p>Most (object-oriented) languages have a special value, <code>null</code>, a.k.a. the <em>null pointer</em>, which is used to indicate the absence of a value. Whenever a variable is expected to be a pointer or an object, i.e. has a reference type, it can contain the <code>null</code> value, meaning that the variable has no value. This null pointer is the cause of many errors, as the programmer should verify whether a reference isn&rsquo;t a null pointer before using it.<span class="footnote">C.A.R. Hoare, the inventor of the null reference, calls it his &ldquo;billion-dollar mistake&rdquo;.</span><span class="footnote">A safer alternative is a nullable type, like Haskell&rsquo;s <code>Maybe</code> type or Scala&rsquo;s <code>Option</code> type.</span></p>
 <p>Allowing null pointers in a language is commonly regarded as a source of problems. Of course, JavaScript can do better than this, it has two different special values that are essentially null pointers! The first one is <code>null</code>, the regular null pointer, which indicates the absence of a value. <code>null</code> is a special keyword in the JavaScript. The second one is <code>undefined</code> indicates that a value is not initialised, e.g. the value of missing parameters, undefined methods, missing properties of an <code>Object</code>, missing elements of an <code>Array</code>. In older versions of JavaScript <code>undefined</code> was a global value, which could even be changed! Changing the value of the global <code>undefined</code> value could break whole programs. Luckily, this mistake was corrected in later versions. The type of <code>null</code> is <code>object</code>, in a way, this makes sense, because <code>null</code> takes the place of an absent <code>object</code>. The type of <code>undefined</code> is <code>undefined</code>.</p>
 <div class="question">Why make a difference between these two? When a property is <code>undefined</code>, isn&rsquo;t it the same as the absence of the value of this property?</div>
@@ -874,7 +874,7 @@ g(4, 0); &#x2F;&#x2F; -1</pre>
  obj.x; &#x2F;&#x2F; 1</pre>
 <p>You can still assign a new value to the property, it just won&rsquo;t have any effect. Of course, this in now way comes close to Haskell&rsquo;s, Scala&rsquo;s or Clojure&rsquo;s immutable data structures.</p>
 <p>In JavaScript 1.8.5, there is a new method available for <code>Object</code>s, called <code>freeze</code>, which effectively makes an object immutable.</p>
-<h4 id="higher-order-functions--recursion---lists">V.2. Higher-order functions, recursion & lists</h4>
+<h4 id="higher-order-functions-recursion-lists">V.2. Higher-order functions, recursion & lists</h4>
 <p>If there even was an accepted definition of functional programming, JavaScript probably wouldn&rsquo;t satisfy the requirements, but this won&rsquo;t prevent programmers from writing JavaScript programs in a functional style. JavaScript is in fact a multi-paradigm language, that supports object-oriented, functional, and imperative styles. Thanks to Scheme&rsquo;s influence, JavaScript is equipped with first-class functions, which allow the programmer to write some of the typical higher-order functions that are almost invariably present in a functional language.</p>
 <p>Disclaimer: the following functions are in no way optimised or robust enough for general use, they just serve to illustrate programming in a functional style.</p>
 <p>Let&rsquo;s start off with some primitives, they should be familiar to programmers that have dabbled in Lisp or Haskell.</p>
@@ -1142,8 +1142,7 @@ longAsyncComputation(function(x) {
         });
     });
 });</pre>
-<p>You can already see that the latter example requires much more code and is harder to read. The nesting will keep increasing for every I/O operation you wish to perform. This phenomenon is called <em>callback hell</em>. Callbacks force the programmer to manually transform his program to continuation passing style. <a href="https://github.com/joyent/node/wiki/modules#wiki-async-flow" target="_blank">Various libraries</a> exist to ease the pain. Programmers familiar with <em>monads</em> will see an excellent opportunity to apply monads. A notation similar to Haskell&rsquo;s <code>do</code>-syntax or Scala&rsquo;s <code>for</code>-expressions would make the code readable again and resemble the synchronous variant. Lisp macros are also a viable option.<span class="footnote">See <a href="#bib-15" class="ref"><span class="bib">15</span> Escaping Callback Hell with ClojureScript macros</a>, a blog post about writing a macro to solve callback hell in ClojureScript, a variant of the Clojure programming language that compiles to JavaScript. TODO refer to compiling to JS</span></p></div>
-<p>TODO development styles: REPL, TDD, browser testing, &hellip;</p>
+<p>You can already see that the latter example requires much more code and is harder to read. The nesting will keep increasing for every I/O operation you wish to perform. This phenomenon is called <em>callback hell</em>. Callbacks force the programmer to manually transform his program to continuation passing style. <a href="https://github.com/joyent/node/wiki/modules#wiki-async-flow" target="_blank">Various libraries</a> exist to ease the pain. Programmers familiar with <em>monads</em> will see an excellent opportunity to apply monads. A notation similar to Haskell&rsquo;s <code>do</code>-syntax or Scala&rsquo;s <code>for</code>-expressions would make the code readable again and resemble the synchronous variant. Lisp macros are also a viable option.<span class="footnote">See <a href="#bib-15" class="ref"><span class="bib">15</span> Escaping Callback Hell with ClojureScript macros</a>, a blog post about writing a macro to solve callback hell in ClojureScript, a variant of the Clojure programming language that compiles to JavaScript. Also see <a href="#compiling-to-javascript" class="ref">Compiling to JavaScript</a>.</span></p></div>
 <h3 id="compiling-to-javascript">VIII. Compiling to JavaScript</h3>
 <p>In the last decade the Internet has grown enormously. More and more people use the Internet more and more. Web 2.0<span class="footnote">Web 2.0 stands for the rise of social media and the importance of user-generated content, e.g. social networks, video sharing, blogs, wikis, and all kinds of web applications.</span> applications have become more powerful and advanced. As the size of these web applications, in essence JavaScript programs, increased, it became more and more obvious that JavaScript isn&rsquo;t suited for building large programs, and never was intended for that purpose anyway.</p>
 <p>Many features targeted at managing increasing complexity are absent in JavaScript, or have to be emulated by the programmer. We have discussed many of them: the lack of static types, emulating <a href="#modularity" class="ref">Modularity</a>, emulating classes via prototypes, &hellip;</p>
@@ -1179,10 +1178,10 @@ longAsyncComputation(function(x) {
 
 
 
-
-    <h3 id="closing-thoughts">Closing thoughts</h3>
-    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enimad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
-    <p>Good ingredients: first-class functions, closures, prototypes, object and array literals</p>
+<h3 id="closing-thoughts">Closing thoughts</h3>
+<p>Most programmers know JavaScript as a weird and ugly language, used to hack together little scripts to enhance web pages. When encountered with some of JavaScript&rsquo;s unfortunate design choices (<a href="#semicolons">semicolon insertion</a>, <a href="#-undefined-null-">undefined & null</a>, &hellip;) programmers&rsquo; perception only evolves further in the negative direction.<span class="footnote">Also see <a href="#bib-8" class="ref"><span class="bib">8</span> JavaScript: The World's Most Misunderstood Programming Language</a>.</span></p>
+<p>But when taking a longer look at the language, the good parts start to shine through: first-class functions, closures, prototypes, &hellip;<span class="footnote">Funnily enough (or not?), the three enumerated features are all <a href="#influences">borrowed from other languages</a>.</span> Combined, they provide the programmer great power.</p>
+<p>We bet most programmers didn&rsquo;t know JavaScript supports monkey patching, traits<span class="footnote">Not full-blown traits like in Scala though.</span>, or higher-order functions.</p>
 
     <div id="bibliography">
       <h3>Bibliography</h3>

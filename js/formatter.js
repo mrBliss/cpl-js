@@ -131,6 +131,7 @@ $(document).ready(function () {
         li.css({opacity: 0.1});
         // Bring it back to normal
         li.animate({opacity: 1}, 1000);
+        // TODO doesn't work inside a footnote
     });
 
     // Equality tables

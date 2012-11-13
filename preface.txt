@@ -1,0 +1,15 @@
+#- Preface #
+
+The following discussion takes place between a programmer that isn't familiar
+with JavaScript, and our group, three 'competent' JavaScript programmers.
+
+Throughout the discussion many code examples will be presented to you. Feel
+free to edit the code. You can even run the code by pressing the 'Evaluate'
+button above the code editor.
+
+Although JavaScript is a small language, you can do a lot of things with it,
+certainly when combining the small number of powerful features, without even
+touching on the vast ecosystem. Browser-specific parts (the DOM, events,
+etc.), popular frameworks (jQuery, Prototype.js, etc.), community practices
+(TDD, browser testing, etc.), and many other interesting topics aren't
+covered.

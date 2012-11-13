@@ -481,12 +481,7 @@ A: Being intended as a quick and easy scripting language for a web browser,
    synchronous variant. Lisp macros are also a viable option.<foot>See
    #[CLJSMacros], a blog post about writing a macro to solve callback hell in
    ClojureScript, a variant of the Clojure programming language that compiles
-   to JavaScript. TODO refer to compiling to JS</foot>
+   to JavaScript. Also see #[compiling-to-js].</foot>
 
    [async-libs]: https://github.com/joyent/node/wiki/modules#wiki-async-flow
    [cljs-macros]: http://brianmckenna.org/blog/cps_transform_js
-
-
-
-
-TODO development styles: REPL, TDD, browser testing, ...

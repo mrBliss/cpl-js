@@ -30,8 +30,9 @@ function fillInRefs(page, references, bibIndex, links) {
 }
 
 
-var pagesNames = ['qa-history', 'qa-syntax', 'qa-semantics',
-                  'qa-pragmatics', 'qa-compiling'],
+var pagesNames = ['preface', 'qa-history', 'qa-syntax',
+                  'qa-semantics', 'qa-pragmatics', 'qa-compiling',
+                  'closing-thoughts'],
     tableOfContents = {},
     tocLevels = refs.emptyTocLevels(),
     references = {},
@@ -48,11 +49,13 @@ pages.forEach(function(page) {
     fillInRefs(page, references, bibIndex, links);
 });
 
+var html = pages.map(function(page) {
+    return page.toHTML();
+});
 
 fs.writeFile('../index.html', template
-             .replace('<!--BODY-->', pages.map(function(page) {
-                 return page.toHTML();
-             }).join('\n'))
+             .replace('<!--PREFACE-->', html[0])
+             .replace('<!--BODY-->', html.slice(1).join('\n'))
              .replace('<!--TOC-->', refs.tocToHTML(tableOfContents))
              .replace('<!--BIB-->', bib.toHTML(bibliography)),
              function(err) {
