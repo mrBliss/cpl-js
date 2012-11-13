@@ -54,6 +54,8 @@ exports.markup = function(s) {
         .replace(/"\b/g, '&ldquo;')
         .replace(/"/g, '&rdquo;')
     // fix
+        .replace(/&lsquo;([0-9]0s)/, '&rsquo;$1')
+    // fix
         .replace(/<code>&rdquo;&rdquo;<\/code>/g, '<code>""</code>')
     // fix
         .replace(/<code>&rsquo;&rsquo;<\/code>/g, "<code>''</code>")

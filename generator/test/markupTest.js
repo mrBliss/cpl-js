@@ -25,5 +25,6 @@ exports.testMarkup = function(test) {
     test.equal(m("`''`"), "<code>''</code>");
     test.equal(m("C~compiler"), "C&nbsp;compiler");
     test.equal(m("C++'s easy"), "C++&rsquo;s easy");
+    test.equal(m("the '90s"), "the &rsquo;90s");
     test.done();
 };
