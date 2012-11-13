@@ -152,7 +152,7 @@ var entries = [
         title: 'JavaScript Execution and Browser Limits',
         url: 'http://www.sitepoint.com/javascript-execution-browser-limits/'
     }),
-    new Blog('Popularity', {
+    new Blog('JSHistory3', {
         authors: [['Eich', 'Brendan']],
         published: 'April 3, 2008',
         title: 'Popularity',
@@ -262,4 +262,20 @@ var entries = [
         published: 'July 24, 2011',
         title: 'Escaping Callback Hell with ClojureScript macros',
         url: 'http://brianmckenna.org/blog/cps_transform_js'
+    }),
+    new Blog('JSExecution', {
+        authors: [['Shariff', 'David']],
+        published: 'June 19, 2011',
+        title: 'What is the Execution Context & Stack in JavaScript?',
+        url: 'http://davidshariff.com/blog/what-is-the-execution-context-in-javascript/'
+    }),
+    new JournalArticle('10Days', {
+        authors: [['Severance', 'Charles']],
+        title: 'JavaScript: Designing a Language in 10 Days',
+        journal: 'Computer',
+        volume: 45,
+        year: 2012,
+        pages: '7-8',
+        publisher: 'IEEE Computer Society',
+        address: 'Los Alamitos, CA'
     })];

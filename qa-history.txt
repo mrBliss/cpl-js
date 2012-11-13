@@ -1,12 +1,17 @@
+# Introduction & history #
+
 Q: Which programming language are we talking about today?
+
 A: JavaScript, the language of the Internet.
 
 Q: Why do you call it the /language of the Internet/?
+
 A: JavaScript is the primary programming language than can be used in a web
-   browser. Whenever a site wants some client-side interactivity, JS is
-   /the/ tool in the box for this task.
+   browser. Whenever a site wants some client-side interactivity, JavaScript
+   is /the/ tool in the box for this task.
 
 Q: What do you mean by /client-side/?
+
 A: Visiting a website involves two parties (or more), the visitor, i.e. the
    client, and the visited website, i.e. the server.
 
@@ -14,7 +19,7 @@ A: Visiting a website involves two parties (or more), the visitor, i.e. the
    then generates or retrieves the page to be sent to the client. The
    generation of this page will be performed by a program, which, of course,
    is written in a certain programming language. Programming languages used to
-   write the program on the server, commonly called `the web server', are
+   write the program on the server, commonly called the /web server/, are
    called server-side languages.
 
    The second part of the interaction takes place in the browser of the
@@ -25,105 +30,147 @@ A: Visiting a website involves two parties (or more), the visitor, i.e. the
    provide a means to change the web page on the fly or to interact with the
    user without requiring a new page to be loaded.
 
-Q: Which other client-side languages are there? 
-   [Is JavaScript the only language that can do that?]
-A: There are several client side languages that can do quite the same. Examples 
-   are Flash, Java, SilverLight, PerlScript, VBScript, Microsoft's JScript),
-   but JavaScript is the most widely used.
-   Every web browser supports the execution of JavaScript. JavaScript is used
-   by roughly 75% of all Internet websites [1].
+Q: Is JavaScript the only language that can do that?
 
-   [1]: http://dev.opera.com/articles/view/mama-key-findings/
+A: There are several client-side languages that can do quite the same.
+   Examples are Flash, Java,<foot>Through the use of Java Applets.</foot>
+   Silverlight, ... but JavaScript is the most widely used. Virtually every
+   web browser supports the execution of JavaScript.<foot>Text-based browsers
+   like [Lynx][http://lynx.browser.org/] and [elinks][http://elinks.or.cz/]
+   don't support JavaScript.</foot> JavaScript is used by roughly 75% of all
+   Internet websites, see #[JSUsage].
 
-   (HTML, DHTML and CSS are also client side languages, but only used for mark-up)
+   HTML, XHTML, CSS, ... are also client-side languages, but are only used for
+   mark-up.
+
+Q: Why is JavaScript the most popular?
+
+A: Unlike other client-side languages like Flash or Java, JavaScript doesn't
+   require a plugin to function.
 
 
-Q: Why is JS the most popular?
-A: JavaScript doesn't require a plugin to work. Others do, like Flash or Java. 
-   Also, the JavaScript syntax looks very familiar to Object Oriented Programmers. 
-<ul>
-	<li>The implementation of JavaScript is also very easy: put the code in the HTML document and refer to it as a JavaScript script;
-	<li>The execution of JavaScript can happen offline;
-	<li>It can help to make websites more dynamic;
-	<li>It can fix CSS layour issues;
-	<li>Easy manipulation of DOM elements.
-   [2]: http://dev.opera.com/articles/view/javascript-uses/
+## Naming ##
 
-	Q: What are those DOM elements?
-	A: The Document Object Model is a platform interface which enables content, structure and style of documents to be dynamic.
+Q: Glancing at the name, one can't help but think JavaScript is related to
+   Java. Is JavaScript perhaps the scripting variant of Java?
 
-Q: So everyone can use JavaScript?
-A: The user must have a browser that supports the use of JavaScript. Almost every
-   recent browser support this, except for some: Amaya, Dillo, Links, Lynx, Mosaic, NetSurf... 
-   If the browser supports JavaScript, still some issues could prevent the use of JavaScript, e.g. 
-   security measures might ignore the <script> tags.
-   
-Q: Is Javascript only used for client-side applications?
-A: No, a number of server-side _projects/frameworks_ have been developed
-   that allow developers to (also) write server-side code in JavaScript. An early example of this
-   is the Netscape Enterprise Server (released in 1994, soon after the release of JS for browsers).
-   A more recent example of server-side JavaScript is Node.js, it is currently widely used in real-word
-   applications.
+A: To answer this question, we shall first tell you a bit about JavaScript's
+   history.
 
-Q: You mentioned Java, glancing at the name, one can assume they are related.
-   Is JS perhaps the scripting variant of Java?
-A: JavaScript was originally developed under the name Mocha, but was later
-   officially renamed to LiveScript, then to JavaScript and finally to ECMAScript. 
-   The change to JavaScript had to do with the new support for Java technology (of
-   SUN Microsystems) in the new Netscape browser version 2.0B3.
-   This change caused a lot of confusion, but was a slick marketing choice to give
-   JavaScript the attention it needed. 
+   During the first browser wars<foot>The term [browser wars][browser-wars] is
+   used to refer to the competition for dominance in usage share in the web
+   browser market share.</foot> in 1995, it had become clear that static HTML
+   pages weren't sufficient for the development of web applications. The Web
+   needed a portable programming language.
 
-Q: What other similarities are there between JS and Java other than the confusingly
-   connected names?
-A: There are certainly a couple of characteristics both languages have in common. 
-   Both are Object Oriented Programming languages. Many of their programming structures
-   are similar. JavaScript has a much smaller and simpler set of commands 
-   than Java.
-   Both languages also have a C-like syntax. JavaScript's syntax was developed
-   with Java's syntax in mind.Disregarding these similarities, Java and JavaScript
-   are very different languages.
+   [browser-wars]: http://en.wikipedia.org/wiki/Browser_wars
 
-Q: What are all these differences then?
-A: JavaScript has dynamic and weak typing, whereas Java is statically and strongly typed.
-   Java programs are compiled to byte-code, while JavaScript is loaded from human-readable source code.
-   Object in JS are not class-based (as in Java), but prototype-based. JavaScript also has many
-   functional programming features, that are not present in Java. So besides similiraties in syntax
-   and standard libraries, Java and JavaScript share very few features. All these differences will be discussed
-   in more detail later on. (Provide links to relevant questions)
-   
-Q: So if Java is not the main inspiration for JS, is it some other language,
-   or was JS a _completely new language_? (Rephrase last three words)
-A: If one ignores the syntax and the object-oriented nature, JS is awfully
-   similar to functional languages in the Lisp tradition, like for instance
-   Scheme. As a matter of fact, Brendan Eich, the creator of JavaScript, says that
-   he was lured by Netscape promising him to make a Scheme for the browser
-   [2]. A short time before, Brendan Eich had developed in an interest in the
-   famous [http://mitpress.mit.edu/sicp/][SICP] book, which presents the
-   tremendous capabilities of a simple functional language, Scheme.
+   At the time, Java was the new kid on the block and was rapidly gaining in
+   popularity because of Sun's successful marketing campaign. Netscape saw
+   Java as the language of the Web, but Java was deemed to complex for
+   beginning programmers. Java was the Web's C++. Netscape needed a
+   lightweight interpreted scripting language. If Visual Basic is C++'s easy
+   alternative, Netscape wanted to develop a language that would be Java's
+   Visual Basic.
+
+   In April 1995, Netscape hired Brendan Eich to develop the programming
+   language that would run in Netscape's browser. The catch was that he had
+   only *10 days* to deliver a working prototype. Eich was instructed to make
+   it similar to Java, but was prohibited from using the object-oriented
+   syntax reserved for Java. He combined the syntax from C and Java with a
+   small number of relatively simple, but powerful, language features. The
+   resulting language seems simple and easy at first sight, but the powerful
+   features, certainly when combined, allow experienced programmers to build
+   complex programs. Because of the short development time, corners were cut,
+   and consequences thereof are still present in the language.
+
+   Source: #[10Days]
+
+   During development the language was named Mocha,<foot>This is a reference
+   to Java, which is also a coffee made from beans produced in the Indonesian
+   island of Java.</foot> but it was officially renamed to LiveScript in 1995.
+   Later that year LiveScript was renamed to JavaScript. For people unfamiliar
+   with JavaScript's origin and relation to Java, this caused lots of
+   confusion, because besides syntax, JavaScript is quite different from Java.
+   The reference to Java in JavaScript's name was a slick marketing choice of
+   Netscape to give JavaScript the attention it needed.
+
+   In 1996 JavaScript was renamed again to ECMAScript,<foot>ECMAScript comes
+   from Ecma (European Computer Manufacturers Association) International, the
+   standards organisation that standardised JavaScript in the ECMA-262
+   standard.</foot> but JavaScript /stuck/ and is still the most popular name
+   for the language.
+
+Q: Can you tell me more about the differences between JavaScript and Java?
+
+A: JavaScript has [dynamic][dynamic-typing] and [weak typing][weak-typing],
+   whereas Java is statically and strongly typed. Java programs are compiled
+   to byte-code, while JavaScript is loaded from human-readable source code.
+   JavaScript is [prototype-based][proto] whereas Java is class-based.
+   JavaScript also has support for many higher-level programming features,
+   e.g. #[closures], that are not present in Java. So besides the similar name
+   and syntax,<foot>JavaScript's small standard library also follows Java's
+   naming conventions, e.g. the `Math` and the `Date` objects.</foot> Java and
+   JavaScript share very few features. These differences will be discussed in
+   more detail later on.
+
+## Influences ##[influences]
+
+Q: So if Java is not the main inspiration for JavaScript, is there some other
+   language that was JavaScript's main inspiration? Or was JavaScript unique
+   when it was created?
+
+A: If one ignores the syntax and the object-oriented nature, JavaScript is
+   awfully similar to functional languages in the Lisp tradition, particularly
+   Scheme. As a matter of fact, Brendan Eich, the creator of JavaScript, says
+   that he was lured by Netscape promising him to make a Scheme for the
+   browser, see #[JSHistory3]. A short time before, Brendan Eich had developed
+   an interest in the famous #[SICP] book, which presents the tremendous
+   capabilities of a simple functional language, Scheme.
 
    The main influence of Scheme was the presence of first-class functions in
-   JavaScript. Another similarity with Scheme is the small size of the
-   language, a handful of built-in types, the single namespace, closures (link to other question (http://jibbering.com/faq/notes/closures/))...
+   JavaScript, also see #[functional]. Another similarity with Scheme is the
+   small size of the language, a handful of built-in types,
+   [closures][closures], ...
 
-   Although JavaScript is an Object Oriented language, Self has influenced javaScript for the use of prototype based inheritance. see [3] for other things to mention.
-	Q: Prototype based inheritance?
-	A: In Java, classes represents a collection of object which share the same state space. Objects are manifestations of this class. Objects in a prototype-based language
-           are clones of prototypes. The reason that ended up in Javascript/ECMA script is basically that 15 years ago, there were much less powerful computers 
-	   and much less sophisticated browsers. Choosing the prototype-based method meant the interpreter could be very simple while preserving the desirable properties of object orientation.
+   During the '90s, when JavaScript was being developed, object-oriented
+   programming was all the rage, so at the time, it was evident that
+   JavaScript had to jump on the OO bandwagon. The object-oriented parts of
+   JavaScript, most notably the presence of prototypes, are borrowed from
+   Self, the programming language that pioneered [prototype-based
+   programming][proto]. Self is a dialect of Smalltalk, according to some
+   people, the true dynamic object-oriented programming language.
 
+## Scripting language ##
 
-   [3] https://brendaneich.com/2008/04/popularity/
-   [4] http://www.crockford.com/javascript/little.html (comparison scheme and JavaScript)
-   [5] http://http://en.wikipedia.org/wiki/Prototype-based_programming
+Q: JavaScript is a scripting language, what does it mean for a language to be
+   a scripting language?
 
-http://javascript.crockford.com/javascript.html
+A: A scripting programming language is actually a lightweight language that is
+   mostly used for writing little programs to execute repetitive tasks. It's a
+   high-level language that is most often implemented by an interpreter.
 
-Q: JS is a scripting language, what does it mean for a language to be a scripting language?
-A: A scripting programming language is actually a lightweight language that is mostly
-   used for writing little programs to execute repetitive tasks. It's a high-level
-   language that is implemented by an interpreter. Note: JavaScript is not always interpreted.
-   Some implementations, such as the V8 JavaScript engine, first compile the JavaScript to native machine code.
-   
- 
-   
+   As JavaScript is a high-level scripting language, it is garbage collected,
+   thus not requiring the programmer to manually manage the memory like in C
+   or C++.
+
+   Q: How is JavaScript executed?
+
+   A: JavaScript is executed by an interpreter.<foot>[Modern JavaScript
+      engines][implementation] employ techniques like [JIT compilation][jit]
+      to compile JavaScript to native code at run-time.</foot> The interpreter
+      executes a JavaScript program line by line, from top to bottom.
+
+      Q[line by line execution][line-by-line]: But when a program is executed
+         linearly, you can't refer to functions and variables that are defined
+         later on in the program? Is this also true for JavaScript?
+
+      A: Good question! The interpreter actually works in multiple stages:
+         first all variables in the current scope are initialised to
+         `undefined` and all functions are initialised with pointers to their
+         locations in memory. After some other initialisations, the actual
+         execution starts at the first line of code. This multi-phased
+         approach makes it possible to have forward references in JavaScript.
+         However, this seemingly logical step has some unwanted consequences,
+         see #[hoisting]. For more details on the execution, we refer you to
+         #[JSExecution].

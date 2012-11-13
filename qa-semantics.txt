@@ -528,7 +528,7 @@ A: Of course, OOP is broader than "everything is an object". Most definitions
       println(x); // 3
       ```
 
-      ### Variable hoisting ###
+      ### Variable hoisting ###[hoisting]
 
       In this intermezzo, another peculiarity of JavaScript's scoping rules is
       introduced, /variable hoisting/.
@@ -598,9 +598,8 @@ A: Of course, OOP is broader than "everything is an object". Most definitions
 
       Q: Why does JavaScript do this?
 
-      A: This is just one of JavaScript's many quirks. It's sometimes
-         difficult to imagine what Brendan Eich must have been thinking when
-         designing JavaScript...
+      A: We explained this in the answer to the question about
+         #[line-by-line].
 
       ### Lexical & dynamic scope ###
 
@@ -626,8 +625,8 @@ A: Of course, OOP is broader than "everything is an object". Most definitions
       ```
 
       JavaScript is lexically scoped, as is Scheme, one of JavaScript's
-      biggest influences TODO ref scheme. The return value of `f` in the
-      example above will be 'lexical'.
+      biggest [influences][influences]. The return value of `f` in the example
+      above will be 'lexical'.
 
       ### Closures ###[closures]
 
@@ -1054,7 +1053,7 @@ A: Of course, OOP is broader than "everything is an object". Most definitions
    a.f(5); // 8
    ```
 
-# Dynamic typing #
+# Dynamic typing #[dynamic-typing]
 
 Q: What kind of typing discipline does JavaScript have?
 
@@ -1097,7 +1096,7 @@ A: Unlike for instance Java, a language people would believe to be akin to
       or in the case of `eval`, impossible.
 
 
-   ## Weak typing ##
+   ## Weak typing ##[weak-typing]
 
    JavaScript's type system is also /weakly/ typed. The opposite of weak
    typing is, /strong/ typing. In weakly typed programs, types can be
@@ -1309,7 +1308,7 @@ A: Unlike for instance Java, a language people would believe to be akin to
       course, will not function correctly as `0`, a falsy number, will fail
       the check. You can see that it's easy to overlook this subtlety.
 
-# Functional programming #
+# Functional programming #[functional]
 
 Q: You mentioned that JavaScript has first-class functions, does this mean
    that JavaScript is a functional language?
@@ -1533,8 +1532,9 @@ A: Yes, it's also possible do monkey patching in JavaScript. In Ruby, classes
    can be modified at run-time. As seen in #[proto], JavaScript allows
    objects, and by consequence classes too,<foot>Remember that classes in
    JavaScript are emulated/implemented using objects.</foot> to be modified at
-   run-time. This is just the way JavaScript works (TODO refer to line-by-line
-   execution).
+   run-time. This is just the way JavaScript works. As JavaScript is executed
+   line by line, objects are also created line by line, property after
+   property, constantly modifying the object.
 
    Monkey patching is often used to modify the behaviour of third-party or
    even standard libraries without requiring access to their source. Fixing
@@ -1658,3 +1658,4 @@ A: Yes, it's also possible do monkey patching in JavaScript. In Ruby, classes
 
 
 TODO bad parts (eval, with, etc.), JavaScript as assembly of the web
+TODO web 2.0 applications, AJAX

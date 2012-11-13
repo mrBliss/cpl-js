@@ -4,11 +4,11 @@ Q: How is JavaScript implemented?
 
 A: JavaScript has many different implementations. Just looking at the
    browsers, each one has its own implementation of JavaScript. Chrome uses
-   the V8 JavaScript engine<foot>V8 is also used by Node.js (TODO
-   refer).</foot>, the latest version of Firefox uses IonMonkey,<foot>It's
-   hard to keep track of the current JavaScript engine of Firefox, they seem
-   to change every couple of releases. Previous engines or parts of the engine
-   include SpiderMonkey, TraceMonkey, and JägerMonkey.</foot> Safari uses
+   the V8 JavaScript engine<foot>V8 is also used by [Node.js][nodejs].</foot>,
+   the latest version of Firefox uses IonMonkey,<foot>It's hard to keep track
+   of the current JavaScript engine of Firefox, they seem to change every
+   couple of releases. Previous engines or parts of the engine include
+   SpiderMonkey, TraceMonkey, and JägerMonkey.</foot> Safari uses
    Nitro,<foot>Nitro was previously called SquirrelFish, which is another name
    for JavaScriptCore, the WebKit JavaScript engine.</foot> Opera uses Carakan
    (formerly Futhark), and lastly, Internet Explorer uses an engine called
@@ -35,7 +35,7 @@ A: This plethora of implementations makes it hard to discuss /the/
    compilation before continuing the discussion on the most common parts of a
    JavaScript engine.
 
-   ## Just-in-time compilation ##
+   ## Just-in-time compilation ##[jit]
 
    Q: Ok, what exactly is JIT compilation?
 
