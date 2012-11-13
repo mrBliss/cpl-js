@@ -111,6 +111,9 @@
 </li>
 </ol>
 </li>
+<li><a href="#compiling-to-javascript">Compiling to JavaScript</a></li>
+</ol>
+</li>
 
           <li class="unnumbered"><a href="#closing-thoughts">Closing thoughts</a></li>
           <li class="unnumbered"><a href="#bibliography">Bibliography</a></li>
@@ -765,7 +768,7 @@ a.f(5); &#x2F;&#x2F; 8</pre></div>
 <p>JavaScript was intended to be a quick and easy scripting language. Advocates of dynamic typing suggest that programmer productivity is increased, at least for small to medium size programs, when the programmer doesn&rsquo;t have to figure out the types when writing the program.</p>
 <p>Even though static typing has many advantages, like better documentation, the elimination of type errors at run-time,<span class="footnote">Most (static) type systems are actually unsound and cannot guarantee a program is well-typed in all of the cases. For instance <em>casting</em> in Java and C is a totally unsafe operation. Even Haskell, a language with an advanced type system, has an unsafe function that bypasses the type system: <code>unsafePerformIO</code>.</span> correct auto completion of identifiers during development, &hellip; it would be very hard to make JavaScript statically typed.</p>
 <p>The ability to extend (prototypes of) objects with new properties at run-time, the ability to change the prototype of an object at run-time, the way the <code>arguments</code>-object works, or even the <code>eval</code> function (see the next paragraph) will make a static type system for JavaScript very complicated, or in the case of <code>eval</code>, impossible.</p>
-<p>There is one function present in JavaScript that is impossible to annotate with a useful type signature, <code>eval</code>, which comes from Lisp. This built-in function takes a string and evaluates it, effectively parsing and interpreting it.<span class="footnote">If someone wanted to statically compile JavaScript <strong>and</strong> include <code>eval</code>, a JavaScript interpreter would have to be included in the executable.</span> The <code>eval</code> function is also a security risk and should not be called with input from third-parties. Using <code>eval</code> in a program is often frowned upon.<span class="footnote">The best use of <code>eval</code> is to build a REPL (Read-Eval-Print-Loop).</span> TODO more?</p></div>
+<p>There is one built-in function present in JavaScript that is impossible to annotate with a useful type signature, <code>eval</code>, which comes from Lisp. This function takes a string and evaluates it, effectively parsing and interpreting it.<span class="footnote">If someone wanted to statically compile JavaScript <strong>and</strong> include <code>eval</code>, a JavaScript interpreter would have to be included in the executable.</span> The <code>eval</code> function is also a security risk and should not be called with input from third-parties. Using <code>eval</code> in a program is often frowned upon.<span class="footnote">A plausible use of <code>eval</code> is to build a REPL (Read-Eval-Print-Loop).</span></p></div>
 <h4 id="weak-typing">IV.1. Weak typing</h4>
 <p>JavaScript&rsquo;s type system is also <em>weakly</em> typed. The opposite of weak typing is, <em>strong</em> typing. In weakly typed programs, types can be implicitly converted to other types, whereas these conversion have to be done explicitly in strongly typed language.</p>
 <p>An example will make it much clearer:</p>
@@ -932,7 +935,7 @@ inc(2); &#x2F;&#x2F; 3</pre>
 <ul>
 <li><a href="http://underscorejs.org" target="_blank">Underscore.js</a></li>
 <li><a href="http://osteele.com/sources/javascript/functional/" target="_blank">Functional JavaScript</a></li>
-<li><a href="http://gkz.github.com/prelude-ls/" target="_blank">prelude.ls</a><span class="footnote">This library is actually written in LiveScript, a functional language that compiles to JavaScript, more about such languages in TODO refer compiling to JS.</span></li>
+<li><a href="http://gkz.github.com/prelude-ls/" target="_blank">prelude.ls</a><span class="footnote">This library is actually written in LiveScript, a functional language that compiles to JavaScript, more about such languages in <a href="#compiling-to-javascript" class="ref">Compiling to JavaScript</a></span></li>
 </ul></div>
 <h3 id="monkey-patching">VI. Monkey-patching</h3>
 <div class="question">When talking about JavaScript&rsquo;s dynamic nature, you said JavaScript was comparable to Ruby in this aspect. Does JavaScript also support monkey patching?</div>
@@ -1006,7 +1009,6 @@ delete Array.prototype.last; &#x2F;&#x2F; the delete operator deletes a property
 <div class="question">Given the pitfalls just listed, is monkey patching still encouraged in JavaScript or rather frowned upon?</div>
 <div class="answer">
 <p>If done with care and for the right reasons, monkey patching is a defensible solution. Fixing a bug in a third-party library could be a valid reason, provided that the monkey patch will only be applied to faulty versions of the library.</p></div></div>
-<p>TODO bad parts (eval, with, etc.), JavaScript as assembly of the web TODO web 2.0 applications, AJAX</p>
 <h3 id="implementation">VII. Implementation</h3>
 <div class="question">How is JavaScript implemented?</div>
 <div class="answer">
@@ -1142,6 +1144,41 @@ longAsyncComputation(function(x) {
 });</pre>
 <p>You can already see that the latter example requires much more code and is harder to read. The nesting will keep increasing for every I/O operation you wish to perform. This phenomenon is called <em>callback hell</em>. Callbacks force the programmer to manually transform his program to continuation passing style. <a href="https://github.com/joyent/node/wiki/modules#wiki-async-flow" target="_blank">Various libraries</a> exist to ease the pain. Programmers familiar with <em>monads</em> will see an excellent opportunity to apply monads. A notation similar to Haskell&rsquo;s <code>do</code>-syntax or Scala&rsquo;s <code>for</code>-expressions would make the code readable again and resemble the synchronous variant. Lisp macros are also a viable option.<span class="footnote">See <a href="#bib-15" class="ref"><span class="bib">15</span> Escaping Callback Hell with ClojureScript macros</a>, a blog post about writing a macro to solve callback hell in ClojureScript, a variant of the Clojure programming language that compiles to JavaScript. TODO refer to compiling to JS</span></p></div>
 <p>TODO development styles: REPL, TDD, browser testing, &hellip;</p>
+<h3 id="compiling-to-javascript">VIII. Compiling to JavaScript</h3>
+<p>In the last decade the Internet has grown enormously. More and more people use the Internet more and more. Web 2.0<span class="footnote">Web 2.0 stands for the rise of social media and the importance of user-generated content, e.g. social networks, video sharing, blogs, wikis, and all kinds of web applications.</span> applications have become more powerful and advanced. As the size of these web applications, in essence JavaScript programs, increased, it became more and more obvious that JavaScript isn&rsquo;t suited for building large programs, and never was intended for that purpose anyway.</p>
+<p>Many features targeted at managing increasing complexity are absent in JavaScript, or have to be emulated by the programmer. We have discussed many of them: the lack of static types, emulating <a href="#modularity" class="ref">Modularity</a>, emulating classes via prototypes, &hellip;</p>
+<p>Thankfully, JavaScript is equipped with enough powerful building blocks (first-class functions, closures, prototype-based programming) to emulate many of the desired features, but the emulation requires lots of boilerplate code. The solution people have come up with for this problem is to create new languages that compile to JavaScript. Initially it will sound odd, to <em>compile</em> to a high-level language. But in this case it actually makes sense. JavaScript is already supported by (virtually) every browser, and it would be an insurmountable obstacle to create a new language supported by all browser vendors.<span class="footnote">Standards compliance of the JavaScript, HTML and CSS is already a problem in the browser landscape.</span> The current JavaScript engines are plenty fast.</p>
+<p>JavaScript has become the <em>assembly language of the web</em>.<span class="footnote">Some people argue that <em>VM</em> (Virtual Machine) would be more accurate.</span></p>
+<p>Here follows a selection of existing languages, in no particular order, that compile to JavaScript:</p>
+<ul>
+<li><a href="https://developers.google.com/web-toolkit/" target="_blank">Google Web Toolkit</a> compiles Java to JavaScript.</li>
+<li><a href="http://coffeescript.org/" target="_blank">CoffeeScript</a> is a layer of syntactic sugar over JavaScript inspired by Ruby, Python and Haskell. Of all the languages compiling to JavaScript, CoffeeScript is probably the most popular.</li>
+<li><a href="http://livescript.net/" target="_blank">LiveScript</a> (<a href="#libraries">already mentioned</a>) is a descendant of LiveScript with an emphasis on functional programming.<span class="footnote">Indeed, LiveScript briefly was the <a href="#naming-history">official name</a> of JavaScript in 1995.</span></li>
+<li><a href="https://github.com/clojure/clojurescript" target="_blank">ClojureScript</a>, a variant of Clojure, originally targeted at the JVM.</li>
+<li><a href="http://elm-lang.org/" target="_blank">Elm</a>, a type inferenced language intended for Functional Reactive Programming.</li>
+<li><a href="http://haxe.org/" target="_blank">Haxe</a>, a high-level multiplatform language. Other than to JavaScript, Haxe can also be compiled to Flash, PHP, &hellip;</li>
+<li><a href="http://cappuccino.org/" target="_blank">Objective-J</a> is to JavaScript as Objective-C is to C. Objective-J is tightly connected to the Cappuccino framework.</li>
+<li><a href="http://impredicative.com/ur/" target="_blank">Ur</a> is a functional language in which the impossibility of invalid HTML, code-injection attacks, &hellip; is enforced by the type checker.</li>
+<li><a href="http://opalang.org/" target="_blank">Opa</a> is a language and multi-tiered (server-side, client-side, and database) framework for writing secure and scalable web applications.</li>
+<li><a href="http://www.dartlang.org/" target="_blank">Dart</a> is Google&rsquo;s try to develop a more Java-like for the web with support for classes, modules, and optional typing.</li>
+<li><a href="http://www.typescriptlang.org/" target="_blank">TypeScript</a> is Microsoft&rsquo;s answer to Dart.</li>
+</ul>
+<p>Besides the languages above there exist ports of C#, F#, Objective-C, ActionScript, Ruby, Python, OCaml, SML, Haskell, Smalltalk, C<span class="footnote">Via <a href="https://github.com/kripken/emscripten" target="_blank">Emscripten</a>, a LLVM bitcode to JavaScript compiler. Many <a href="https://github.com/kripken/emscripten/wiki" target="_blank">existing programs</a> written in C have been ported to the browser through the use of this compiler, e.g. SQLite, OpenJPEG.</span>, Basic, Io, Logo, Tcl, and Erlang to JavaScript. There are especially many Lisp dialects that can be compiled to JavaScript or are created on top of JavaScript, demonstrating the similarity of the two languages. For a more comprehensive list see <a href="https://github.com/jashkenas/coffee-script/wiki/List-of-languages-that-compile-to-JS" target="_blank">List of languages that compile to JS</a> and <a href="http://altjs.org/" target="_blank">altJS</a>.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     <h3 id="closing-thoughts">Closing thoughts</h3>
     <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enimad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>

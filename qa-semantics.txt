@@ -1521,7 +1521,7 @@ A: It's true that all, functional languages support first-class functions, but
 
    The example was taken from #[FuncProgJS].
 
-   ## Libraries ##
+   ## Libraries ##[func-libs]
 
    As demonstrated in the previous section, programming in a functional style
    is certainly possible in JavaScript. Numerous programmers have discovered
@@ -1532,8 +1532,7 @@ A: It's true that all, functional languages support first-class functions, but
    * [Functional JavaScript][http://osteele.com/sources/javascript/functional/]
    * [prelude.ls][http://gkz.github.com/prelude-ls/]<foot>This library is
      actually written in LiveScript, a functional language that compiles to
-     JavaScript, more about such languages in TODO refer compiling to
-     JS.</foot>
+     JavaScript, more about such languages in #[compiling-to-js]</foot>
 
 
 # Monkey-patching #[monkey-patching]
@@ -1669,7 +1668,3 @@ A: Yes, it's also possible do monkey patching in JavaScript. In Ruby, classes
       defensible solution. Fixing a bug in a third-party library could be a
       valid reason, provided that the monkey patch will only be applied to
       faulty versions of the library.
-
-
-TODO bad parts (eval, with, etc.), JavaScript as assembly of the web
-TODO web 2.0 applications, AJAX
