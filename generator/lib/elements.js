@@ -2,11 +2,12 @@ function Paragraph(indent, text) {
     this.indent = indent;
     this.text = text;
 }
-function Title(indent, level, text, label) {
+function Title(indent, level, text, label, unnumbered) {
     this.indent = indent;
     this.level = level;
     this.text = text;
     if (label) this.label = label;
+    if (unnumbered) this.unnumbered = unnumbered;
 }
 function CodeBlock(indent, lang, code) {
     this.indent = indent;
@@ -139,7 +140,7 @@ Title.prototype.anchor = function() {
     if (!this._anchor) {
         this._anchor = this.text.toLowerCase()
             .replace(/[^a-z0-9-]|\s/g, '-')
-            .replace(/-+/, '-');
+            .replace(/-+/g, '-');
     }
     return this._anchor;
 };
@@ -154,7 +155,8 @@ Paragraph.prototype.toHTML = function() {
 Title.prototype.toHTML = function() {
     var hLevel = this.level + 2;
     return '<h' + hLevel +' id="' + this.anchor()
-        + '">' + this.number + ' ' + this.text + '</h' + hLevel + '>';
+        + '">' + (this.unnumbered ? '' : this.number + ' ') +
+        this.text + '</h' + hLevel + '>';
 };
 
 // Source: https://github.com/janl/mustache.js

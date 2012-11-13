@@ -91,6 +91,8 @@ exports.testTitle = function(test) {
            '# Bla #[a]\n  ## Di ##[b]\n',
            [{indent: 0, level: 1, text: 'Bla', label: 'a'},
             {indent: 2, level: 2, text: 'Di', label: 'b'}]);
+    parses(test, parser.Title, '#- Bla #\n',
+           {indent: 0, level: 1, text:'Bla', unnumbered: true});
     doesntParse(test, parser.Title, '# Bla\n');
     doesntParse(test, parser.Title, '# Bla #');
     doesntParse(test, parser.Title, '# Bla\nDi #');

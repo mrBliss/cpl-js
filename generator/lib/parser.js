@@ -76,12 +76,14 @@ var Bracketed = between('[', joined(rep1(but(ch(']')))), ']');
 var Title = action(
     indented(seq(
         count(rep1(ch('#'))),
+        opt(ch('-')),
         ws(trimRight(joined(rep1(but(ch('#')))))),
         ignored(rep1(ch('#'))),
         opt(Bracketed),
         ignored(NewLine))),
     function(arr) {
-        return new el.Title(arr[0], arr[1][0], arr[1][1], arr[1][2]);
+        return new el.Title(arr[0], arr[1][0], arr[1][2], arr[1][3],
+                            arr[1][1] ? true : false);
     });
 
 var CodeBlock = action(

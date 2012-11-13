@@ -31,17 +31,19 @@ exports.tocBuilder = function(toc, levels) {
     }
     return function(elem) {
         if (elem.level) {
-            levels[elem.level - 1]++;
+            if (!elem.unnumbered) levels[elem.level - 1]++;
             for (var i = elem.level; i < levels.length; i++) {
                 levels[i] = 0;
             }
-            elem.number = numberString();
-            var key = [];
-            for (var j = 0; j < levels.length; j++) {
-                if (levels[j] == 0) break;
-                key.push(levels[j]);
+            if (!elem.unnumbered) {
+                elem.number = numberString();
+                var key = [];
+                for (var j = 0; j < levels.length; j++) {
+                    if (levels[j] == 0) break;
+                    key.push(levels[j]);
+                }
+                toc[key] = [elem.number, elem.text];
             }
-            toc[key] = [elem.number, elem.text];
         }
     };
 };
