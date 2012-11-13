@@ -207,12 +207,15 @@ var QA = action(seq(Question,
                 });
 
 var Page = action(
-    rep1(choice(QA, Title, CodeBlock, Paragraph, BlankLines)),
+    rep1(choice(QA, Title, CodeBlock, List, BlankLines, LinkDef,
+                BlockQuote, HTML, Paragraph)),
     function(arr) {
         return new el.Page(filter(arr, function(x) {
             return x !== null;
         }));
     });
+
+
 
 function parse(parser, str) {
     return parser(ps(str));
