@@ -6,13 +6,13 @@ body{font-family:"Crimson Text",Georgia,serif;font-size:110%;line-height:1.25em;
 a:link{color:#222222;}
 a:hover{color:#474d4d;}
 a:visited{color:#5f6767;}
-div#scroller{position:fixed;top:30%;right:0.5em;max-width:8%;font-size:0.9em;}
+div#scroller{position:fixed;top:30%;right:0.5em;max-width:8%;font-size:0.9em;-webkit-border-radius:5px;-moz-border-radius:5px;-ms-border-radius:5px;-o-border-radius:5px;border-radius:5px;background:#ffffff;padding:1em 0.2em;}
 div#header{font-variant:small-caps;margin-bottom:2em;}div#header h1,div#header h2{text-align:center;letter-spacing:0.1em;font-weight:normal;line-height:1.25em;text-shadow:1px 1px 1px #b3b3b3;}
 div#header h1{font-size:3em;}
 div#header h2{font-size:2em;}
 div#credits{font-style:italic;color:#474d4d;}
-div#info{margin-top:1em;}div#info div.leftCol{float:left;padding-right:1em;}
-div#info div.rightCol{float:left;border-left:1px dashed #babfbf;}
+div#info{margin-top:1em;}div#info div.leftCol{float:left;padding-right:1em;width:50%;}
+div#info div.rightCol{padding-left:1em;float:left;border-left:1px dashed #babfbf;}
 li.unnumbered{list-style-type:none;padding-top:0.2em;}
 div#toc{padding-left:0;font-size:0.9em;}div#toc ol{list-style-type:upper-roman;}div#toc ol li{font-weight:bold;}
 div#toc ol ol{list-style-type:decimal;}div#toc ol ol li{font-weight:normal;}div#toc ol ol li li{font-size:0.9em;}
@@ -37,7 +37,7 @@ div.answer li{margin-bottom:0.2em;}
 p,ul{font-size:1.1em;line-height:1.4em;}p ul,ul ul{font-size:0.95em;}
 pre,div.editor,div.CodeMirror{font-family:"Inconsolata",Monaco,Consolas,monospace;}
 code{font-family:Consolas,Menlo,Monaco,"Liberation Mono",Courier,monospace;}
-div.editor ul.tabs{font-family:"Quattrocento Sans",Helvetica,Arial,sans-serif;}
+div.editor ul.tabs{font-family:"Quattrocento Sans",Helvetica,Arial,sans-serif;clear:left;}
 code{font-size:0.7em;border:1px solid #cccccc;padding:0.2em;padding-bottom:0;background:#eeeef0;line-height:1.3em;}code:hover{background:#e9e9eb;}
 pre{white-space:pre-wrap;font-size:0.8em;border-left:1em solid #b3b3b3;background:#fcfcfc;background:url("img/billie_holiday.png") repeat;margin:2em;padding:0.8em;}pre:hover{border-left:1em solid #cccccc;}
 div.editor{margin-top:-1em;margin-bottom:2em;}div.editor ul.tabs{display:inline;left:0;float:left;list-style-type:none;text-align:center;margin-bottom:-0.2em;padding-left:1px;}div.editor ul.tabs li{font-size:0.7em;line-height:1.1em;padding:0.3em;margin-left:-1px;display:inline-block;border:1px solid #cccccc;background:#f7f7f7;background:linear-gradient(#f7f7f7, #e8e8e8);background:-o-linear-gradient(#f7f7f7, #e8e8e8);background:-moz-linear-gradient(#f7f7f7, #e8e8e8);background:-webkit-linear-gradient(#f7f7f7, #e8e8e8);background:-ms-linear-gradient(#f7f7f7, #e8e8e8);}div.editor ul.tabs li:first-child{border-top-left-radius:5px;font-weight:bold;padding-left:1em;padding-right:1em;background:#ffffff;background:linear-gradient(#ffffff, #f7f7f7);background:-o-linear-gradient(#ffffff, #f7f7f7);background:-moz-linear-gradient(#ffffff, #f7f7f7);background:-webkit-linear-gradient(#ffffff, #f7f7f7);background:-ms-linear-gradient(#ffffff, #f7f7f7);}

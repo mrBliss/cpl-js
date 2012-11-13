@@ -45,14 +45,15 @@ a {
     }
 }
 
-
-
 div#scroller {
     position: fixed;
     top: 30%;
     right: 0.5em;
     max-width: 8%;
     font-size: 0.9em;
+    .rounded-corners(5px);
+    background: @bg;
+    padding: 1em 0.2em;
 }
 
 div#header {
@@ -81,8 +82,10 @@ div#info {
     div.leftCol {
         float: left;
         padding-right: 1em;
+        width: 50%;
     }
     div.rightCol {
+        padding-left: 1em;
         float: left;
         border-left: 1px dashed lighten(@text, 60%);
     }
@@ -234,6 +237,7 @@ code {
 }
 div.editor ul.tabs {
     .sans;
+    clear: left;
 }
 code {
     font-size: 0.7em;
