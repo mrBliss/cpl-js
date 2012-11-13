@@ -63,12 +63,12 @@ exports.tocToHTML = function(toc) {
         }
         var anchor = t[1].toLowerCase()
                 .replace(/[^a-z0-9-]|\s/g, '-')
-                .replace(/-+/, '-');
+                .replace(/-+/g, '-');
         html += '<li><a href="#' + anchor +'">' + t[1].replace(/`/g, '') + '</a>';
         prevLevel = level;
     });
-    html += '</li>\n</ol>\n</li>\n';
-    for (var i = level; i > 2; i--) {
+    html += '</li>\n';
+    for (var i = level; i > 1; i--) {
         html += '</ol>\n</li>\n';
     }
     return html;

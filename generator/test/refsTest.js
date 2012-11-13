@@ -65,5 +65,12 @@ exports.testTocToHTML = function(test) {
             + '</ol>\n'
             + '</li>\n';
     test.equal(tocToHTML(toc2), html2);
+
+    var toc3 = {
+        '1': ['I.', 'Bla' ]
+    };
+    var html3 = '<li><a href="#bla">Bla</a></li>\n';
+    test.equal(tocToHTML(toc3), html3);
+
     test.done();
 };
