@@ -49,7 +49,7 @@ A: Unlike other client-side languages like Flash or Java, JavaScript doesn't
    require a plugin to function.
 
 
-## Naming ##
+## Naming & history ##
 
 Q: Glancing at the name, one can't help but think JavaScript is related to
    Java. Is JavaScript perhaps the scripting variant of Java?
@@ -152,7 +152,7 @@ A: A scripting programming language is actually a lightweight language that is
 
    As JavaScript is a high-level scripting language, it is garbage collected,
    thus not requiring the programmer to manually manage the memory like in C
-   or C++.
+   or C++. More about this topic in #[garbage-collection].
 
    Q: How is JavaScript executed?
 

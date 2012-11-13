@@ -30,7 +30,7 @@ function fillInRefs(page, references, bibIndex, links) {
 }
 
 
-var pagesNames = ['qa-history', 'qa-semantics', 'qa-pragmatics'],
+var pagesNames = ['qa-history', 'qa-syntax', 'qa-semantics', 'qa-pragmatics'],
     tableOfContents = {},
     tocLevels = refs.emptyTocLevels(),
     references = {},

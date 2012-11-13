@@ -1,0 +1,149 @@
+# Syntax #
+
+Q: Could you describe JavaScript's syntax?
+
+A: As JavaScript syntax is mostly borrowed from C and Java, syntax you are
+   familiar with, we shall only highlight where JavaScript deviates from
+   Java's or C's syntax. Moreover, this document contains a myriad of code
+   examples you can look at to get an idea of what JavaScript code looks like.
+
+   Besides the common keywords like `for`, `if`, `while`, `try`, `new`, ...
+   there are a number of /future reserved keywords/ in JavaScript: `class`,
+   `const`, `enum`, `export`, `extends`, `import`, `super`. These keywords
+   aren't used in JavaScript and probably never will. Identifiers cannot have
+   the same name as a keyword. These keywords are a remnant of Java's
+   influence.
+
+   ## Semicolons ##
+
+   A controversial feature in JavaScript is /semicolon insertion/. In C and
+   Java, each statement or expression should be terminated with a semicolon,
+   `;'. In JavaScript, terminating semicolons are optional, they will be
+   inserted by the interpreter if absent. They aren't just inserted
+   willy-nilly after each line, there are rules for this, which aren't that
+   interesting. However, there are some edge cases where semicolon insertion
+   will mess up your program.
+
+   ```JavaScript
+   return
+   a + b;
+   // Returns undefined. Treated as:
+   //   return;
+   //   a + b;
+   // But:
+   a = b + c
+   (d + e).foo()
+   // Treated as:
+   //   a = b + c(d + e).foo();
+   ```
+
+   Source: #[JSSyntax]
+
+   Q: What do you recommend: always writing semicolons or not?
+
+   A: As you saw in the code sample above, a semicolon would have prevented
+      the problem in the second example, but not in the first. Like
+      indentation width,<foot>And the famous [tabs versus spaces
+      war][tabs-vs-spaces].</foot> semicolons are often considered a question
+      of convention or style.<foot>Trivial matters often lead to heated
+      discussions, see for example [this discussion about a single
+      semicolon][semicolon-discussion].</foot>
+
+      [tabs-vs-spaces]: http://www.jwz.org/doc/tabs-vs-spaces.html
+      [semicolon-discussion]: https://github.com/twitter/bootstrap/issues/3057
+
+   ## Variables and functions ##[variables-functions]
+
+   As JavaScript is [dynamically typed][dynamic-typing], the programmer
+   doesn't have to declare the types of variables or functions. To declare a
+   new variable, prepend the `var` keyword for the identifier. A function
+   definition is started with the `function` keyword.
+
+   ```JavaScript
+   function f(x, y) {
+       var sum = x + y;
+       return sum;
+   }
+   f(3, 4); // 7
+   sum; // 'ReferenceError: sum is not defined' as sum was a local variable
+   ```
+
+   Watch what happens when we forget the `var` keyword:
+
+   ```JavaScript
+   function f(x, y) {
+       sum = x + y;
+       return sum;
+   }
+   f(3, 4); // 7
+   sum; // 7 (!)
+   ```
+
+   Omitting the `var` keyword will declare the variable as a global! This is a
+   typical pitfall of JavaScript. See #[scope] and #[modularity] for more
+   about the global object and why this is a problem.
+
+   ## Anonymous functions ##
+
+   As told in #[influences], thanks to Scheme JavaScript has [first-class
+   functions][functional]. Whereas anonymous functions in Scheme are
+   introduced by lambda-expressions, in JavaScript you can just omit the name
+   of the function to create an anonymous function.
+
+   ```Scheme
+   (let ([f (lambda (x y) (+ x y))])
+     f); #<procedure:f>
+   ```
+
+   ```JavaScript
+   function(x, y) { return x + y; };
+   f; // [Function]
+   ```
+
+   It's also possible to assign a function to a variable.
+
+   ```JavaScript
+   var f = function(x, y) { return x + y; };
+   ```
+
+   Q: Is this equivalent to the function declaration syntax seen in
+      #[variables-functions]?
+
+   A: In most cases it is, but not always, see the following examples:
+
+      ```JavaScript
+      var z = x() + 1;
+      var x = function() { return 10; };
+      z; // TypeError: x is not a function
+      ```
+      ```JavaScript
+      var z = x() + 1;
+      function x() { return 10; };
+      z; // 11
+      ```
+
+      In the first example, `x` is called before it is defined. In the second
+      example `x` is also defined after it is called, but using the other
+      syntax for function definitions, resulting in a correct result.
+
+      The reason for this difference was mentioned in #[line-by-line] and will
+      also be covered in #[hoisting].
+
+      > [..] all variables in the current scope are initialised to `undefined`
+         and *all functions are initialised with pointers to their locations* in
+         memory [..]
+
+   ## Strings & regular expressions ##
+
+   Like most scripting languages, but unlike C and Java, strings can be
+   delimited with single (`''`) or double quotes (`""`). This comes in handy
+   when constructing HTML, in which attributes appear between double quotes,
+   from strings.
+
+   Regular expressions have a literal syntax in JavaScript, which is also
+   typical of a scripting language.
+
+   ```JavaScript
+   'Wubwobwab'.replace(/([aou])b/g, '$1p$1');
+   // Wupuwopowapa
+   ```

@@ -46,6 +46,11 @@ var entries = [
         retrieved: 'November 3, 2012',
         url: 'http://en.wikipedia.org/wiki/ECMAScript_syntax'
     }),
+    new Wikipedia('JSSyntax', {
+        title: 'JavaScript Syntax',
+        retrieved: 'November 13, 2012',
+        url: 'http://en.wikipedia.org/wiki/JavaScript_syntax'
+    }),
     new Wikipedia('PrototypeBProg', {
         title: 'Prototype-based programming',
         retrieved: 'November 1, 2012',

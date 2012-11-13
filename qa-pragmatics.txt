@@ -121,9 +121,10 @@ A: This plethora of implementations makes it hard to discuss /the/
 
 ## Components of a JavaScript engine ##
 
-Q: Got it. Now back to the engine. What are its most important components?
+Q: Why the term 'engine', why not just 'runtime' or 'interpreter'?
 
-A: A JavaScript engine usually consists of the following parts:
+A: A JavaScript engine comprises multiple parts, not just a 'runtime' or
+   'interpreter'. It usually consists of the following parts:
 
    * A base compiler or interpreter: parses the JavaScript<foot>Parsing is
      also often done as late as possible, i.e. just in time, to keep the
@@ -148,7 +149,7 @@ A: A JavaScript engine usually consists of the following parts:
      it is important to understand how the garbage collector works (the same
      is true for the other components).
 
-## Garbage collection ##
+## Garbage collection ##[garbage-collection]
 
 Q: How is garbage collection performed in JavaScript?
 

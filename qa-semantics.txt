@@ -1,6 +1,6 @@
 # Object-oriented programming #
 
-Q: I've heard that JavaScript is an object-oriented language, could you expand
+Q: You said that JavaScript is an object-oriented language, could you expand
    on that?
 
 A: Indeed, JavaScript is object-oriented. Typically, in object-oriented
@@ -45,10 +45,10 @@ A: Indeed, JavaScript is object-oriented. Typically, in object-oriented
    person.walk; // [Function]
    person.walk(); // "Do bi do ... walking, walking, walking"
    ```
+
    This notation of objects is compact, easy to parse and parse, and has
-   become a popular general data-interchange format, called JSON (JavaScript
-   Object Notation).
-   TODO expand on JSON
+   become a popular general data-interchange format, called
+   [JSON][http://www.json.org/] (JavaScript Object Notation).
 
    JavaScript has no separate hash map type. Since objects function as hash
    maps, they are often (ab)used as hash maps. Conflating objects with hash
@@ -987,7 +987,8 @@ A: Of course, OOP is broader than "everything is an object". Most definitions
    well as their state.
 
    By wrapping the code constituting the module in a closure, we prevent it
-   from tainting the global namespace (TODO refer to omission of var).
+   from tainting the global namespace. Forgetting the `var` keyword will still
+   create global variables though, see #[variables-functions].
 
    ```JavaScript
    (function() {
@@ -1091,9 +1092,19 @@ A: Unlike for instance Java, a language people would believe to be akin to
 
       The ability to extend (prototypes of) objects with new properties at
       run-time, the ability to change the prototype of an object at run-time,
-      the way the `arguments`-object works, or even the `eval` function (TODO
-      refer) will make a static type system for JavaScript very complicated,
-      or in the case of `eval`, impossible.
+      the way the `arguments`-object works, or even the `eval` function (see
+      the next paragraph) will make a static type system for JavaScript very
+      complicated, or in the case of `eval`, impossible.
+
+      There is one built-in function present in JavaScript that is impossible
+      to annotate with a useful type signature, `eval`, which comes from Lisp.
+      This function takes a string and evaluates it, effectively parsing and
+      interpreting it.<foot>If someone wanted to statically compile JavaScript
+      *and* include `eval`, a JavaScript interpreter would have to be included
+      in the executable.</foot> The `eval` function is also a security risk
+      and should not be called with input from third-parties. Using `eval` in
+      a program is often frowned upon.<foot>A plausible use of `eval` is to
+      build a REPL (Read-Eval-Print-Loop).</foot>
 
 
    ## Weak typing ##[weak-typing]
@@ -1313,22 +1324,22 @@ A: Unlike for instance Java, a language people would believe to be akin to
 Q: You mentioned that JavaScript has first-class functions, does this mean
    that JavaScript is a functional language?
 
-A: It's true that nearly all, if not all, functional languages support
-   first-class functions, but this alone doesn't make a language functional.
-   Functional programming consists of more than just first-class functions,
-   sometimes it's more about what you /can't/ do<foot>In Haskell, for example,
-   you can't just change the value of a variable.</foot>, or in some cases,
-   what the default is.<foot>Immutable data structures are the default in
-   Scala, but mutable ones are also available.</foot>
+A: It's true that all, functional languages support first-class functions, but
+   this alone doesn't make a language functional. Functional programming
+   consists of more than just first-class functions, sometimes it's more about
+   what you /can't/ do<foot>In Haskell, for example, you can't just change the
+   value of a variable.</foot>, or in some cases, what the default
+   is.<foot>Immutable data structures are the default in Scala, but mutable
+   ones are also available.</foot>
 
    An important tenet of functional programming is the avoidance or isolation
    of side-effects. All forms of state are side-effects. In JavaScript, pretty
    much every accessible variable can be modified, effectively making the
    whole environment /stateful/. It's very common to define and change global
-   variables, even by accident (TODO refer var keyword omission). The
-   properties of objects are mutable by default, including the methods and the
-   prototype. Just like Ruby, JavaScript is a very dynamic language, offering
-   the programmer nearly maximum flexibility, at the cost of the omnipresent
+   variables, even by [accident][variables-functions]. The properties of
+   objects are mutable by default, including the methods and the prototype.
+   Just like Ruby, JavaScript is a very dynamic language, offering the
+   programmer nearly maximum flexibility, at the cost of the omnipresent
    fragility of state.
 
    ## Immutability ##
@@ -1519,7 +1530,10 @@ A: It's true that nearly all, if not all, functional languages support
 
    * [Underscore.js][http://underscorejs.org]
    * [Functional JavaScript][http://osteele.com/sources/javascript/functional/]
-   * [prelude.ls][http://gkz.github.com/prelude-ls/]
+   * [prelude.ls][http://gkz.github.com/prelude-ls/]<foot>This library is
+     actually written in LiveScript, a functional language that compiles to
+     JavaScript, more about such languages in TODO refer compiling to
+     JS.</foot>
 
 
 # Monkey-patching #[monkey-patching]
