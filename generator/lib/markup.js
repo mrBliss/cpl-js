@@ -48,7 +48,7 @@ exports.markup = function(s) {
         .replace(/\*\b([^\*]+)\b\*(?:(\s)|$)/g, '<strong>$1</strong>$2')
         .replace(/(?:^|(\s))\/\b([^\/]+)\b\//g, '$1<em>$2</em>')
         .replace(/\/\b([^\/]+)\b\/(?:(\s|:)|$)/g, '<em>$1</em>$2')
-        .replace(/(\w|>)'(\w)/g, '$1&rsquo;$2')
+        .replace(/(\w|>|\+)'(\w)/g, '$1&rsquo;$2')
         .replace(/'\b/g, '&lsquo;')
         .replace(/'/g, '&rsquo;')
         .replace(/"\b/g, '&ldquo;')
