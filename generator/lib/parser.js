@@ -158,10 +158,12 @@ var HTML = action(indented(seq(between('<html>',
 
 var Question = action(
     seq(count(rep0(ch(' '))),
-        ignored('Q: '),
+        ignored('Q'),
+        opt(seq(Bracketed, Bracketed)),
+        ignored(': '),
         ws(Paragraph)),
     function(arr) {
-        return new el.Question(arr[0], arr[1].text);
+        return new el.Question(arr[0], arr[2].text, arr[1][0], arr[1][1]);
     });
 
 var Answer = action(

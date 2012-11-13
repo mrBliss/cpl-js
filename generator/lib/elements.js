@@ -66,9 +66,13 @@ function HTML(indent, html) {
     this.html = html;
 }
 
-function Question(indent, text) {
+function Question(indent, text, name, label) {
     this.indent = indent;
     this.text = text;
+    if (name && label) {
+        this.name = name;
+        this.label = label;
+    }
 }
 
 function HasContents() {};
@@ -209,7 +213,11 @@ HTML.prototype.toHTML = function() {
 };
 
 Question.prototype.toHTML = function() {
-    return '<div class="question">' + this.text + '</div>';
+    return '<div class="question"' +
+        (this.label
+         ? ' id="' + this.label + '">'
+         : '>')
+         + this.text + '</div>';
 };
 
 Answer.prototype.toHTML = function() {
@@ -245,10 +253,12 @@ Title.prototype.transform = function(t) {
 CodeBlock.prototype.transform = function(t) {
     return this;
 };
+
 ListItem.prototype.transform = function(t) {
     this.text = t(this.text);
     return this;
-}
+};
+
 List.prototype.transform = function(t) {
     for (var i = 0; i < this.items.length; i++) {
         this.items[i].transform(t);

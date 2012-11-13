@@ -266,8 +266,14 @@ exports.testQuestion = function(test) {
     parses(test, parser.Question,
            '     Q: Bladibla\nJos\n',
            {indent: 5, text: 'Bladibla Jos'});
+    parses(test, parser.Question,
+           'Q[Bla][foo]: Bladibla\nJos\n',
+           {indent: 0, text: 'Bladibla Jos',
+            label: 'foo', name: 'Bla'});
     doesntParse(test, parser.Question, 'Q: Foo');
     doesntParse(test, parser.Question, 'Q:Foo');
+    doesntParse(test, parser.Question, 'Q[foo: Bladibla\nJos\n');
+    doesntParse(test, parser.Question, 'Q[foo]: Bladibla\nJos\n');
     test.done();
 };
 

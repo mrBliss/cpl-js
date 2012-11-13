@@ -80,6 +80,9 @@ exports.labelCollector = function(refs, links) {
             if (elem.url) {
                 // LinkDef
                 links[elem.label] = elem.url;
+            } else if (elem.name) {
+                // Question
+                refs[elem.label] = [elem.label, elem.name];
             } else {
                 // Title
                 refs[elem.label] = [elem.anchor(), elem.text];
