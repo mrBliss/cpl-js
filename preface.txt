@@ -5,11 +5,14 @@ with JavaScript, and our group, three 'competent' JavaScript programmers.
 
 Throughout the discussion many code examples will be presented to you. Feel
 free to edit the code. You can even run the code by pressing the 'Evaluate'
-button above the code editor.
+button above the code editor. Besides the conventional shortcuts like
+<kbd>ctrl</kbd> + <kbd>z</kbd> for undo, <kbd>ctrl</kbd> + <kbd>e</kbd>
+evaluates the code example and <kbd>ctrl</kbd> + <kbd>r</kbd> resets the code
+example to its initial contents.
 
 Although JavaScript is a small language, you can do a lot of things with it,
 certainly when combining the small number of powerful features, without even
 touching on the vast ecosystem. Browser-specific parts (the DOM, events,
 etc.), popular frameworks (jQuery, Prototype.js, etc.), community practices
-(TDD, browser testing, etc.), and many other interesting topics aren't
+(testing, code minimisation, etc.), and many other interesting topics aren't
 covered.
