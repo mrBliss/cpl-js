@@ -91,14 +91,14 @@ $(document).ready(function () {
             $pre.replaceWith($div);
             // Store the initial contents of the pre, so we can later reset
             $div.data('initial', pre.innerHTML);
-            var $links = $('a', $tabs);
-            $links.first().click(function (event) {
+            // $('a.ref[href^="#bib-"]')
+            $('a[href="#eval"]', $tabs).click(function(event) {
                 event.preventDefault();
                 var val = codeMirror.getValue();
                 codeMirror.setValue(val + "\n\n// ########\n" + evalJS(val));
                 fixEncoding(codeMirror);
             });
-            $links.last().click(function (event) {
+            $('a[href="#reset"]', $tabs).click(function(event) {
                 event.preventDefault();
                 fixEncoding(codeMirror, $div.data('initial'));
             });
