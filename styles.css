@@ -6,7 +6,7 @@ body{font-family:"Crimson Text",Georgia,serif;font-size:110%;line-height:1.25em;
 a:link{color:#222222;}
 a:hover{color:#474d4d;}
 a:visited{color:#5f6767;}
-div#scroller{position:fixed;top:30%;right:0.5em;max-width:8%;font-size:0.9em;-webkit-border-radius:5px;-moz-border-radius:5px;-ms-border-radius:5px;-o-border-radius:5px;border-radius:5px;background:#ffffff;padding:1em 0.2em;}
+span.to-top{float:right;}span.to-top:nth-of-type(1){display:none;}
 div#header{font-variant:small-caps;margin-bottom:2em;}div#header h1,div#header h2{text-align:center;letter-spacing:0.1em;font-weight:normal;line-height:1.25em;text-shadow:1px 1px 1px #b3b3b3;}
 div#header h1{font-size:3em;}
 div#header h2{font-size:2em;}

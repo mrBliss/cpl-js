@@ -21,9 +21,6 @@
   </head>
 
   <body id="top">
-    <div id="scroller">
-      <a href="#top">&uarr; To top</a>
-    </div>
     <div id="info">
       <div class="leftCol">
         <div id="header">
@@ -31,7 +28,8 @@
           <h2>JavaScript</h2>
         </div>
         <div id="credits">© 2012 Glenn Croes, Philippe De Croock, Thomas Winant</div>
-        <h3 id="preface">Preface</h3>
+        <span class="to-top"><a href="#top">&uarr; To top</a></span>
+<h3 id="preface">Preface</h3>
 <p>The following discussion takes place between a programmer that isn&rsquo;t familiar with JavaScript, and our group, three &lsquo;competent&rsquo; JavaScript programmers.</p>
 <p>Throughout the discussion many code examples will be presented to you. Feel free to edit the code. You can even run the code<span class="footnote">Note that statements, e.g. declarations and assignments, will result in <code>undefined</code> return values. Don&rsquo;t be alarmed when results differ from the predicted outcome, this has to do with the parser, the code printer or sometimes even scoping issues.</span> by pressing the &lsquo;Evaluate&rsquo; button above the code editor. Besides the conventional shortcuts like <kbd>ctrl</kbd> + <kbd>z</kbd> for undo, <kbd>ctrl</kbd> + <kbd>e</kbd> evaluates the code example and <kbd>ctrl</kbd> + <kbd>r</kbd> resets the code example to its initial contents.</p>
 <p>Although JavaScript is a small language, you can do a lot of things with it, certainly when combining the small number of powerful features, without even touching on the vast ecosystem. Browser-specific parts (the DOM, events, etc.), popular frameworks (jQuery, Prototype.js, etc.), community practices (testing, code minimisation, etc.), and many other interesting topics aren&rsquo;t covered.</p>
@@ -125,7 +123,8 @@
     </div>
     <span class="spacer"></span>
 
-    <h3 id="introduction-history">I. Introduction & history</h3>
+    <span class="to-top"><a href="#top">&uarr; To top</a></span>
+<h3 id="introduction-history">I. Introduction & history</h3>
 <div class="question">Which programming language are we talking about today?</div>
 <div class="answer">
 <p>JavaScript, the language of the Internet.</p></div>
@@ -144,6 +143,7 @@
 <div class="question">Why is JavaScript the most popular?</div>
 <div class="answer">
 <p>Unlike other client-side languages like Flash or Java, JavaScript doesn&rsquo;t require a plugin to function.</p></div>
+<span class="to-top"><a href="#top">&uarr; To top</a></span>
 <h4 id="naming-history">I.1. Naming & history</h4>
 <div class="question">Glancing at the name, one can&rsquo;t help but think JavaScript is related to Java. Is JavaScript perhaps the scripting variant of Java?</div>
 <div class="answer">
@@ -158,12 +158,14 @@
 <div class="question">Can you tell me more about the differences between JavaScript and Java?</div>
 <div class="answer">
 <p>JavaScript has <a href="#dynamic-typing">dynamic</a> and <a href="#weak-typing">weak typing</a>, whereas Java is statically and strongly typed. Java programs are compiled to byte-code, while JavaScript is loaded from human-readable source code. JavaScript is <a href="#prototype-based-programming">prototype-based</a> whereas Java is class-based. JavaScript also has support for many higher-level programming features, e.g. <a href="#closures" class="ref">Closures</a>, that are not present in Java. So besides the similar name and syntax,<span class="footnote">JavaScript&rsquo;s small standard library also follows Java&rsquo;s naming conventions, e.g. the <code>Math</code> and the <code>Date</code> objects.</span> Java and JavaScript share very few features. These differences will be discussed in more detail later on.</p></div>
+<span class="to-top"><a href="#top">&uarr; To top</a></span>
 <h4 id="influences">I.2. Influences</h4>
 <div class="question">So if Java is not the main inspiration for JavaScript, is there some other language that was JavaScript&rsquo;s main inspiration? Or was JavaScript unique when it was created?</div>
 <div class="answer">
 <p>If one ignores the syntax and the object-oriented nature, JavaScript is awfully similar to functional languages in the Lisp tradition, particularly Scheme. As a matter of fact, Brendan Eich, the creator of JavaScript, says that he was lured by Netscape promising him to make a Scheme for the browser, see <a href="#bib-11" class="ref"><span class="bib">11</span> Popularity</a>. A short time before, Brendan Eich had developed an interest in the famous <a href="#bib-1" class="ref"><span class="bib">1</span> Structure and Interpretation of Computer Programs</a> book, which presents the tremendous capabilities of a simple functional language, Scheme.</p>
 <p>The main influence of Scheme was the presence of first-class functions in JavaScript, also see <a href="#functional-programming" class="ref">Functional programming</a>. Another similarity with Scheme is the small size of the language, a handful of built-in types, <a href="#closures">closures</a>, &hellip;</p>
 <p>During the &rsquo;90s, when JavaScript was being developed, object-oriented programming was all the rage, so at the time, it was evident that JavaScript had to jump on the OO bandwagon. The object-oriented parts of JavaScript, most notably the presence of prototypes, are borrowed from Self, the programming language that pioneered <a href="#prototype-based-programming">prototype-based programming</a>. Self is a dialect of Smalltalk, according to some people, the true dynamic object-oriented programming language.</p></div>
+<span class="to-top"><a href="#top">&uarr; To top</a></span>
 <h4 id="scripting-language">I.3. Scripting language</h4>
 <div class="question">JavaScript is a scripting language, what does it mean for a language to be a scripting language?</div>
 <div class="answer">
@@ -175,11 +177,13 @@
 <div class="question" id="line-by-line">But when a program is executed linearly, you can&rsquo;t refer to functions and variables that are defined later on in the program? Is this also true for JavaScript?</div>
 <div class="answer">
 <p>Good question! The interpreter actually works in multiple stages: first all variables in the current scope are initialised to <code>undefined</code> and all functions are initialised with pointers to their locations in memory. After some other initialisations, the actual execution starts at the first line of code. This multi-phased approach makes it possible to have forward references in JavaScript. However, this seemingly logical step has some unwanted consequences, see <a href="#variable-hoisting" class="ref">Variable hoisting</a>. For more details on the execution, we refer you to <a href="#bib-22" class="ref"><span class="bib">22</span> What is the Execution Context & Stack in JavaScript?</a>.</p></div></div></div>
+<span class="to-top"><a href="#top">&uarr; To top</a></span>
 <h3 id="syntax">II. Syntax</h3>
 <div class="question">Could you describe JavaScript&rsquo;s syntax?</div>
 <div class="answer">
 <p>As JavaScript syntax is mostly borrowed from C and Java, syntax you are familiar with, we shall only highlight where JavaScript deviates from Java&rsquo;s or C&rsquo;s syntax. Moreover, this document contains a myriad of code examples you can look at to get an idea of what JavaScript code looks like.</p>
 <p>Besides the common keywords like <code>for</code>, <code>if</code>, <code>while</code>, <code>try</code>, <code>new</code>, &hellip; there are a number of <em>future reserved keywords</em> in JavaScript: <code>class</code>, <code>const</code>, <code>enum</code>, <code>export</code>, <code>extends</code>, <code>import</code>, <code>super</code>. These keywords aren&rsquo;t used in JavaScript and probably never will. Identifiers cannot have the same name as a keyword. These keywords are a remnant of Java&rsquo;s influence.</p>
+<span class="to-top"><a href="#top">&uarr; To top</a></span>
 <h4 id="variables-and-functions">II.1. Variables and functions</h4>
 <p>As JavaScript is <a href="#dynamic-typing">dynamically typed</a>, the programmer doesn&rsquo;t have to declare the types of variables or functions. To declare a new variable, prepend the <code>var</code> keyword for the identifier. A function definition is started with the <code>function</code> keyword.</p>
 <pre>function f(x, y) {
@@ -196,6 +200,7 @@ sum; &#x2F;&#x2F; &#39;ReferenceError: sum is not defined&#39; as sum was a loca
 f(3, 4); &#x2F;&#x2F; 7
 sum; &#x2F;&#x2F; 7 (!)</pre>
 <p>Omitting the <code>var</code> keyword will declare the variable as a global! This is a typical pitfall of JavaScript. See <a href="#function-global-scope" class="ref">Function & global scope</a> and <a href="#modularity" class="ref">Modularity</a> for more about the global object and why this is a problem.</p>
+<span class="to-top"><a href="#top">&uarr; To top</a></span>
 <h4 id="anonymous-functions">II.2. Anonymous functions</h4>
 <p>As told in <a href="#influences" class="ref">Influences</a>, thanks to Scheme JavaScript has <a href="#functional-programming">first-class functions</a>. Whereas anonymous functions in Scheme are introduced by lambda-expressions, in JavaScript you can just omit the name of the function to create an anonymous function.</p>
 <pre class="Scheme">(let ([f (lambda (x y) (+ x y))])
@@ -222,6 +227,7 @@ f(); &#x2F;&#x2F; 11</pre>
 <p>In the first example, <code>x</code> is called before it is defined. In the second example <code>x</code> is also defined after it is called, but using the other syntax for function definitions, resulting in a correct result.</p>
 <p>The reason for this difference was mentioned in <a href="#line-by-line" class="ref">line by line execution</a> and will also be covered in <a href="#variable-hoisting" class="ref">Variable hoisting</a>.</p>
 <blockquote>[..] all variables in the current scope are initialised to <code>undefined</code> and <strong>all functions are initialised with pointers to their locations</strong> in memory [..]</blockquote></div>
+<span class="to-top"><a href="#top">&uarr; To top</a></span>
 <h4 id="semicolons">II.3. Semicolons</h4>
 <p>A controversial feature in JavaScript is <em>semicolon insertion</em>. In C and Java, each statement or expression should be terminated with a semicolon, <code>;</code>. In JavaScript, terminating semicolons are optional, they will be inserted by the interpreter if absent. They aren&rsquo;t just inserted willy-nilly after each line, there are rules for this, which aren&rsquo;t that interesting. However, there are some edge cases where semicolon insertion will mess up your program.</p>
 <pre>function f(a, b) {
@@ -245,18 +251,21 @@ var a = 1,
 <p>As you saw in the code sample above, a semicolon would have prevented the problem in the second example, but not in the first. Like indentation width,<span class="footnote">And the famous <a href="http://www.jwz.org/doc/tabs-vs-spaces.html" target="_blank">tabs versus spaces war</a>.</span> semicolons are often considered a question of convention or style.<span class="footnote">Trivial matters often lead to heated discussions, see for example <a href="https://github.com/twitter/bootstrap/issues/3057" target="_blank">this discussion about a single semicolon</a>.</span></p>
 
 </div>
+<span class="to-top"><a href="#top">&uarr; To top</a></span>
 <h4 id="strings-regular-expressions">II.4. Strings & regular expressions</h4>
 <p>Like most scripting languages, but unlike C and Java, strings can be delimited with single (<code>''</code>) or double quotes (<code>""</code>). This comes in handy when constructing HTML, in which attributes appear between double quotes, from strings.</p>
 <p>Regular expressions have a literal syntax in JavaScript, which is also typical of a scripting language.</p>
 <pre>&#39;Wubwobwab&#39;.replace(&#x2F;([aou])b&#x2F;g, &#39;$1p$1&#39;);
 &#x2F;&#x2F; Wupuwopowapa</pre></div>
+<span class="to-top"><a href="#top">&uarr; To top</a></span>
 <h3 id="object-oriented-programming">III. Object-oriented programming</h3>
 <div class="question">You said that JavaScript is an object-oriented language, could you expand on that?</div>
 <div class="answer">
 <p>Indeed, JavaScript is object-oriented. Typically, in object-oriented languages, everything is an object (e.g. Python, Scala, Ruby, Eiffel, &hellip;) In JavaScript this is not the case, there are both objects and primitives. The primitives in JS are numbers, strings, booleans, and the special types null and undefined. The objects include <code>Array</code>, <code>Function</code>, <code>Date</code>, <code>RegExp</code>, <code>Error</code>, &hellip; This design decision, by many people considered a mistake, was carried over from Java.</p>
+<span class="to-top"><a href="#top">&uarr; To top</a></span>
 <h4 id="objects">III.1. Objects</h4>
 <p>Objects in JavaScript are in fact containers of properties, where each property has a name and a value. By assigning a function to a property&rsquo;s value, one can add a method to the object. This demonstrates the importance of the presence of first-class functions. Objects in JavaScript can be compared with untyped hash maps from strings to values from any kind, similar to Python&rsquo;s dicts, Ruby&rsquo;s hashes, &hellip; The name of a property can be any string, but the quotes can be dropped if the name of the property is a valid JavaScript identifier. The quotes are required when the property name is a reserved keyword, an empty string, or other strings not constituting valid JavaScript identifiers.</p>
-<pre>var emptyObject = {};
+<pre data-name="person">var emptyObject = {};
 var person = {
     name: &quot;Erin&quot;,
     age: 28,
@@ -264,7 +273,7 @@ var person = {
     walk: function () { return &quot;Do bi do ... walking, walking, walking&quot;; }
 };</pre>
 <p>Property lookup is done via the <code>.</code> notation. When the property name is not a valid JavaScript identifier, one has to use the bracket notation. Looking up a property of which the value is a function, just returns that function. To actually invoke it, terminate the expression with <code>()</code>.</p>
-<pre>person.name; &#x2F;&#x2F; &quot;Erin&quot;
+<pre data-name="person-usage" data-depends="person">person.name; &#x2F;&#x2F; &quot;Erin&quot;
 person[&quot;place-of-birth&quot;]; &#x2F;&#x2F; &quot;Gibraltar&quot;
 person.walk; &#x2F;&#x2F; [Function]
 person.walk(); &#x2F;&#x2F; &quot;Do bi do ... walking, walking, walking&quot;</pre>
@@ -280,6 +289,7 @@ z[[0]]; &#x2F;&#x2F; 3, as [0].toString() == &#39;0&#39;</pre></div>
 <div class="answer">
 <p>Of course, OOP is broader than &ldquo;everything is an object&rdquo;. Most definitions of object-oriented programming include features such as modularity, encapsulation, polymorphism, inheritance, &hellip;</p>
 <p>JavaScript has support most of them, but differs from other classical OO languages in the implementation of these features. Take for instance inheritance. Classical OO languages mostly feature a class-based inheritance mechanism, whereas JavaScript has prototype-based inheritance. JavaScript often has a different way of doing things compared to other languages, this will be a recurring theme.</p>
+<span class="to-top"><a href="#top">&uarr; To top</a></span>
 <h4 id="prototype-based-programming">III.2. Prototype-based programming</h4>
 <div class="question">What entails prototype-based inheritance?</div>
 <div class="answer">
@@ -335,7 +345,7 @@ b.x; &#x2F;&#x2F; &quot;b&#39;s x&quot;</pre></div>
 <p>For example, you have a bunch of <code>Cat</code> objects, but you want one of the cats, named Dexter, to make a different meow-sound. You can simply change the <code>meow</code> method of Dexter, a single <code>Cat</code> object, without affecting the others, or having to define a new subclass of <code>Cat</code>.</p>
 <p>Having so much control over which fields and methods to <em>inherit</em> allows the programmer to do things not possible in class-based languages without language support, for instance traits can easily be emulated using prototype-based programming. Even classes can be and often are emulated.</p>
 <p>Let&rsquo;s show you how to emulate classes using prototypes:</p>
-<pre>function Car(make) {
+<pre data-name="car">function Car(make) {
     this.make = make;
 };
 Car.prototype.drive = function() {
@@ -361,7 +371,7 @@ mySportsCar.driveFast();
 <p>The steps to create a subclass are often put together in a single function, allowing easy class-based inheritance.</p>
 <p>Traits are also easy to emulate, although we don&rsquo;t have access to the super objects anymore. Abstract members can also be emulated, but will not be checked at compile-time for presence.</p>
 <p>The methods are simply copied over from the trait object to the other object.</p>
-<pre>&#x2F;&#x2F; The Trait we define
+<pre data-name="trait" data-depends="car">&#x2F;&#x2F; The Trait we define
 var HasTires = {
     tiresOk: true,
     puncture: function() {
@@ -382,6 +392,7 @@ mySportsCar.puncture();
 mySportsCar.tiresOk; &#x2F;&#x2F; false</pre>
 <p>Of course, freedom comes with a price. One of the disadvantages are the slower field and method accesses/dispatches and to a lesser extend the memory overhead. Objects cloned from others object don&rsquo;t clone the fields and methods. It would be wasteful to clone this reusable data. Instead, the cloned object keeps track of its prototype. Whenever an inherited field or method of the new object, i.e. a field or method defined in the prototype (or a prototype of the prototype), is accessed, the new object delegates the call to the prototype. This delegation will go on until a definition is found in one of the ancestor prototypes. The longer this <em>chain</em> of prototypes, the costlier a field access or method call.</p>
 <p>Another disadvantage is that it becomes harder to figure out which fields and methods an object has, and where they were defined. When using classes, knowing the class of an object is enough to know which fields and methods an object has (this, of course, includes looking at superclasses). A class functions as the type of the object, but in JavaScript, properties can be added and removed from objects at run-time.</p></div></div>
+<span class="to-top"><a href="#top">&uarr; To top</a></span>
 <h4 id="invoking-functions">III.3. Invoking functions</h4>
 <p>In JavaScript, a function can be invoked in four different ways:</p>
 <ul>
@@ -391,6 +402,7 @@ mySportsCar.tiresOk; &#x2F;&#x2F; false</pre>
 <li>Indirectly through <code>call()</code> or <code>apply()</code></li>
 </ul>
 <p>Functions can behave differently, depending on the kind of invocation. For instance the value of <code>this</code>, will be different. In JavaScript, as in most object-oriented languages, <code>this</code> is a special keyword inside the context of a function that refers the object of which the function is a method, i.e. the owner of the method.</p>
+<span class="to-top"><a href="#top">&uarr; To top</a></span>
 <h5 id="function-invocation">III.3.1. Function invocation</h5>
 <p>Function invocation, is the regular kind of invocation, like you would call functions (or procedures) in C, Haskell, or Lisp, i.e. in a non-OO language.</p>
 <p>For example:</p>
@@ -399,6 +411,7 @@ mySportsCar.tiresOk; &#x2F;&#x2F; false</pre>
 }</pre>
 <p>Functions that don&rsquo;t contain an explicit <code>return</code>-statement, will return <code>undefined</code>, JavaScript&rsquo;s <code>void</code>.</p>
 <p>In the case of a regular function invocation, the value of <code>this</code> will be the global object. See <a href="#function-global-scope" class="ref">Function & global scope</a> and <a href="#modularity" class="ref">Modularity</a> for more about the global object.</p>
+<span class="to-top"><a href="#top">&uarr; To top</a></span>
 <h5 id="method-invocation">III.3.2. Method invocation</h5>
 <p>A function is considered a method when it&rsquo;s the property of an object. The big difference between function and method invocation, is that in the case of method invocation, <code>this</code> will refer to the object on which the method is called, instead of the global object.</p>
 <pre>function f() {
@@ -410,6 +423,7 @@ f(); &#x2F;&#x2F; 1
 &#x2F;&#x2F; Method invocation
 var o = {x: 2, f: f};
 o.f(); &#x2F;&#x2F; 2</pre>
+<span class="to-top"><a href="#top">&uarr; To top</a></span>
 <h5 id="constructor-invocation">III.3.3. Constructor invocation</h5>
 <p>When a function or method invocation is preceded by the <code>new</code> keyword, it is a constructor invocation.</p>
 <p>A few things are different for constructor invocations:</p>
@@ -423,6 +437,7 @@ o.f(); &#x2F;&#x2F; 2</pre>
 <div class="answer">
 <p>The ability to invoke every function as a constructor isn&rsquo;t very useful. The <code>new</code> keyword is rather dangerous, certainly when it&rsquo;s forgotten. Not prepending a constructor call with <code>new</code> will cause the properties defined in the function to be added to the global object instead of a newly created object. A reason for the inclusion of the <code>new</code> keyword is the familiarity from other object-oriented languages. And, of course, there still has to be a way to create a new object.</p>
 </div>
+<span class="to-top"><a href="#top">&uarr; To top</a></span>
 <h5 id="indirect-invocation">III.3.4. Indirect invocation</h5>
 <p>The fourth and final kind of invocation, is indirect invocation. As <code>Function</code>s are also <code>Object</code>s in JavaScript, they can have methods. Two of the available methods of <code>Function</code>s are <code>call</code> and <code>apply</code>.<span class="footnote">For readers familiar with Common Lisp (or a <a href="http://en.wikipedia.org/wiki/Lisp-1_vs._Lisp-2#The_function_namespace" target="_blank">Lisp-2</a> to be more precise), <code>call</code> is JavaScript&rsquo;s <code>funcall</code>. For readers familiar with any Lisp dialect, JavaScript&rsquo;s <code>apply</code> is similar to most Lisp&rsquo;s <code>apply</code>.</span></p>
 <p>The <code>call</code> method is invoked on a function and takes at least one argument, the object to which <code>this</code> will refer in the context of the function. Extra arguments are passed to the function.</p>
@@ -448,6 +463,7 @@ Person.prototype.introduce = function() {
 &#x2F;&#x2F; invocation.
 var car = {name: &#39;Mater&#39;, town: &#39;Radiator Springs&#39;};
 Person.prototype.introduce.call(car);</pre></div>
+<span class="to-top"><a href="#top">&uarr; To top</a></span>
 <h4 id="encapsulation">III.4. Encapsulation</h4>
 <p>Another example of JavaScript&rsquo;s <em>exotic</em> way of doing things is encapsulation. Most classical OO languages support visibility modifiers to control the accessibility of fields and methods by other classes. In JavaScript, there are no such modifiers, but encapsulation is still achievable, via the use of closures.</p>
 <p>Example:</p>
@@ -475,6 +491,7 @@ a.counter; &#x2F;&#x2F; Not visible: undefined</pre>
 <div class="question">What is a closure?</div>
 <div class="answer">
 <p>Before explaining what a closure is, you have to know some things about JavaScript&rsquo;s scoping rules.</p>
+<span class="to-top"><a href="#top">&uarr; To top</a></span>
 <h5 id="function-global-scope">III.4.1. Function & global scope</h5>
 <p>JavaScript&rsquo;s scoping rules differ from common languages like C and Java. In C and Java, curly braces (<code>{&hellip;}</code>) delimit different scopes. The body of a function, a while-loop, a for-loop, a class (in the case of Java), all have a separate scope (known as <em>block scope</em>). In JavaScript, there are only two kinds of scope: the global scope and function scope.</p>
 <p>Let&rsquo;s look at some examples of these differing scoping rules:</p>
@@ -508,6 +525,7 @@ println(a); &#x2F;&#x2F; 3</pre>
     println(x); &#x2F;&#x2F; 10
 })(); &#x2F;&#x2F; This function is invoked immediately after definition
 println(x); &#x2F;&#x2F; 3</pre>
+<span class="to-top"><a href="#top">&uarr; To top</a></span>
 <h5 id="variable-hoisting">III.4.2. Variable hoisting</h5>
 <p>In this intermezzo, another peculiarity of JavaScript&rsquo;s scoping rules is introduced, <em>variable hoisting</em>.</p>
 <pre>var f = function() {
@@ -549,6 +567,7 @@ f();</pre>
 <div class="answer">
 <p>We explained this in the answer to the question about <a href="#line-by-line" class="ref">line by line execution</a>.</p>
 </div>
+<span class="to-top"><a href="#top">&uarr; To top</a></span>
 <h5 id="lexical-dynamic-scope">III.4.3. Lexical & dynamic scope</h5>
 <p>We assume you&rsquo;re already familiar with lexical and dynamic scoping, so we&rsquo;ll quickly glance over it.</p>
 <p>In the case of lexical scoping, functions are invoked in the scope that was active during the definition of the function. In the case of dynamic scoping, functions are invoked in the scope active during the invocation of the function. Let&rsquo;s show difference with an example.</p>
@@ -563,6 +582,7 @@ var z = &#39;dynamic&#39;;
 f(); &#x2F;&#x2F; &#39;lexical&#39; when lexically scoped,
      &#x2F;&#x2F; &#39;dynamic&#39; in the other case</pre>
 <p>JavaScript is lexically scoped, as is Scheme, one of JavaScript&rsquo;s biggest <a href="#influences">influences</a>. The return value of <code>f</code> in the example above will be &lsquo;lexical&rsquo;.</p>
+<span class="to-top"><a href="#top">&uarr; To top</a></span>
 <h5 id="closures">III.4.4. Closures</h5>
 <p>Let&rsquo;s have another look of the example that we showed you to demonstrate encapsulation.</p>
 <pre>var a = (function () {
@@ -602,6 +622,7 @@ closures[1](); &#x2F;&#x2F; 1</pre></div>
 <p>Actually, one could call it <em>emulating</em> encapsulation via closures. Because of the absence of built-in encapsulation via visibility-modifiers, JavaScript programmers are required to implement encapsulation manually via closures. So one could call it a disadvantage of JavaScript, although some people argue against encapsulation.</p>
 <p>With closures, the programmer has more control over encapsulation, but has to do more work to achieve it.</p>
 </div>
+<span class="to-top"><a href="#top">&uarr; To top</a></span>
 <h4 id="polymorphism">III.5. Polymorphism</h4>
 <p>Polymorphism in JavaScript is achieved through inheritance or duck typing.</p>
 <p>Example of polymorphism through inheritance:</p>
@@ -655,6 +676,7 @@ for (var i = 0; i &lt; animals.length; i++) {
 <div class="question">You mentioned that one can <em>override</em> a method in JavaScript, is it also possible to <em>overload</em> a method in JavaScript?</div>
 <div class="answer">
 <p>To be clear, a method (or function) overloads another method if it has the same name, but differs in the number of arguments or the types of the expected arguments. The right method to call is chosen statically, at compile-time. Overloading is a feature typically present in statically typed languages. With JavaScript being a dynamically typed language, the compile-time resolution that determines which method to call is ruled out, as the types are not known in advance.</p>
+<span class="to-top"><a href="#top">&uarr; To top</a></span>
 <h4 id="function-arguments">III.6. Function arguments</h4>
 <p>Overloading based on arity is possible in dynamically typed languages, but not in JavaScript. The reason being that JavaScript doesn&rsquo;t check whether a function is called with the correct number of arguments. JavaScript will happily allow you to call a function expecting two arguments with 0, 1, 2, 3, &hellip; arguments. Missing arguments will be <code>undefined</code>. JavaScript also allows you to access the excess arguments via the <code>arguments</code> object. The <code>arguments</code> object is a local variable accessible within all functions. It is similar to an Array, but not quite the same. The elements of <code>arguments</code> can be accessed, and it has the <code>length</code>-property, but the other methods available for <code>Array</code>s cannot be used on the <code>arguments</code> object. One can convert the <code>arguments</code> object to an actual array, by calling <code>Array</code>&rsquo;s <code>slice</code>-method on it, like so: <code>var args = Array.prototype.slice.call(arguments);</code>.<span class="footnote">The <code>slice</code>-method of <code>Array</code> copies the elements into a new array, it optionally takes start- and end-indexes. See <a href="#indirect-invocation" class="ref">Indirect invocation</a> for more about the <code>call</code>-method.</span></p>
 <div class="question">What&rsquo;s the point of this <code>arguments</code> object? And why isn&rsquo;t it a proper <code>Array</code>?</div>
@@ -724,10 +746,11 @@ overloaded(1, &quot;foo&quot;);
 &#x2F;&#x2F; A number and a string</pre>
 <p>These <code>return</code>-statements could of course be replaced with different blocks of code, specific for each case.</p>
 <p>Of course, doing this resolution at run-time has a negative impact on the performance.</p></div>
+<span class="to-top"><a href="#top">&uarr; To top</a></span>
 <h4 id="modularity">III.7. Modularity</h4>
 <p>An important cornerstone of object-oriented programming is code reuse. In order to reuse code, it&rsquo;s helpful, or rather often, of paramount importance to organise code into modular components. We&rsquo;ll use the term <em>module</em> for such a modular component. Such modules should provide a clear interface of the offered functionality, as well as the required functionality.</p>
 <p>Modules often function as a namespace, take for example a look at Java, where packages or classes act as modules.</p>
-<p>Originally, JavaScript was intended to augment static web pages with little scripts, making the page more dynamic. JavaScript was designed with this goal in mind. Little scripts don&rsquo;t need namespaces, packages, or modules. They were often thrown together in a single file. As we saw in <a href="#function-global-scope" class="ref">Function & global scope</a>, variables and functions defined outside the context of a function, become global variables. Every script executed on a web page executes in the same context, the global object. This object is directly accessible via the <code>window</code> variable, the name of this object immediately reveals JavaScript tight coupling with the browser. All globals are properties of this <code>window</code> object.</p>
+<p>Originally, JavaScript was intended to augment static web pages with little scripts, making the page more dynamic. JavaScript was designed with this goal in mind. Little scripts don&rsquo;t need namespaces, packages, or modules. They were often thrown together in a single file. As we saw in <a href="#function-global-scope" class="ref">Function & global scope</a>, variables and functions defined outside the context of a function, become global variables. Every script executed on a web page executes in the same context, the global object. This object is directly accessible via the <code>window</code> variable, the name of this object immediately reveals JavaScript tight coupling with the browser. All globals are properties of this <code>window</code> object.<span class="footnote">When evaluating the code example below, the results will differ from the predicted outcome, because the code example isn&rsquo;t executed in the global scope.</span></p>
 <pre>var x = 3;
 x; &#x2F;&#x2F; 3
 window.x; &#x2F;&#x2F; 3</pre>
@@ -744,7 +767,7 @@ window.x; &#x2F;&#x2F; 3</pre>
 })();
 f(x); &#x2F;&#x2F; ReferenceError: f is not defined</pre>
 <p>Currently, the functionality of our module is only accessible inside the module. The next thing to do is to export the functionality so it can be used by other modules. This is accomplished by letting the closure return an object containing the exported variables and functions. This object acts as a namespace for the exported functionality of the module. These namespace can be nested, by embedding other namespace objects inside them.</p>
-<pre>var myModule = (function() {
+<pre data-name="myModule">var myModule = (function() {
     var module = {};
     module.x = 3;
     var _privateVar = 1; &#x2F;&#x2F; Not exported
@@ -755,7 +778,7 @@ f(x); &#x2F;&#x2F; ReferenceError: f is not defined</pre>
 })();
 myModule.f(myModule.x); &#x2F;&#x2F; 9</pre>
 <p>To use functionality from other modules, we just pass the module object as an argument to the closure.</p>
-<pre>var otherModule = (function(m) {
+<pre data-name="otherModule" data-depends="myModule">var otherModule = (function(m) {
     var module = {};
     module.f = function(a) { return m.f(a) * a; };
     return module;
@@ -769,6 +792,7 @@ exports.f = function(a) { return x + a; };
 &#x2F;&#x2F; File b.js
 var a = require(&#39;a.js&#39;);
 a.f(5); &#x2F;&#x2F; 8</pre></div>
+<span class="to-top"><a href="#top">&uarr; To top</a></span>
 <h3 id="dynamic-typing">IV. Dynamic typing</h3>
 <div class="question">What kind of typing discipline does JavaScript have?</div>
 <div class="answer">
@@ -781,6 +805,7 @@ a.f(5); &#x2F;&#x2F; 8</pre></div>
 <p>Even though static typing has many advantages, like better documentation, the elimination of type errors at run-time,<span class="footnote">Most (static) type systems are actually unsound and cannot guarantee a program is well-typed in all of the cases. For instance <em>casting</em> in Java and C is a totally unsafe operation. Even Haskell, a language with an advanced type system, has an unsafe function that bypasses the type system: <code>unsafePerformIO</code>.</span> correct auto completion of identifiers during development, &hellip; it would be very hard to make JavaScript statically typed.</p>
 <p>The ability to extend (prototypes of) objects with new properties at run-time, the ability to change the prototype of an object at run-time, the way the <code>arguments</code>-object works, or even the <code>eval</code> function (see the next paragraph) will make a static type system for JavaScript very complicated, or in the case of <code>eval</code>, impossible.</p>
 <p>There is one built-in function present in JavaScript that is impossible to annotate with a useful type signature, <code>eval</code>, which comes from Lisp. This function takes a string and evaluates it, effectively parsing and interpreting it.<span class="footnote">If someone wanted to statically compile JavaScript <strong>and</strong> include <code>eval</code>, a JavaScript interpreter would have to be included in the executable.</span> The <code>eval</code> function is also a security risk and should not be called with input from third-parties. Using <code>eval</code> in a program is often frowned upon.<span class="footnote">A plausible use of <code>eval</code> is to build a REPL (Read-Eval-Print-Loop).</span></p></div>
+<span class="to-top"><a href="#top">&uarr; To top</a></span>
 <h4 id="weak-typing">IV.1. Weak typing</h4>
 <p>JavaScript&rsquo;s type system is also <em>weakly</em> typed. The opposite of weak typing is, <em>strong</em> typing. In weakly typed programs, types can be implicitly converted to other types, whereas these conversion have to be done explicitly in strongly typed language.</p>
 <p>An example will make it much clearer:</p>
@@ -805,6 +830,7 @@ Integer.parseInt(&quot;12&quot;) * 3; &#x2F;&#x2F; 36</pre>
 <p>TODO ^^ doesn&rsquo;t work properly in the browser</p>
 <p>This is the downside of these conversions, you have to know when they will occur and which conversion will occur for which types. Looking at the examples, you will probably agree that these rules aren&rsquo;t really intuitive.</p>
 </div>
+<span class="to-top"><a href="#top">&uarr; To top</a></span>
 <h4 id="equality">IV.2. Equality</h4>
 <p>Like most programming languages, JavaScript has a <code>==</code> operator to check whether two values are equal, its inverse, <code>!=</code> is also present. JavaScript also has another operator that checks whether two values are equal, <code>===</code>, and of course, its inverse, <code>!==</code>. The latter operator, <code>===</code>, is also called the <em>strict</em> equality or <em>identity</em> operator. The two operators define <em>equality</em> in a different manner.</p>
 <p>The strict equality operator, <code>===</code>, compares two values as follows:</p>
@@ -835,6 +861,7 @@ Integer.parseInt(&quot;12&quot;) * 3; &#x2F;&#x2F; 36</pre>
 <p>And the following table illustrates the rules of the non-strict equality operator, <code>==</code>.</p>
 <table class="comparisons" id="equality-table"></table>
 <p>Tables adapted from <a href="https://github.com/dorey/JavaScript-Equality-Table" target="_blank">dorey&rsquo;s JavaScript-Equality-Table</a>.</p>
+<span class="to-top"><a href="#top">&uarr; To top</a></span>
 <h4 id="-undefined-null-">IV.3. <code>undefined</code> & <code>null</code></h4>
 <p>Most (object-oriented) languages have a special value, <code>null</code>, a.k.a. the <em>null pointer</em>, which is used to indicate the absence of a value. Whenever a variable is expected to be a pointer or an object, i.e. has a reference type, it can contain the <code>null</code> value, meaning that the variable has no value. This null pointer is the cause of many errors, as the programmer should verify whether a reference isn&rsquo;t a null pointer before using it.<span class="footnote">C.A.R. Hoare, the inventor of the null reference, calls it his &ldquo;billion-dollar mistake&rdquo;.</span><span class="footnote">A safer alternative is a nullable type, like Haskell&rsquo;s <code>Maybe</code> type or Scala&rsquo;s <code>Option</code> type.</span></p>
 <p>Allowing null pointers in a language is commonly regarded as a source of problems. Of course, JavaScript can do better than this, it has two different special values that are essentially null pointers! The first one is <code>null</code>, the regular null pointer, which indicates the absence of a value. <code>null</code> is a special keyword in the JavaScript. The second one is <code>undefined</code> indicates that a value is not initialised, e.g. the value of missing parameters, undefined methods, missing properties of an <code>Object</code>, missing elements of an <code>Array</code>. In older versions of JavaScript <code>undefined</code> was a global value, which could even be changed! Changing the value of the global <code>undefined</code> value could break whole programs. Luckily, this mistake was corrected in later versions. The type of <code>null</code> is <code>object</code>, in a way, this makes sense, because <code>null</code> takes the place of an absent <code>object</code>. The type of <code>undefined</code> is <code>undefined</code>.</p>
@@ -842,6 +869,7 @@ Integer.parseInt(&quot;12&quot;) * 3; &#x2F;&#x2F; 36</pre>
 <div class="answer">
 <p>It&rsquo;s hard to conceive of a convincing argument for a separation between the two. Here&rsquo;s the one Douglas Crockford makes in <a href="#bib-7" class="ref"><span class="bib">7</span> JavaScript: The Good Parts</a>:</p>
 <blockquote>You might consider <code>undefined</code> to represent a system-level, unexpected, or error-like absence of value and <code>null</code> to represent program-level, normal, or expected absence of value. If you need to assign one of these values to a variable or property or pass one of these values to a function, <code>null</code> is almost always the right choice.<br><span class="cite">&mdash;<a href="#bib-7">Douglas Crockford</a></span></blockquote></div>
+<span class="to-top"><a href="#top">&uarr; To top</a></span>
 <h4 id="truthiness-and-falsiness">IV.4. Truthiness and falsiness</h4>
 <p>JavaScript has a <code>boolean</code> type of which there exist two values, <code>true</code> and <code>false</code>. These two values, or expressions that evaluate to one of them can be used as conditions of an if-statement, or any other <em>boolean context</em>.<span class="footnote">Expressions used as operands of a boolean operator are also in a boolean context, e.g. <code>1 && true == true</code>.</span> In JavaScript, values of all types can, not just boolean, can be used in a boolean context. All values can be converted to a boolean, depending on the <em>truthiness</em> or <em>falsiness</em> of the value. All values are considered to be <em>truthy</em>, including <code>Object</code>s, <code>Array</code>s, numbers, except for the following list of values which are <em>falsy</em>:</p>
 <ul>
@@ -865,11 +893,13 @@ Integer.parseInt(&quot;12&quot;) * 3; &#x2F;&#x2F; 36</pre>
 g(4, 5); &#x2F;&#x2F; 9
 g(4, 0); &#x2F;&#x2F; -1</pre>
 <p>The programmer could have had the following behaviour in mind when writing the function <code>g</code> in the example above: &ldquo;when both arguments are non-<code>null</code> and also not <code>undefined</code>, return the sum of them.&rdquo; This, of course, will not function correctly as <code>0</code>, a falsy number, will fail the check. You can see that it&rsquo;s easy to overlook this subtlety.</p></div></div>
+<span class="to-top"><a href="#top">&uarr; To top</a></span>
 <h3 id="functional-programming">V. Functional programming</h3>
 <div class="question">You mentioned that JavaScript has first-class functions, does this mean that JavaScript is a functional language?</div>
 <div class="answer">
 <p>It&rsquo;s true that all, functional languages support first-class functions, but this alone doesn&rsquo;t make a language functional. Functional programming consists of more than just first-class functions, sometimes it&rsquo;s more about what you <em>can&rsquo;t</em> do<span class="footnote">In Haskell, for example, you can&rsquo;t just change the value of a variable.</span>, or in some cases, what the default is.<span class="footnote">Immutable data structures are the default in Scala, but mutable ones are also available.</span></p>
 <p>An important tenet of functional programming is the avoidance or isolation of side-effects. All forms of state are side-effects. In JavaScript, pretty much every accessible variable can be modified, effectively making the whole environment <em>stateful</em>. It&rsquo;s very common to define and change global variables, even by <a href="#variables-and-functions">accident</a>. The properties of objects are mutable by default, including the methods and the prototype. Just like Ruby, JavaScript is a very dynamic language, offering the programmer nearly maximum flexibility, at the cost of the omnipresent fragility of state.</p>
+<span class="to-top"><a href="#top">&uarr; To top</a></span>
 <h4 id="immutability">V.1. Immutability</h4>
 <p>An important tool to minimise the presence of state in a program is the use of immutable data structures, instead of mutable ones, which are inherently stateful. Rather than modifying the data structure in-place, a new copy of the data structure is made with the desired modifications.<span class="footnote">Copying the whole data structure for every change is of course costly. Luckily, efficient immutable data structures exist, for example the <em>hash array mapped trie</em>, invented by the late Phill Bagwell. See <a href="#bib-16" class="ref"><span class="bib">16</span> Purely Functional Data Structures</a>, for more such data structures.</span></p>
 <p>It might come as a surprise, but in JavaScript, properties can be made immutable. As you will see, this requires a lot more effort. This clearly indicates the language designer&rsquo;s intention, to discourage users from using the feature.</p>
@@ -886,11 +916,12 @@ g(4, 0); &#x2F;&#x2F; -1</pre>
  obj.x; &#x2F;&#x2F; 1</pre>
 <p>You can still assign a new value to the property, it just won&rsquo;t have any effect. Of course, this in now way comes close to Haskell&rsquo;s, Scala&rsquo;s or Clojure&rsquo;s immutable data structures.</p>
 <p>In JavaScript 1.8.5, there is a new method available for <code>Object</code>s, called <code>freeze</code>, which effectively makes an object immutable.</p>
+<span class="to-top"><a href="#top">&uarr; To top</a></span>
 <h4 id="higher-order-functions-recursion-lists">V.2. Higher-order functions, recursion & lists</h4>
 <p>If there even was an accepted definition of functional programming, JavaScript probably wouldn&rsquo;t satisfy the requirements, but this won&rsquo;t prevent programmers from writing JavaScript programs in a functional style. JavaScript is in fact a multi-paradigm language, that supports object-oriented, functional, and imperative styles. Thanks to Scheme&rsquo;s influence, JavaScript is equipped with first-class functions, which allow the programmer to write some of the typical higher-order functions that are almost invariably present in a functional language.</p>
 <p>Disclaimer: the following functions are in no way optimised or robust enough for general use, they just serve to illustrate programming in a functional style.</p>
 <p>Let&rsquo;s start off with some primitives, they should be familiar to programmers that have dabbled in Lisp or Haskell.</p>
-<pre>&#x2F;&#x2F; Make a list with x as head and xs as tail
+<pre data-name="func-primitives">&#x2F;&#x2F; Make a list with x as head and xs as tail
 var cons = function(x, xs) {
     &#x2F;&#x2F; Make a copy of xs
     var xs2 = xs.slice(0);
@@ -910,7 +941,7 @@ var isEmpty = function(xs) {
     return xs.length == 0;
 };</pre>
 <p>Using these primitives, we can easily define our first <em>higher-order function</em>. A higher-order function is a function that takes a function as an argument, or returns a function. The function defined below, <code>map</code> takes two arguments: a function <code>f</code> and an array <code>xs</code>. <code>map</code> will apply <code>f</code> to every element in <code>xs</code> and return a new array containing the return values of these applications.</p>
-<pre>var map = function(f, xs) {
+<pre data-name="map" data-depends="func-primitives">var map = function(f, xs) {
     if (isEmpty(xs))
         return [];
     else
@@ -942,6 +973,7 @@ function add(x, y) { return x + y; };
 var inc = add.partial(1);
 inc(2); &#x2F;&#x2F; 3</pre>
 <p>The example was taken from <a href="#bib-23" class="ref"><span class="bib">23</span> Functional Programming in JavaScript</a>.</p>
+<span class="to-top"><a href="#top">&uarr; To top</a></span>
 <h4 id="libraries">V.3. Libraries</h4>
 <p>As demonstrated in the previous section, programming in a functional style is certainly possible in JavaScript. Numerous programmers have discovered this and have even made libraries providing functions that promote programming in a functional style. Here are some interesting ones:</p>
 <ul>
@@ -949,6 +981,7 @@ inc(2); &#x2F;&#x2F; 3</pre>
 <li><a href="http://osteele.com/sources/javascript/functional/" target="_blank">Functional JavaScript</a></li>
 <li><a href="http://gkz.github.com/prelude-ls/" target="_blank">prelude.ls</a><span class="footnote">This library is actually written in LiveScript, a functional language that compiles to JavaScript, more about such languages in <a href="#compiling-to-javascript" class="ref">Compiling to JavaScript</a></span></li>
 </ul></div>
+<span class="to-top"><a href="#top">&uarr; To top</a></span>
 <h3 id="monkey-patching">VI. Monkey-patching</h3>
 <div class="question">When talking about JavaScript&rsquo;s dynamic nature, you said JavaScript was comparable to Ruby in this aspect. Does JavaScript also support monkey patching?</div>
 <div class="answer">
@@ -1020,6 +1053,7 @@ delete Array.prototype.last; &#x2F;&#x2F; the delete operator deletes a property
 <div class="question">Given the pitfalls just listed, is monkey patching still encouraged in JavaScript or rather frowned upon?</div>
 <div class="answer">
 <p>If done with care and for the right reasons, monkey patching is a defensible solution. Fixing a bug in a third-party library could be a valid reason, provided that the monkey patch will only be applied to faulty versions of the library.</p></div></div>
+<span class="to-top"><a href="#top">&uarr; To top</a></span>
 <h3 id="implementation">VII. Implementation</h3>
 <div class="question">How is JavaScript implemented?</div>
 <div class="answer">
@@ -1027,6 +1061,7 @@ delete Array.prototype.last; &#x2F;&#x2F; the delete operator deletes a property
 <div class="question">That&rsquo;s a lot of engines. What do they have in common?</div>
 <div class="answer">
 <p>This plethora of implementations makes it hard to discuss <em>the</em> implementation of JavaScript. Most engines do have quite a few components in common. Most (if not all) of them execute JavaScript code using JIT (Just-In-Time) compilation. Let&rsquo;s delve a bit into the concept of JIT compilation before continuing the discussion on the most common parts of a JavaScript engine.</p>
+<span class="to-top"><a href="#top">&uarr; To top</a></span>
 <h4 id="just-in-time-compilation">VII.1. Just-in-time compilation</h4>
 <div class="question">Ok, what exactly is JIT compilation?</div>
 <div class="answer">
@@ -1041,10 +1076,11 @@ delete Array.prototype.last; &#x2F;&#x2F; the delete operator deletes a property
 <div class="answer">
 <p>A common goal of all JIT techniques is to reach or surpass the performance of static compilation while maintaining the advantages of interpretation. JIT compilation generally out-performs code interpretation by far (because of compiler-level optimisations). However, it may not be immediately clear how JIT compilation can be faster than static compilation. After all, a static compiler can analyse the entire program, compile and optimise it in its entirety (and has all the time to do so!). However, here are some reasons a JIT compiler has over a static compiler:</p>
 <ul>
-<li>The JIT compiler can optimise for the targeted processor architecture and operating system. For example, SSE2 or another more advanced instruction set can be used when available. To obtain this effect with astatic compiler, one must either compile multiple versions (one with, one without SSE2) of the same program, or include multiple versions of the same code in the compiled program (<code>if SSE2 &hellip; else &hellip;</code>).</li>
+<li>The JIT compiler can optimise for the targeted processor architecture and operating system. For example, SSE2 or another more advanced instruction set can be used when available. To obtain this effect with a&nbsp;static compiler, one must either compile multiple versions (one with, one without SSE2) of the same program, or include multiple versions of the same code in the compiled program (<code>if SSE2 &hellip; else &hellip;</code>).</li>
 <li>The system can collect information about how the program is currently running in the environment, and optimise code accordingly. For example, when a particular piece of code is <em>very hot</em>, the JIT compiler can perform extra optimisations on just this piece of code, whereas a static compiler must choose between performing these optimisations on the whole program, or not at all. Performing these optimisations on the whole program is often very time-consuming.</li>
 <li>Improvements in compiler technology affect existing programs. A better C&nbsp;compiler will not improve performance of C&nbsp;programs that have already been deployed. However, when a better JavaScript compiler is released, it will improve the performance of existing programs.</li>
 </ul></div></div>
+<span class="to-top"><a href="#top">&uarr; To top</a></span>
 <h4 id="components-of-a-javascript-engine">VII.2. Components of a JavaScript engine</h4>
 <div class="question">Why the term &lsquo;engine&rsquo;, why not just &lsquo;runtime&rsquo; or &lsquo;interpreter&rsquo;?</div>
 <div class="answer">
@@ -1057,6 +1093,7 @@ delete Array.prototype.last; &#x2F;&#x2F; the delete operator deletes a property
 <li>Some engines support <em>deoptimization</em>: if the assumptions made about optimised code prove to be too optimistic, the optimised code can be <em>degenerated</em>. This is referred to as a <em>bail-out</em>.</li>
 <li>A garbage collector: manages memory allocation, reclaims memory that is no longer being used. Ideally, the programmer should not need to worry about memory management. However, to write performant and clean programs, it is important to understand how the garbage collector works (the same is true for the other components).</li>
 </ul></div>
+<span class="to-top"><a href="#top">&uarr; To top</a></span>
 <h4 id="garbage-collection">VII.3. Garbage collection</h4>
 <div class="question">How is garbage collection performed in JavaScript?</div>
 <div class="answer">
@@ -1071,10 +1108,12 @@ delete Array.prototype.last; &#x2F;&#x2F; the delete operator deletes a property
 <div class="question">Can garbage collection be forced?</div>
 <div class="answer">
 <p>It&rsquo;s not possible to explicitly force garbage collection in JavaScript. Some programmers try to force this anyway by the use of the <code>delete</code> operator. <code>delete</code> was originally intended to remove values from a map, i.e. an object. One should avoid using <code>delete</code> to try and force memory deallocation. JavaScript engines tend to optimise objects behind the scenes and changing the structure of an object manually can force deoptimisation of an object. Another misconception among programmers is that setting an object reference to <code>null</code> implies that the object is deleted from memory, <em>nulled out</em>). This is not true. Only the reference is set to <code>null</code>, the object still lives in memory until it is garbage collected. If the reference you set to <code>null</code> was the last reference, the object will be garbage collected, otherwise it will remain in memory. The only way to manage memory efficiently in JavaScript is to scope your variables properly. Once variables fall out of scope, they will be garbage collected. So it is key to scope your variables as locally as possible. Also, try to avoid global variables. They are <strong>never</strong> garbage collected and will exist for the entire lifetime of your application, or, in case of web browsers, as long as the page is open.</p></div>
+<span class="to-top"><a href="#top">&uarr; To top</a></span>
 <h4 id="representations">VII.4. Representations</h4>
 <div class="question">Can you tell me some other interesting things about JavaScript engines?</div>
 <div class="answer">
 <p>Actually, in JavaScript <code>Object</code>s, <code>Array</code>s and <code>Number</code>s are all represented in a peculiar and sometimes rather inefficient fashion.</p>
+<span class="to-top"><a href="#top">&uarr; To top</a></span>
 <h5 id="numbers">VII.4.1. Numbers</h5>
 <p>For example, the JavaScript standard declares that a JavaScript <code>Number</code> is actually a 64-bit floating point value, following the IEEE 754 standard. As <code>Number</code> is the only numeric type of JavaScript, this means that JavaScript doesn&rsquo;t support numbers represented by integers.</p>
 <div class="question">Why only one type of numbers and why floating point numbers?</div>
@@ -1088,9 +1127,11 @@ delete Array.prototype.last; &#x2F;&#x2F; the delete operator deletes a property
 <p>What would be rather problematic is that some of the numbers that aren&rsquo;t representable could be integral numbers. Adding, using floating point arithmetic, two integral numbers that sum to a number that is not exactly representable as a floating point number, would result in an incorrect result. Because the standard requires integral number whose magnitude is no greater than 2<sup>53</sup> to be representable, programmers can do calculations with a safe heart, as long as they stay within these bounds. As integers and longs have often respectively 2<sup>31</sup>&nbsp;-&nbsp;1 and 2<sup>63</sup>&nbsp;-&nbsp;1 as maximum magnitudes, JavaScript has correct integral numbers up to a magnitude that lies between the common long&rsquo;s and integer&rsquo;s magnitude.</p></div>
 <p>It seems rather wasteful to reserve 64 bits for all numbers, however small they might turn out to be, like the majority of loop indexes. Some operations might also prove to be faster on integers than on floating point numbers.</p>
 <p>Many JavaScript engines try to figure whether a numeric value will remain integral or become a floating point number at some point. When the engine has concluded that a number will remain integral for its lifetime, it will be represented by an integer. Or V8 might try to represent the number as an integer for as long as it can, eventually converting it to a floating point number. V8 will for example represent most loop indices by integers.</p>
+<span class="to-top"><a href="#top">&uarr; To top</a></span>
 <h5 id="objects">VII.4.2. Objects</h5>
 <p>As we already mentioned a couple of times, objects in JavaScript are equivalent to hash maps with strings as keys. Performing a lookup in a hash map is, of course, much slower than directly accessing a field of a struct or an object, whose fields or instance variables are located at fixed offsets.</p>
 <p>The V8 engine optimises property lookup in the following way: instead of representing the object as a hash map, it represents it as a <em>hidden class</em> with the properties as fields, offering fast lookup times. When a property is added at a later stage, another hidden class is created which will contain the new property, the original class will be updated to refer to the new class whenever the newly added property is accessed. See <a href="#bib-44" class="ref"><span class="bib">44</span> V8 Design Elements</a> for more details.</p>
+<span class="to-top"><a href="#top">&uarr; To top</a></span>
 <h5 id="arrays">VII.4.3. Arrays</h5>
 <p>Another peculiarity of JavaScript is the way <code>Array</code>s are implemented. As an <code>Array</code> is an object, properties can be added and removed. Have a look at the following interactions with an array:</p>
 <pre>var a = [1, 2, 3];
@@ -1116,18 +1157,21 @@ a[1]; &#x2F;&#x2F; undefined</pre>
 <div class="question">It seems like the <code>Object</code>s, <code>Array</code>s, and <code>Number</code>s are all designed without performance in mind. If we combine this with the dynamic nature, JavaScript must be very slow language. Is this the case?</div>
 <div class="answer">
 <p>The dynamic nature of JavaScript indeed hinders optimisations like inlining. As almost everything can be changed at run-time, including methods and inheritance relations, it is very difficult to optimise JavaScript. But as we mentioned, most JavaScript engines have become very good at optimising JavaScript via the use of JIT compilation. <code>Object</code>s, <code>Array</code>s, and <code>Number</code>s can often be represented by a more optimal format. If the programmer sticks to some guidelines, like keeping <code>Array</code>s contiguous, not adding properties to <code>Object</code>s after creating them, not changing the type of a variable, i.e. limiting the dynamic nature of JavaScript, JavaScript can be efficiently executed.</p>
+<span class="to-top"><a href="#top">&uarr; To top</a></span>
 <h4 id="benchmarks">VII.5. Benchmarks</h4>
 <p>Let&rsquo;s have a look at some performance benchmarks. Keep in mind that it&rsquo;s very difficult to benchmark programming languages. These benchmarks are often unfair as the program used in the benchmark will differ from language to language in the degree of optimisation. Programs written for a benchmark are seldomly written in idiomatic style, and will be optimised much more than real world programs. Benchmarks rarely are an accurate yardstick to measure performance of a programming language for real word programs. But they can give you an idea of the raw speed a programming language can achieve when properly optimised.<span class="footnote">Keep in mind that making a programming language or a program faster is the same as decreasing the number of instructions to be executed to accomplish the same results.</span></p>
 <img src="img/alioth.png" alt="benchmark" title="Benchmark results" width="400" height="300" />
-<p>The results show that in this benchmark C++ is the fastest language,<span class="footnote">This will be surprising to most programmers, but again, this benchmark is not representative for all programs. It could be caused by the aggressive inlining that is done for C++.</span> next comes C, then Java, Common Lisp, Haskell, OCaml, <em>JavaScript</em> (using Google&rsquo;s V8 engine), Smalltalk, PHP, Ruby, Python, and finally Perl. What is remarkable is that except for Common Lisp, JavaScript is the fastest dynamicly typed language. Common Lisp has existed for a much longer time than JavaScript, thus giving more time for compiler writers to optimise. Languages like Ruby, Perl, Python and Smalltalk are all older than JavaScript and have the same dynamic nature, but still prove to be an order of magnitude slower than JavaScript.</p>
+<p>The results show that in this benchmark C++ is the fastest language,<span class="footnote">Most programmers expect C to be the fastest, but again, this benchmark is not representative for all programs. It could be caused by the aggressive inlining that is done by C++ compilers.</span> next comes C, then Java, Common Lisp, Haskell, OCaml, <em>JavaScript</em> (using Google&rsquo;s V8 engine), Smalltalk, PHP, Ruby, Python, and finally Perl. What is remarkable is that except for Common Lisp, JavaScript is the fastest dynamicly typed language. Common Lisp has existed for a much longer time than JavaScript, thus giving more time for compiler writers to optimise. Languages like Ruby, Perl, Python and Smalltalk are all older than JavaScript and have the same dynamic nature, but still prove to be an order of magnitude slower than JavaScript.</p>
 <div class="question">How come JavaScript seems to be much faster than the other dynamic languages?</div>
 <div class="answer">
 <p>A lot of man-hours have been invested in optimising JavaScript engines, as JavaScript is the lingua franca of the web, and will not be going away any time soon. Every browser contains a JavaScript engine, and one of the ways to lure users over, as the browser market is a competitive one, is to have a faster browser. A performant JavaScript engine is a big part of this. This is actually an example of the free market principles: competition pushes companies, in this case Mozilla, Google, Microsoft, &hellip; to improve their product, the browser, in order to win over customers.</p></div></div></div>
+<span class="to-top"><a href="#top">&uarr; To top</a></span>
 <h4 id="concurrency-parallelism">VII.6. Concurrency & parallelism</h4>
 <div class="question">What kind of concurrency model does JavaScript have?</div>
 <div class="answer">
 <p>Being intended as a quick and easy scripting language for a web browser, JavaScript didn&rsquo;t come equipped with support for threads or other concurrency primitives. Each JavaScript program in the web browser is executed by a single thread.</p>
 <p>In web browsers it is very common for a user to interact with a page via events, e.g. clicking on an item or typing some text. These events are handled asynchronously. They are all put together in a single queue and are handled sequentially. A callback can be bound to an event. A callback is a function/closure passed as an argument that will be invoked whenever the associated event is triggered, see <a href="#callback-hell" class="ref">Callback hell</a>. This is another area where the presence of first-class functions in JavaScript comes in handy.</p>
+<span class="to-top"><a href="#top">&uarr; To top</a></span>
 <h5 id="node-js">VII.6.1. Node.js</h5>
 <p>This event-driven model actually inspired Ryan Dahl to create Node.js, a server-side version of JavaScript.<span class="footnote">With Node.js you can run JavaScript programs outside the web browser, like regular programs.</span> He combined Google&rsquo;s V8 JavaScript engine with a self-written C&nbsp;library libuv that implements non-blocking I/O, based on events. Node.js is intended to write scalable Internet applications, primarily web servers which are particularly event-driven.</p>
 <p>The premise of Node.js is that by performing all I/O operations asynchronously and minimising computations, the application will scale. Node.js programs are single-threaded. The program thread will continuously process incoming events that are triggered by completed I/O operations or incoming requests. Because of the minimal amount of computation, these events can be handled very quickly, allowing a larger number of concurrent operations, as most time is spent waiting on the I/O anyway.</p>
@@ -1137,10 +1181,11 @@ a[1]; &#x2F;&#x2F; undefined</pre>
 <p>The event-driven model is still suitable for event-driven programs with non-blocking I/O, such as web servers, the application Node.js&rsquo;s was originally intended for.</p>
 
 </div>
+<span class="to-top"><a href="#top">&uarr; To top</a></span>
 <h5 id="callback-hell">VII.6.2. Callback hell</h5>
 <p>When doing synchronous I/O, the program can be written in typical imperative style. However, when doing I/O asynchronously, programs can no longer be written as sequences of instructions where each instruction can refer to results of previous instructions. Asynchronous operations are performed in the background while the program continues execution. It&rsquo;s obvious that the next statement in the program cannot simply use the result of previously started asynchronous I/O operations, as they are performed in the background. To use such a result, we would have to wait for the asynchronous I/O operation to complete, which essentially makes the program blocking, i.e. synchronous again.</p>
 <p>The solution to this problem is to put the code to be executed after the asynchronous I/O operation completes inside a function, a callback, essentially a <em>continuation</em>. This function will then be executed when the result of the I/O operation is available. Compare the synchronous program below with the asynchronous one.</p>
-<pre>&#x2F;&#x2F; Synchronous, blocking program
+<pre class="NodeJS">&#x2F;&#x2F; Synchronous, blocking program
 var x = longSyncComputation();
 var y = slowSyncFileRead(x);
 var z = largeSyncFileDownload(y);
@@ -1154,6 +1199,7 @@ longAsyncComputation(function(x) {
     });
 });</pre>
 <p>You can already see that the latter example requires much more code and is harder to read. The nesting will keep increasing for every I/O operation you wish to perform. This phenomenon is called <em>callback hell</em>. Callbacks force the programmer to manually transform his program to continuation passing style. <a href="https://github.com/joyent/node/wiki/modules#wiki-async-flow" target="_blank">Various libraries</a> exist to ease the pain. Programmers familiar with <em>monads</em> will see an excellent opportunity to apply monads. A notation similar to Haskell&rsquo;s <code>do</code>-syntax or Scala&rsquo;s <code>for</code>-expressions would make the code readable again and resemble the synchronous variant. Lisp macros are also a viable option.<span class="footnote">See <a href="#bib-15" class="ref"><span class="bib">15</span> Escaping Callback Hell with ClojureScript macros</a>, a blog post about writing a macro to solve callback hell in ClojureScript, a variant of the Clojure programming language that compiles to JavaScript. Also see <a href="#compiling-to-javascript" class="ref">Compiling to JavaScript</a>.</span></p></div>
+<span class="to-top"><a href="#top">&uarr; To top</a></span>
 <h3 id="compiling-to-javascript">VIII. Compiling to JavaScript</h3>
 <p>In the last decade the Internet has grown enormously. More and more people use the Internet more and more. Web 2.0<span class="footnote">Web 2.0 stands for the rise of social media and the importance of user-generated content, e.g. social networks, video sharing, blogs, wikis, and all kinds of web applications.</span> applications have become more powerful and advanced. As the size of these web applications, in essence JavaScript programs, increased, it became more and more obvious that JavaScript isn&rsquo;t suited for building large programs, and never was intended for that purpose anyway.</p>
 <p>Many features targeted at managing increasing complexity are absent in JavaScript, or have to be emulated by the programmer. We have discussed many of them: the lack of static types, emulating <a href="#modularity" class="ref">Modularity</a>, emulating classes via prototypes, &hellip;</p>
@@ -1189,6 +1235,7 @@ longAsyncComputation(function(x) {
 
 
 
+<span class="to-top"><a href="#top">&uarr; To top</a></span>
 <h3 id="closing-thoughts">Closing thoughts</h3>
 <p>Most programmers know JavaScript as a weird and ugly language, used to hack together little scripts to enhance web pages. When encountered with some of JavaScript&rsquo;s unfortunate design choices (<a href="#semicolons">semicolon insertion</a>, <a href="#-undefined-null-">undefined & null</a>, &hellip;) programmers&rsquo; perception only evolves further in the negative direction.<span class="footnote">Also see <a href="#bib-8" class="ref"><span class="bib">8</span> JavaScript: The World's Most Misunderstood Programming Language</a>.</span></p>
 <p>But when taking a longer look at the language, the good parts start to shine through: first-class functions, closures, prototypes, &hellip;<span class="footnote">Funnily enough (or not?), the three enumerated features are all <a href="#influences">borrowed from other languages</a>.</span> Combined, they provide the programmer great power.</p>

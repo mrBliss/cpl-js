@@ -155,8 +155,11 @@ Paragraph.prototype.toHTML = function() {
 };
 
 Title.prototype.toHTML = function() {
-    var hLevel = this.level + 2;
-    return '<h' + hLevel +' id="' + this.anchor()
+    var hLevel = this.level + 2,
+        scroller = '<span class="to-top">'
+            + '<a href="#top">&uarr; To top</a></span>\n';
+
+    return scroller + '<h' + hLevel +' id="' + this.anchor()
         + '">' + (this.unnumbered ? '' : this.number + ' ') +
         this.text + '</h' + hLevel + '>';
 };

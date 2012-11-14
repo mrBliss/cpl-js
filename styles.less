@@ -45,15 +45,11 @@ a {
     }
 }
 
-div#scroller {
-    position: fixed;
-    top: 30%;
-    right: 0.5em;
-    max-width: 8%;
-    font-size: 0.9em;
-    .rounded-corners(5px);
-    background: @bg;
-    padding: 1em 0.2em;
+span.to-top {
+    float: right;
+    &:nth-of-type(1) {
+        display: none;
+    }
 }
 
 div#header {
@@ -123,7 +119,6 @@ div#toc {
     margin-bottom: 2em;
     clear: both;
 }
-
 h3 {
     padding: 0.5em 1em 0.2em 1em;
     font-size: 2em;
