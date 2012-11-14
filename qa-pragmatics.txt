@@ -301,7 +301,7 @@ A: Actually, in JavaScript `Object`s, `Array`s and `Number`s are all
    // sparse array.
    delete a[1];
    a; // [1, , 3]
-   a.length; // 2
+   a.length; // 3
    a[1]; // undefined
    ```
 

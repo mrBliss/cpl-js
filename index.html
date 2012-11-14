@@ -33,7 +33,7 @@
         <div id="credits">© 2012 Glenn Croes, Philippe De Croock, Thomas Winant</div>
         <h3 id="preface">Preface</h3>
 <p>The following discussion takes place between a programmer that isn&rsquo;t familiar with JavaScript, and our group, three &lsquo;competent&rsquo; JavaScript programmers.</p>
-<p>Throughout the discussion many code examples will be presented to you. Feel free to edit the code. You can even run the code by pressing the &lsquo;Evaluate&rsquo; button above the code editor. Besides the conventional shortcuts like <kbd>ctrl</kbd> + <kbd>z</kbd> for undo, <kbd>ctrl</kbd> + <kbd>e</kbd> evaluates the code example and <kbd>ctrl</kbd> + <kbd>r</kbd> resets the code example to its initial contents.</p>
+<p>Throughout the discussion many code examples will be presented to you. Feel free to edit the code. You can even run the code<span class="footnote">Note that statements, e.g. declarations and assignments, will result in <code>undefined</code> return values. Don&rsquo;t be alarmed when results differ from the predicted outcome, this has to do with the parser, the code printer or sometimes even scoping issues.</span> by pressing the &lsquo;Evaluate&rsquo; button above the code editor. Besides the conventional shortcuts like <kbd>ctrl</kbd> + <kbd>z</kbd> for undo, <kbd>ctrl</kbd> + <kbd>e</kbd> evaluates the code example and <kbd>ctrl</kbd> + <kbd>r</kbd> resets the code example to its initial contents.</p>
 <p>Although JavaScript is a small language, you can do a lot of things with it, certainly when combining the small number of powerful features, without even touching on the vast ecosystem. Browser-specific parts (the DOM, events, etc.), popular frameworks (jQuery, Prototype.js, etc.), community practices (testing, code minimisation, etc.), and many other interesting topics aren&rsquo;t covered.</p>
       </div>
       <div id="toc" class="rightCol">
@@ -200,36 +200,43 @@ sum; &#x2F;&#x2F; 7 (!)</pre>
 <p>As told in <a href="#influences" class="ref">Influences</a>, thanks to Scheme JavaScript has <a href="#functional-programming">first-class functions</a>. Whereas anonymous functions in Scheme are introduced by lambda-expressions, in JavaScript you can just omit the name of the function to create an anonymous function.</p>
 <pre class="Scheme">(let ([f (lambda (x y) (+ x y))])
   f); #&lt;procedure:f&gt;</pre>
-<pre>function(x, y) { return x + y; };
+<pre>function f(x, y) { return x + y; }
 f; &#x2F;&#x2F; [Function]</pre>
 <p>It&rsquo;s also possible to assign a function to a variable.</p>
 <pre>var f = function(x, y) { return x + y; };</pre>
 <div class="question">Is this equivalent to the function declaration syntax seen in <a href="#variables-and-functions" class="ref">Variables and functions</a>?</div>
 <div class="answer">
 <p>In most cases it is, but not always, see the following examples:</p>
-<pre>var z = x() + 1;
-var x = function() { return 10; };
-z; &#x2F;&#x2F; TypeError: x is not a function</pre>
-<pre>var z = x() + 1;
-function x() { return 10; };
-z; &#x2F;&#x2F; 11</pre>
+<pre>function f() {
+    var z = x() + 1;
+    var x = function() { return 10; };
+    return z;
+}
+f();  &#x2F;&#x2F; TypeError: x is not a function</pre>
+<pre>function f() {
+    var z = x() + 1;
+    function x() { return 10; };
+    return z;
+}
+f(); &#x2F;&#x2F; 11</pre>
 <p>In the first example, <code>x</code> is called before it is defined. In the second example <code>x</code> is also defined after it is called, but using the other syntax for function definitions, resulting in a correct result.</p>
 <p>The reason for this difference was mentioned in <a href="#line-by-line" class="ref">line by line execution</a> and will also be covered in <a href="#variable-hoisting" class="ref">Variable hoisting</a>.</p>
 <blockquote>[..] all variables in the current scope are initialised to <code>undefined</code> and <strong>all functions are initialised with pointers to their locations</strong> in memory [..]</blockquote></div>
 <h4 id="semicolons">II.3. Semicolons</h4>
-<p>A controversial feature in JavaScript is <em>semicolon insertion</em>. In C and Java, each statement or expression should be terminated with a semicolon, `;&rsquo;. In JavaScript, terminating semicolons are optional, they will be inserted by the interpreter if absent. They aren&rsquo;t just inserted willy-nilly after each line, there are rules for this, which aren&rsquo;t that interesting. However, there are some edge cases where semicolon insertion will mess up your program.</p>
+<p>A controversial feature in JavaScript is <em>semicolon insertion</em>. In C and Java, each statement or expression should be terminated with a semicolon, <code>;</code>. In JavaScript, terminating semicolons are optional, they will be inserted by the interpreter if absent. They aren&rsquo;t just inserted willy-nilly after each line, there are rules for this, which aren&rsquo;t that interesting. However, there are some edge cases where semicolon insertion will mess up your program.</p>
 <pre>function f(a, b) {
     return
     a + b;
 }
-f(1, 2);
-&#x2F;&#x2F; Returns undefined. Treated as:
+f(1, 2); &#x2F;&#x2F; undefined
+&#x2F;&#x2F; Treated as:
 &#x2F;&#x2F;   return;
 &#x2F;&#x2F;   a + b;
+
 &#x2F;&#x2F; But:
 var a = 1,
     b = a
-(1 + 1).toString()
+(1 + 1).toString() &#x2F;&#x2F; TypeError: a is not a function
 &#x2F;&#x2F; Treated as:
 &#x2F;&#x2F;   b = a(1 + 1).toString();</pre>
 <p>Source: <a href="#bib-34" class="ref"><span class="bib">34</span> JavaScript Syntax</a></p>
@@ -459,18 +466,18 @@ a.counter; &#x2F;&#x2F; Error: not visible!
     var counter = 0;
     return {
         inc: function() {
-            counter++;
+            return ++counter;
         },
     };
 })();
-a.inc(); &#x2F;&#x2F; OK
-a.counter; &#x2F;&#x2F; Error: not visible!</pre>
+a.inc(); &#x2F;&#x2F; 1
+a.counter; &#x2F;&#x2F; Not visible: undefined</pre>
 <div class="question">What is a closure?</div>
 <div class="answer">
 <p>Before explaining what a closure is, you have to know some things about JavaScript&rsquo;s scoping rules.</p>
 <h5 id="function-global-scope">III.4.1. Function & global scope</h5>
 <p>JavaScript&rsquo;s scoping rules differ from common languages like C and Java. In C and Java, curly braces (<code>{&hellip;}</code>) delimit different scopes. The body of a function, a while-loop, a for-loop, a class (in the case of Java), all have a separate scope (known as <em>block scope</em>). In JavaScript, there are only two kinds of scope: the global scope and function scope.</p>
-<p>Let&rsquo;s see some examples of these differing scoping rules</p>
+<p>Let&rsquo;s look at some examples of these differing scoping rules:</p>
 <pre class="Java">for (int i = 0; i &lt; 10; i++) {
     &#x2F;&#x2F; ...
 }
@@ -498,7 +505,7 @@ println(a); &#x2F;&#x2F; 3</pre>
 <pre>var x = 3;
 (function() {
     var x = 10;
-    &#x2F;&#x2F; x = 10
+    println(x); &#x2F;&#x2F; 10
 })(); &#x2F;&#x2F; This function is invoked immediately after definition
 println(x); &#x2F;&#x2F; 3</pre>
 <h5 id="variable-hoisting">III.4.2. Variable hoisting</h5>
@@ -562,12 +569,12 @@ f(); &#x2F;&#x2F; &#39;lexical&#39; when lexically scoped,
     var counter = 0;
     return {
         inc: function() {
-            counter++;
+            return ++counter;
         },
     };
 })();
-a.inc(); &#x2F;&#x2F; OK
-a.counter; &#x2F;&#x2F; Error: not visible!</pre>
+a.inc(); &#x2F;&#x2F; 1
+a.counter; &#x2F;&#x2F; Not visible: undefined</pre>
 <p>As JavaScript is lexically scoped, functions have to capture the scope that was active during their definition. Essentially, what happens is that all variables defined in a scope outside the defined function but referenced from within the scope of the function, known as <em>free variables</em>, have to be captured. In the example above, the function defined on line 4 references a variable <code>counter</code> (line 5), that was defined in another scope (line 2). The free variables are <em>closed</em>-over, they are <em>captured</em> by the closure. One can think of a closure as a pair of a function, i.e. code, and its environment, i.e. data.</p>
 <p>Encapsulation can be achieved by defining the variables meant to be private in a function (scope) A, and defining a new function B within A, that references these variables. The closure of function B will capture these private variables. By holding onto function B, but discarding function (scope) A, only B will be able to access these private variable,<span class="footnote">Unless function B leaks them via its properties.</span> effectively achieving encapsulation.</p>
 <p>The following example<span class="footnote">Taken from the <a href="http://www.dartlang.org/docs/dart-up-and-running/ch02.html#for-loops" target="_blank">Dart Language Tour</a>.</span> demonstrates a common pitfall with closures (and scope) in JavaScript:</p>
@@ -786,13 +793,13 @@ Integer.parseInt(&quot;12&quot;) * 3; &#x2F;&#x2F; 36</pre>
 <p>In the example above, it indeed seems useful. This is not always the case. It&rsquo;s not always obvious when a conversion and which conversion will occur. Take the following example:</p>
 <pre>(&#39;10&#39; - 1) * 2; &#x2F;&#x2F; 18 = 9 * 2
 (&#39;10&#39; + 1) * 2; &#x2F;&#x2F; 202 = 101 * 2</pre>
-<p><code>Object</code>s and <code>Array</code>s can also cause some odd interactions:</p>
-<pre>[] + 1; &#x2F;&#x2F; &quot;1&quot;
-{} + 1; &#x2F;&#x2F; 1
-[] + []; &#x2F;&#x2F; &quot;&quot;
-[] + {}; &#x2F;&#x2F; &quot;[object Object]&quot;
-{} + []; &#x2F;&#x2F; 0
-{} + {}; &#x2F;&#x2F; NaN</pre>
+<p><code>Object</code>s and <code>Array</code>s can also cause some odd interactions:<span class="footnote">It&rsquo;s possible that the results after pressing `Evaluate&rsquo; don&rsquo;t match the expected outcome, this is because of the parser and code printer.</span></p>
+<pre>([] + 1); &#x2F;&#x2F; &quot;1&quot;
+({} + 1); &#x2F;&#x2F; 1
+([] + []); &#x2F;&#x2F; &quot;&quot;
+([] + {}); &#x2F;&#x2F; &quot;[object Object]&quot;
+({} + []); &#x2F;&#x2F; 0
+({} + {}); &#x2F;&#x2F; NaN</pre>
 <p>Source: <a href="https://www.destroyallsoftware.com/talks/wat" target="_blank">Gary Bernhardt&rsquo;s talk, &ldquo;WAT&rdquo;</a></p>
 
 <p>TODO ^^ doesn&rsquo;t work properly in the browser</p>
@@ -993,13 +1000,12 @@ Object.prototype.merge = function(obj) {
 <ul>
 <li>Patching a method in a single place will affect the whole program, which can cause some unintended behaviour. However, it is possible to revert or remove the monkey patched methods after using them.<span class="footnote">Users familiar with Lisp macros will see in the example below a perfect opportunity for a <code>with-patches</code> macro. The application and removal and the patches should be put in a try- and a finally-clause respectively.</span></li>
 </ul>
-<pre>[1, 2, 3].last(); &#x2F;&#x2F; no method &#39;last&#39;
-Array.prototype.last = function() {
+<pre>Array.prototype.last = function() {
     return this[this.length - 1];
 };
 [1, 2, 3].last(); &#x2F;&#x2F; 3
 delete Array.prototype.last; &#x2F;&#x2F; the delete operator deletes a property
-[1, 2, 3].last(); &#x2F;&#x2F; no method &#39;last&#39;</pre>
+[1, 2, 3].last(); &#x2F;&#x2F; last is not a function</pre>
 <ul>
 <li>When a single method is monkey patched in two different places in your program, it&rsquo;s not always clear which monkey patch <em>wins</em>.</li>
 </ul>
@@ -1102,7 +1108,7 @@ a[&#39;0&#39;]; &#x2F;&#x2F; 1
 &#x2F;&#x2F; sparse array.
 delete a[1];
 a; &#x2F;&#x2F; [1, , 3]
-a.length; &#x2F;&#x2F; 2
+a.length; &#x2F;&#x2F; 3
 a[1]; &#x2F;&#x2F; undefined</pre>
 <p>An <code>Array</code> is in fact implemented as an <code>Object</code>, the indices are just the keys. And because the keys of an object must be strings, they are first converted to a string.</p>
 <p>In most languages array accesses can be performed in constant time. Let&rsquo;s compare an array lookup in JavaScript with an array lookup in the C&nbsp;programming language. Array accesses in other languages are often implemented similar to C. In C, accessing an element <code>x</code> in array <code>a</code> at index <code>i</code> is equivalent to accessing a memory location of which the address is determined by adding <code>i</code> to <code>a</code>, which is actually a pointer. On most computer architectures, this can be achieved with one instruction.</p>

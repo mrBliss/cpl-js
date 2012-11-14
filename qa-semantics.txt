@@ -461,12 +461,12 @@ A: Of course, OOP is broader than "everything is an object". Most definitions
        var counter = 0;
        return {
            inc: function() {
-               counter++;
+               return ++counter;
            },
        };
    })();
-   a.inc(); // OK
-   a.counter; // Error: not visible!
+   a.inc(); // 1
+   a.counter; // Not visible: undefined
    ```
 
 
@@ -483,7 +483,7 @@ A: Of course, OOP is broader than "everything is an object". Most definitions
       all have a separate scope (known as /block scope/). In JavaScript, there
       are only two kinds of scope: the global scope and function scope.
 
-      Let's see some examples of these differing scoping rules
+      Let's look at some examples of these differing scoping rules:
 
       ```Java
       for (int i = 0; i < 10; i++) {
@@ -523,7 +523,7 @@ A: Of course, OOP is broader than "everything is an object". Most definitions
       var x = 3;
       (function() {
           var x = 10;
-          // x = 10
+          println(x); // 10
       })(); // This function is invoked immediately after definition
       println(x); // 3
       ```
@@ -638,12 +638,12 @@ A: Of course, OOP is broader than "everything is an object". Most definitions
           var counter = 0;
           return {
               inc: function() {
-                  counter++;
+                  return ++counter;
               },
           };
       })();
-      a.inc(); // OK
-      a.counter; // Error: not visible!
+      a.inc(); // 1
+      a.counter; // Not visible: undefined
       ```
 
       As JavaScript is lexically scoped, functions have to capture the scope
@@ -1140,15 +1140,18 @@ A: Unlike for instance Java, a language people would believe to be akin to
       ('10' + 1) * 2; // 202 = 101 * 2
       ```
 
-      `Object`s and `Array`s can also cause some odd interactions:
+      `Object`s and `Array`s can also cause some odd interactions:<foot>It's
+      possible that the results after pressing `Evaluate' don't match the
+      expected outcome, this is because of the parser and code printer.</foot>
+
 
       ```JavaScript
-      [] + 1; // "1"
-      {} + 1; // 1
-      [] + []; // ""
-      [] + {}; // "[object Object]"
-      {} + []; // 0
-      {} + {}; // NaN
+      ([] + 1); // "1"
+      ({} + 1); // 1
+      ([] + []); // ""
+      ([] + {}); // "[object Object]"
+      ({} + []); // 0
+      ({} + {}); // NaN
       ```
 
       Source: [Gary Bernhardt's talk, "WAT"][wat]
@@ -1628,13 +1631,12 @@ A: Yes, it's also possible do monkey patching in JavaScript. In Ruby, classes
         finally-clause respectively.</foot>
 
         ```JavaScript
-        [1, 2, 3].last(); // no method 'last'
         Array.prototype.last = function() {
             return this[this.length - 1];
         };
         [1, 2, 3].last(); // 3
         delete Array.prototype.last; // the delete operator deletes a property
-        [1, 2, 3].last(); // no method 'last'
+        [1, 2, 3].last(); // last is not a function
         ```
 
       * When a single method is monkey patched in two different places in your

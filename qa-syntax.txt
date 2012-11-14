@@ -58,7 +58,7 @@ A: As JavaScript syntax is mostly borrowed from C and Java, syntax you are
    ```
 
    ```JavaScript
-   function(x, y) { return x + y; };
+   function f(x, y) { return x + y; }
    f; // [Function]
    ```
 
@@ -74,14 +74,20 @@ A: As JavaScript syntax is mostly borrowed from C and Java, syntax you are
    A: In most cases it is, but not always, see the following examples:
 
       ```JavaScript
-      var z = x() + 1;
-      var x = function() { return 10; };
-      z; // TypeError: x is not a function
+      function f() {
+          var z = x() + 1;
+          var x = function() { return 10; };
+          return z;
+      }
+      f();  // TypeError: x is not a function
       ```
       ```JavaScript
-      var z = x() + 1;
-      function x() { return 10; };
-      z; // 11
+      function f() {
+          var z = x() + 1;
+          function x() { return 10; };
+          return z;
+      }
+      f(); // 11
       ```
 
       In the first example, `x` is called before it is defined. In the second
@@ -99,7 +105,7 @@ A: As JavaScript syntax is mostly borrowed from C and Java, syntax you are
 
    A controversial feature in JavaScript is /semicolon insertion/. In C and
    Java, each statement or expression should be terminated with a semicolon,
-   `;'. In JavaScript, terminating semicolons are optional, they will be
+   `;`. In JavaScript, terminating semicolons are optional, they will be
    inserted by the interpreter if absent. They aren't just inserted
    willy-nilly after each line, there are rules for this, which aren't that
    interesting. However, there are some edge cases where semicolon insertion
@@ -110,14 +116,15 @@ A: As JavaScript syntax is mostly borrowed from C and Java, syntax you are
        return
        a + b;
    }
-   f(1, 2);
-   // Returns undefined. Treated as:
+   f(1, 2); // undefined
+   // Treated as:
    //   return;
    //   a + b;
+
    // But:
    var a = 1,
        b = a
-   (1 + 1).toString()
+   (1 + 1).toString() // TypeError: a is not a function
    // Treated as:
    //   b = a(1 + 1).toString();
    ```
