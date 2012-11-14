@@ -23,19 +23,38 @@ $(document).ready(function () {
          message instead of the return value.
          */
         try {
-            var ast = parseJs.parse(sourceCode).splice(1)[0];
-            var outputs = ast.map(function(astNode) {
-                [astNode].unshift("toplevel");
+            var ast = parseJs.parse(sourceCode).splice(1)[0],
+                exprs = ast.map(function(astNode) {
+                    [astNode].unshift("toplevel");
+                    return process.gen_code(astNode, false);
+                }),
+                output = '';
+            // Is sometimes used in code samples
+            function println(x) {
+                output += x + '\n';
+            }
+            // We can't use map for this, as the anonymous function causes
+            // every expression to be executed in a separate scope,
+            // preventing the use of previous definitions.
+            while (exprs.length > 0) {
                 try {
-                    return "// " + eval(process.gen_code(astNode,
-                                                         false));
+                    var evaluated = eval(exprs.shift());
+                    // Don't print out full functions
+                    if (evaluated && evaluated.toString().match(/function\s/)) {
+                        evaluated = evaluated.toString().split('\n')[0] + ' ..';
+                    }
+                    output += evaluated + '\n';
                 } catch (err) {
-                    return "// Eval error: " + err.message;
+                    output += err.name + ': ' + err.message + '\n';
                 }
-            });
-            return outputs.join("\n");
+            }
+            // Comment out each line
+            return output.split(/\n/g).map(function(line) {
+                return '// ' + line;
+            }).join('\n');
+
         } catch (err) {
-            return "// Invalid input: " + err.message;
+            return '// Invalid input: ' + err.message + '\n';
         };
     }
     function fixEncoding(cm, text) {
@@ -76,7 +95,7 @@ $(document).ready(function () {
             $links.first().click(function (event) {
                 event.preventDefault();
                 var val = codeMirror.getValue();
-                codeMirror.setValue(val + "\n" + evalJS(val));
+                codeMirror.setValue(val + "\n\n// ########\n" + evalJS(val));
                 fixEncoding(codeMirror);
             });
             $links.last().click(function (event) {
