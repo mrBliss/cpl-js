@@ -103,7 +103,7 @@ A: This plethora of implementations makes it hard to discuss /the/
       * The JIT compiler can optimise for the targeted processor architecture
         and operating system. For example, SSE2 or another more advanced
         instruction set can be used when available. To obtain this effect with
-        a static compiler, one must either compile multiple versions (one
+        a~static compiler, one must either compile multiple versions (one
         with, one without SSE2) of the same program, or include multiple
         versions of the same code in the compiled program (`if SSE2 ... else
         ...`).
@@ -359,13 +359,13 @@ A: Actually, in JavaScript `Object`s, `Array`s and `Number`s are all
       <html><img src="img/alioth.png" alt="benchmark" title="Benchmark results" width="400" height="300" /></html>
 
       The results show that in this benchmark C++ is the fastest
-      language,<foot>This will be surprising to most programmers, but again,
+      language,<foot>Most programmers expect C to be the fastest, but again,
       this benchmark is not representative for all programs. It could be
-      caused by the aggressive inlining that is done for C++.</foot> next
-      comes C, then Java, Common Lisp, Haskell, OCaml, /JavaScript/ (using
-      Google's V8 engine), Smalltalk, PHP, Ruby, Python, and finally Perl.
-      What is remarkable is that except for Common Lisp, JavaScript is the
-      fastest dynamicly typed language. Common Lisp has existed for a much
+      caused by the aggressive inlining that is done by C++ compilers.</foot>
+      next comes C, then Java, Common Lisp, Haskell, OCaml, /JavaScript/
+      (using Google's V8 engine), Smalltalk, PHP, Ruby, Python, and finally
+      Perl. What is remarkable is that except for Common Lisp, JavaScript is
+      the fastest dynamicly typed language. Common Lisp has existed for a much
       longer time than JavaScript, thus giving more time for compiler writers
       to optimise. Languages like Ruby, Perl, Python and Smalltalk are all
       older than JavaScript and have the same dynamic nature, but still prove
