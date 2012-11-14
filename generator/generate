@@ -1,4 +1,18 @@
 #!/bin/bash
+
+check_lessc() {
+    if type lessc &> /dev/null; then
+        LESSC=lessc
+    else
+        if [ ! -f node_modules/.bin/lessc ]; then
+            echo "Installing less"
+            npm install less
+        fi
+        LESSC=node_modules/.bin/lessc
+    fi
+}
+
 node lib/main.js
-lessc -x ../styles.less > ../styles.css
+check_lessc
+$LESSC -x ../styles.less > ../styles.css
 echo "Generated styles.css"
