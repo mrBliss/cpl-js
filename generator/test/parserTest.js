@@ -107,6 +107,15 @@ exports.testCodeBlock = function(test) {
            '```JavaScript\nBla di bla\n```',
            {indent: 0, lang: 'JavaScript',
             code: 'Bla di bla'});
+    parses(test, parser.CodeBlock,
+           '```JavaScript[foo]\nBla di bla\n```',
+           {indent: 0, lang: 'JavaScript',
+            code: 'Bla di bla', name: 'foo'});
+    parses(test, parser.CodeBlock,
+           '```JavaScript[foo][bar]\nBla di bla\n```',
+           {indent: 0, lang: 'JavaScript',
+            code: 'Bla di bla', name: 'foo',
+            depends: 'bar'});
     var code1 = '    ```JavaScript\n'
             + '    function(x) {\n'
             + '        return x;\n'

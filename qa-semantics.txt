@@ -24,7 +24,7 @@ A: Indeed, JavaScript is object-oriented. Typically, in object-oriented
    is a reserved keyword, an empty string, or other strings not constituting
    valid JavaScript identifiers.
 
-   ```JavaScript
+   ```JavaScript[person]
    var emptyObject = {};
    var person = {
        name: "Erin",
@@ -39,7 +39,7 @@ A: Indeed, JavaScript is object-oriented. Typically, in object-oriented
    up a property of which the value is a function, just returns that function.
    To actually invoke it, terminate the expression with `()`.
 
-   ```JavaScript
+   ```JavaScript[person-usage][person]
    person.name; // "Erin"
    person["place-of-birth"]; // "Gibraltar"
    person.walk; // [Function]
@@ -217,7 +217,7 @@ A: Of course, OOP is broader than "everything is an object". Most definitions
 
          Let's show you how to emulate classes using prototypes:
 
-         ```JavaScript
+         ```JavaScript[car]
          function Car(make) {
              this.make = make;
          };
@@ -253,7 +253,7 @@ A: Of course, OOP is broader than "everything is an object". Most definitions
          The methods are simply copied over from the trait object to the other
          object.
 
-         ```JavaScript
+         ```JavaScript[trait][car]
          // The Trait we define
          var HasTires = {
              tiresOk: true,
@@ -960,7 +960,9 @@ A: Of course, OOP is broader than "everything is an object". Most definitions
    context, the global object. This object is directly accessible via the
    `window` variable, the name of this object immediately reveals JavaScript
    tight coupling with the browser. All globals are properties of this
-   `window` object.
+   `window` object.<foot>When evaluating the code example below, the results
+   will differ from the predicted outcome, because the code example isn't
+   executed in the global scope.</foot>
 
    ```JavaScript
    var x = 3;
@@ -1007,7 +1009,7 @@ A: Of course, OOP is broader than "everything is an object". Most definitions
    as a namespace for the exported functionality of the module. These
    namespace can be nested, by embedding other namespace objects inside them.
 
-   ```JavaScript
+   ```JavaScript[myModule]
    var myModule = (function() {
        var module = {};
        module.x = 3;
@@ -1023,7 +1025,7 @@ A: Of course, OOP is broader than "everything is an object". Most definitions
    To use functionality from other modules, we just pass the module object as
    an argument to the closure.
 
-   ```JavaScript
+   ```JavaScript[otherModule][myModule]
    var otherModule = (function(m) {
        var module = {};
        module.f = function(a) { return m.f(a) * a; };
@@ -1406,7 +1408,7 @@ A: It's true that all, functional languages support first-class functions, but
    Let's start off with some primitives, they should be familiar to
    programmers that have dabbled in Lisp or Haskell.
 
-   ```JavaScript
+   ```JavaScript[func-primitives]
    // Make a list with x as head and xs as tail
    var cons = function(x, xs) {
        // Make a copy of xs
@@ -1435,7 +1437,7 @@ A: It's true that all, functional languages support first-class functions, but
    every element in `xs` and return a new array containing the return values
    of these applications.
 
-   ```JavaScript
+   ```JavaScript[map][func-primitives]
    var map = function(f, xs) {
        if (isEmpty(xs))
            return [];

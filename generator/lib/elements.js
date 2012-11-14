@@ -9,10 +9,12 @@ function Title(indent, level, text, label, unnumbered) {
     if (label) this.label = label;
     if (unnumbered) this.unnumbered = unnumbered;
 }
-function CodeBlock(indent, lang, code) {
+function CodeBlock(indent, lang, code, name, depends) {
     this.indent = indent;
     this.lang = lang;
     this.code = code;
+    if (name) this.name = name;
+    if (depends) this.depends = depends;
 }
 function ListItem(indent, text) {
     this.indent = indent;
@@ -177,8 +179,14 @@ function escapeHTML(html) {
 CodeBlock.prototype.toHTML = function() {
     var className = (this.lang != 'JavaScript'
                      ? ' class="' + this.lang + '"'
-                     : '');
-    return '<pre' + className + '>' + escapeHTML(this.code) + '</pre>';
+                     : ''),
+        name = (this.name
+                ? ' data-name="' + this.name + '"'
+                : ''),
+        depends = (this.depends
+                ? ' data-depends="' + this.depends + '"'
+                : '');
+    return '<pre' + className + name + depends + '>' + escapeHTML(this.code) + '</pre>';
 };
 
 

@@ -89,18 +89,26 @@ var Title = action(
 var CodeBlock = action(
     seq(opt(WS),
         between('```',
-                seq(TillEOL, NewLine, joined(rep1(but(token('```'))))),
+                seq(joined(rep1(but(choice(NewLine, '[')))),
+                    opt(Bracketed),
+                    opt(Bracketed),
+                    NewLine,
+                    joined(rep1(but(token('```'))))),
                 '```')),
     function(arr) {
         var indentRE = new RegExp('^' + (arr[0] ? arr[0].join('') : ''));
         var lang = arr[1][0];
-        var code = arr[1][2];
+        var name = arr[1][1];
+        var depends = arr[1][2];
+        var code = arr[1][4];
         return new el.CodeBlock(
             arr[0] ? arr[0].length : 0,
             lang,
             code.split(/\r?\n/).map(function(line) {
                 return line.replace(indentRE, '');
-            }).join('\n').replace(/\r?\n$/, ''));
+            }).join('\n').replace(/\r?\n$/, ''),
+            name,
+            depends);
     });
 
 

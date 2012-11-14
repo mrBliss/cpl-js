@@ -1,7 +1,7 @@
 $(document).ready(function () {
 
     // TODO snippets relying on previous definitions don't work
-    function evalJS(sourceCode, callback) {
+    function evalJS(sourceCode, depends) {
         /*
          Why not just eval(sourceCode)? Because sourceCode can be a
          string containing multiple expressions and/or statements, but
@@ -23,16 +23,28 @@ $(document).ready(function () {
          message instead of the return value.
          */
         try {
+            // Optionally evaluate a code block this code block
+            // depends on for definitions, etc.
+            if (depends) {
+                var println = function(x) {
+                    // Suppress output of previous code blocks
+                };
+                var depEditor = $('div.editor[data-name="' + depends + '"]');
+                eval(depEditor.data('initial'));
+            }
+
             var ast = parseJs.parse(sourceCode).splice(1)[0],
                 exprs = ast.map(function(astNode) {
                     [astNode].unshift("toplevel");
                     return process.gen_code(astNode, false);
                 }),
                 output = '';
-            // Is sometimes used in code samples
-            function println(x) {
+            // Is sometimes used in code blocks
+            println = function(x) {
+                // Redefine the one used when evaluating another code
+                // block this one depends on.
                 output += x + '\n';
-            }
+            };
             // We can't use map for this, as the anonymous function causes
             // every expression to be executed in a separate scope,
             // preventing the use of previous definitions.
@@ -77,9 +89,13 @@ $(document).ready(function () {
     $('pre').each(function(index, pre) {
         var id = 'editor' + index;
         var codeMirror = CodeMirror(function(editor) {
-            var $pre = $(pre);
-            var $div = $('<div class="editor" id="' + id + '"></div>');
-            var $tabs = $('<ul class="tabs">'
+            var $pre = $(pre),
+                name = $pre.data('name'),
+                depends = $pre.data('depends'),
+                $div = $('<div class="editor" '
+                         + (name ? 'data-name="' + name + '" ' : '')
+                         + 'id="' + id + '"></div>'),
+                $tabs = $('<ul class="tabs">'
                           + '<li>' + (pre.className || 'JavaScript') + '</li>'
                           + (!pre.className ?
                              '<li><a href="#eval">Evaluate</a></li>'
@@ -95,7 +111,8 @@ $(document).ready(function () {
             $('a[href="#eval"]', $tabs).click(function(event) {
                 event.preventDefault();
                 var val = codeMirror.getValue();
-                codeMirror.setValue(val + "\n\n// ########\n" + evalJS(val));
+                codeMirror.setValue(val + "\n\n// ########\n" +
+                                    evalJS(val, depends));
                 fixEncoding(codeMirror);
             });
             $('a[href="#reset"]', $tabs).click(function(event) {
@@ -123,16 +140,16 @@ $(document).ready(function () {
     // Popup footnotes
     $('span.footnote').each(function(index, elem) {
         var link = $('<a href="#" class="footnote">[' + (index + 1)
-                     + ']</a>');
-        var $elem = $(elem);
+                     + ']</a>'),
+            $elem = $(elem);
         $elem.before(link);
         $(link).click(function(e) {
             e.preventDefault();
             // Don't make the popup if it's already present
             if ($('div#footnote' + (index + 1)).length > 0) return;
             var popup = $('<div id="footnote' + (index + 1) + '" class="footnote">' + $elem.html() +
-                          '</div>');
-            var $window = $(window);
+                          '</div>'),
+                $window = $(window);
             popup.css({left: Math.max(20, e.pageX - $window.width() * 0.2) + 'px',
                        top: (e.pageY + 10) + 'px'});
             $elem.after(popup);

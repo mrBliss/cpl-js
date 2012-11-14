@@ -454,7 +454,7 @@ A: Being intended as a quick and easy scripting language for a web browser,
    result of the I/O operation is available. Compare the synchronous program
    below with the asynchronous one.
 
-   ```JavaScript
+   ```NodeJS
    // Synchronous, blocking program
    var x = longSyncComputation();
    var y = slowSyncFileRead(x);
