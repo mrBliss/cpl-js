@@ -48,9 +48,9 @@
 </li>
 <li><a href="#syntax">Syntax</a>
 <ol>
-<li><a href="#semicolons">Semicolons</a></li>
 <li><a href="#variables-and-functions">Variables and functions</a></li>
 <li><a href="#anonymous-functions">Anonymous functions</a></li>
+<li><a href="#semicolons">Semicolons</a></li>
 <li><a href="#strings-regular-expressions">Strings & regular expressions</a></li>
 </ol>
 </li>
@@ -180,25 +180,7 @@
 <div class="answer">
 <p>As JavaScript syntax is mostly borrowed from C and Java, syntax you are familiar with, we shall only highlight where JavaScript deviates from Java&rsquo;s or C&rsquo;s syntax. Moreover, this document contains a myriad of code examples you can look at to get an idea of what JavaScript code looks like.</p>
 <p>Besides the common keywords like <code>for</code>, <code>if</code>, <code>while</code>, <code>try</code>, <code>new</code>, &hellip; there are a number of <em>future reserved keywords</em> in JavaScript: <code>class</code>, <code>const</code>, <code>enum</code>, <code>export</code>, <code>extends</code>, <code>import</code>, <code>super</code>. These keywords aren&rsquo;t used in JavaScript and probably never will. Identifiers cannot have the same name as a keyword. These keywords are a remnant of Java&rsquo;s influence.</p>
-<h4 id="semicolons">II.1. Semicolons</h4>
-<p>A controversial feature in JavaScript is <em>semicolon insertion</em>. In C and Java, each statement or expression should be terminated with a semicolon, `;&rsquo;. In JavaScript, terminating semicolons are optional, they will be inserted by the interpreter if absent. They aren&rsquo;t just inserted willy-nilly after each line, there are rules for this, which aren&rsquo;t that interesting. However, there are some edge cases where semicolon insertion will mess up your program.</p>
-<pre>return
-a + b;
-&#x2F;&#x2F; Returns undefined. Treated as:
-&#x2F;&#x2F;   return;
-&#x2F;&#x2F;   a + b;
-&#x2F;&#x2F; But:
-a = b + c
-(d + e).foo()
-&#x2F;&#x2F; Treated as:
-&#x2F;&#x2F;   a = b + c(d + e).foo();</pre>
-<p>Source: <a href="#bib-34" class="ref"><span class="bib">34</span> JavaScript Syntax</a></p>
-<div class="question">What do you recommend: always writing semicolons or not?</div>
-<div class="answer">
-<p>As you saw in the code sample above, a semicolon would have prevented the problem in the second example, but not in the first. Like indentation width,<span class="footnote">And the famous <a href="http://www.jwz.org/doc/tabs-vs-spaces.html" target="_blank">tabs versus spaces war</a>.</span> semicolons are often considered a question of convention or style.<span class="footnote">Trivial matters often lead to heated discussions, see for example <a href="https://github.com/twitter/bootstrap/issues/3057" target="_blank">this discussion about a single semicolon</a>.</span></p>
-
-</div>
-<h4 id="variables-and-functions">II.2. Variables and functions</h4>
+<h4 id="variables-and-functions">II.1. Variables and functions</h4>
 <p>As JavaScript is <a href="#dynamic-typing">dynamically typed</a>, the programmer doesn&rsquo;t have to declare the types of variables or functions. To declare a new variable, prepend the <code>var</code> keyword for the identifier. A function definition is started with the <code>function</code> keyword.</p>
 <pre>function f(x, y) {
     var sum = x + y;
@@ -214,7 +196,7 @@ sum; &#x2F;&#x2F; &#39;ReferenceError: sum is not defined&#39; as sum was a loca
 f(3, 4); &#x2F;&#x2F; 7
 sum; &#x2F;&#x2F; 7 (!)</pre>
 <p>Omitting the <code>var</code> keyword will declare the variable as a global! This is a typical pitfall of JavaScript. See <a href="#function-global-scope" class="ref">Function & global scope</a> and <a href="#modularity" class="ref">Modularity</a> for more about the global object and why this is a problem.</p>
-<h4 id="anonymous-functions">II.3. Anonymous functions</h4>
+<h4 id="anonymous-functions">II.2. Anonymous functions</h4>
 <p>As told in <a href="#influences" class="ref">Influences</a>, thanks to Scheme JavaScript has <a href="#functional-programming">first-class functions</a>. Whereas anonymous functions in Scheme are introduced by lambda-expressions, in JavaScript you can just omit the name of the function to create an anonymous function.</p>
 <pre class="Scheme">(let ([f (lambda (x y) (+ x y))])
   f); #&lt;procedure:f&gt;</pre>
@@ -234,6 +216,28 @@ z; &#x2F;&#x2F; 11</pre>
 <p>In the first example, <code>x</code> is called before it is defined. In the second example <code>x</code> is also defined after it is called, but using the other syntax for function definitions, resulting in a correct result.</p>
 <p>The reason for this difference was mentioned in <a href="#line-by-line" class="ref">line by line execution</a> and will also be covered in <a href="#variable-hoisting" class="ref">Variable hoisting</a>.</p>
 <blockquote>[..] all variables in the current scope are initialised to <code>undefined</code> and <strong>all functions are initialised with pointers to their locations</strong> in memory [..]</blockquote></div>
+<h4 id="semicolons">II.3. Semicolons</h4>
+<p>A controversial feature in JavaScript is <em>semicolon insertion</em>. In C and Java, each statement or expression should be terminated with a semicolon, `;&rsquo;. In JavaScript, terminating semicolons are optional, they will be inserted by the interpreter if absent. They aren&rsquo;t just inserted willy-nilly after each line, there are rules for this, which aren&rsquo;t that interesting. However, there are some edge cases where semicolon insertion will mess up your program.</p>
+<pre>function f(a, b) {
+    return
+    a + b;
+}
+f(1, 2);
+&#x2F;&#x2F; Returns undefined. Treated as:
+&#x2F;&#x2F;   return;
+&#x2F;&#x2F;   a + b;
+&#x2F;&#x2F; But:
+var a = 1,
+    b = a
+(1 + 1).toString()
+&#x2F;&#x2F; Treated as:
+&#x2F;&#x2F;   b = a(1 + 1).toString();</pre>
+<p>Source: <a href="#bib-34" class="ref"><span class="bib">34</span> JavaScript Syntax</a></p>
+<div class="question">What do you recommend: always writing semicolons or not?</div>
+<div class="answer">
+<p>As you saw in the code sample above, a semicolon would have prevented the problem in the second example, but not in the first. Like indentation width,<span class="footnote">And the famous <a href="http://www.jwz.org/doc/tabs-vs-spaces.html" target="_blank">tabs versus spaces war</a>.</span> semicolons are often considered a question of convention or style.<span class="footnote">Trivial matters often lead to heated discussions, see for example <a href="https://github.com/twitter/bootstrap/issues/3057" target="_blank">this discussion about a single semicolon</a>.</span></p>
+
+</div>
 <h4 id="strings-regular-expressions">II.4. Strings & regular expressions</h4>
 <p>Like most scripting languages, but unlike C and Java, strings can be delimited with single (<code>''</code>) or double quotes (<code>""</code>). This comes in handy when constructing HTML, in which attributes appear between double quotes, from strings.</p>
 <p>Regular expressions have a literal syntax in JavaScript, which is also typical of a scripting language.</p>

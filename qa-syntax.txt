@@ -14,44 +14,6 @@ A: As JavaScript syntax is mostly borrowed from C and Java, syntax you are
    the same name as a keyword. These keywords are a remnant of Java's
    influence.
 
-   ## Semicolons ##[semicolons]
-
-   A controversial feature in JavaScript is /semicolon insertion/. In C and
-   Java, each statement or expression should be terminated with a semicolon,
-   `;'. In JavaScript, terminating semicolons are optional, they will be
-   inserted by the interpreter if absent. They aren't just inserted
-   willy-nilly after each line, there are rules for this, which aren't that
-   interesting. However, there are some edge cases where semicolon insertion
-   will mess up your program.
-
-   ```JavaScript
-   return
-   a + b;
-   // Returns undefined. Treated as:
-   //   return;
-   //   a + b;
-   // But:
-   a = b + c
-   (d + e).foo()
-   // Treated as:
-   //   a = b + c(d + e).foo();
-   ```
-
-   Source: #[JSSyntax]
-
-   Q: What do you recommend: always writing semicolons or not?
-
-   A: As you saw in the code sample above, a semicolon would have prevented
-      the problem in the second example, but not in the first. Like
-      indentation width,<foot>And the famous [tabs versus spaces
-      war][tabs-vs-spaces].</foot> semicolons are often considered a question
-      of convention or style.<foot>Trivial matters often lead to heated
-      discussions, see for example [this discussion about a single
-      semicolon][semicolon-discussion].</foot>
-
-      [tabs-vs-spaces]: http://www.jwz.org/doc/tabs-vs-spaces.html
-      [semicolon-discussion]: https://github.com/twitter/bootstrap/issues/3057
-
    ## Variables and functions ##[variables-functions]
 
    As JavaScript is [dynamically typed][dynamic-typing], the programmer
@@ -132,6 +94,49 @@ A: As JavaScript syntax is mostly borrowed from C and Java, syntax you are
       > [..] all variables in the current scope are initialised to `undefined`
          and *all functions are initialised with pointers to their locations* in
          memory [..]
+
+   ## Semicolons ##[semicolons]
+
+   A controversial feature in JavaScript is /semicolon insertion/. In C and
+   Java, each statement or expression should be terminated with a semicolon,
+   `;'. In JavaScript, terminating semicolons are optional, they will be
+   inserted by the interpreter if absent. They aren't just inserted
+   willy-nilly after each line, there are rules for this, which aren't that
+   interesting. However, there are some edge cases where semicolon insertion
+   will mess up your program.
+
+   ```JavaScript
+   function f(a, b) {
+       return
+       a + b;
+   }
+   f(1, 2);
+   // Returns undefined. Treated as:
+   //   return;
+   //   a + b;
+   // But:
+   var a = 1,
+       b = a
+   (1 + 1).toString()
+   // Treated as:
+   //   b = a(1 + 1).toString();
+   ```
+
+   Source: #[JSSyntax]
+
+   Q: What do you recommend: always writing semicolons or not?
+
+   A: As you saw in the code sample above, a semicolon would have prevented
+      the problem in the second example, but not in the first. Like
+      indentation width,<foot>And the famous [tabs versus spaces
+      war][tabs-vs-spaces].</foot> semicolons are often considered a question
+      of convention or style.<foot>Trivial matters often lead to heated
+      discussions, see for example [this discussion about a single
+      semicolon][semicolon-discussion].</foot>
+
+      [tabs-vs-spaces]: http://www.jwz.org/doc/tabs-vs-spaces.html
+      [semicolon-discussion]: https://github.com/twitter/bootstrap/issues/3057
+
 
    ## Strings & regular expressions ##
 
