@@ -1327,7 +1327,7 @@ A: Unlike for instance Java, a language people would believe to be akin to
 Q: You mentioned that JavaScript has first-class functions, does this mean
    that JavaScript is a functional language?
 
-A: It's true that all functional languages support first-class functions, but
+A: It's true that all, functional languages support first-class functions, but
    this alone doesn't make a language functional. Functional programming
    consists of more than just first-class functions, sometimes it's more about
    what you /can't/ do<foot>In Haskell, for example, you can't just change the

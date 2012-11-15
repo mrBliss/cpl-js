@@ -149,8 +149,6 @@ A: A JavaScript engine comprises multiple parts, not just a 'runtime' or
      it is important to understand how the garbage collector works (the same
      is true for the other components).
 
-   Source: #[MemoryEfficientJS]
-
 ## Garbage collection ##[garbage-collection]
 
 Q: How is garbage collection performed in JavaScript?
@@ -199,8 +197,6 @@ A: It's not possible to explicitly force garbage collection in JavaScript.
    avoid global variables. They are *never* garbage collected and will exist
    for the entire lifetime of your application, or, in case of web browsers,
    as long as the page is open.
-
-   Source: #[MemoryEfficientJS]
 
 ## Representations ##
 

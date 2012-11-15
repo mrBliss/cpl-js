@@ -283,10 +283,4 @@ var entries = [
         pages: '7-8',
         publisher: 'IEEE Computer Society',
         address: 'Los Alamitos, CA'
-    }),
-    new Blog('JScriptGC', {
-        authors: [['Lippert', 'Eric']],
-        published: 'September 17, 2003',
-        title: 'How Do The Script Garbage Collectors Work?',
-        url: 'http://blogs.msdn.com/b/ericlippert/archive/2003/09/17/53038.aspx'
     })];

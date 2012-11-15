@@ -12,7 +12,7 @@ A: JavaScript is the primary programming language than can be used in a web
 
 Q: What do you mean by /client-side/?
 
-A: Visiting a website involves two parties (or more): the visitor, i.e. the
+A: Visiting a website involves two parties (or more), the visitor, i.e. the
    client, and the visited website, i.e. the server.
 
    First of all, the client requests a web page from the server. The server
