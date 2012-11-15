@@ -277,9 +277,9 @@ var person = {
 person[&quot;place-of-birth&quot;]; &#x2F;&#x2F; &quot;Gibraltar&quot;
 person.walk; &#x2F;&#x2F; [Function]
 person.walk(); &#x2F;&#x2F; &quot;Do bi do ... walking, walking, walking&quot;</pre>
-<p>This notation of objects is compact, easy to parse and parse, and has become a popular general data-interchange format, called <a href="http://www.json.org/" target="_blank">JSON</a> (JavaScript Object Notation).</p>
+<p>This notation of objects is compact, easy to read and parse, and has become a popular general data-interchange format, called <a href="http://www.json.org/" target="_blank">JSON</a> (JavaScript Object Notation).</p>
 <p>JavaScript has no separate hash map type. Since objects function as hash maps, they are often (ab)used as hash maps. Conflating objects with hash maps can have some unwanted consequences, see the examples in <a href="#monkey-patching" class="ref">Monkey-patching</a>.<span class="footnote">The next JavaScript standard will contain a separate <code>Map</code> type.</span></p>
-<p>As the keys of an object are required to be strings, any key that isn&rsquo;t a string will first be converted to a string. which can cause some surprising results. See the following example.</p>
+<p>As the keys of an object are required to be strings, any key that isn&rsquo;t a string will first be converted to a string, which can cause some surprising results. See the following example.</p>
 <pre>var z = {};
 z[0] = 3;
 z[0]; &#x2F;&#x2F; 3
@@ -439,7 +439,7 @@ o.f(); &#x2F;&#x2F; 2</pre>
 </div>
 <span class="to-top"><a href="#top">&uarr; To top</a></span>
 <h5 id="indirect-invocation">III.3.4. Indirect invocation</h5>
-<p>The fourth and final kind of invocation, is indirect invocation. As <code>Function</code>s are also <code>Object</code>s in JavaScript, they can have methods. Two of the available methods of <code>Function</code>s are <code>call</code> and <code>apply</code>.<span class="footnote">For readers familiar with Common Lisp (or a <a href="http://en.wikipedia.org/wiki/Lisp-1_vs._Lisp-2#The_function_namespace" target="_blank">Lisp-2</a> to be more precise), <code>call</code> is JavaScript&rsquo;s <code>funcall</code>. For readers familiar with any Lisp dialect, JavaScript&rsquo;s <code>apply</code> is similar to most Lisp&rsquo;s <code>apply</code>.</span></p>
+<p>The fourth and final kind of invocation, is indirect invocation. As <code>Function</code>s are also <code>Object</code>s in JavaScript, they can have methods. Two of the available methods of <code>Function</code>s are <code>call</code> and <code>apply</code>.<span class="footnote">For readers familiar with Common Lisp (or a <a href="http://en.wikipedia.org/wiki/Lisp-1_vs._Lisp-2#The_function_namespace" target="_blank">Lisp-2</a> to be more precise), <code>call</code> is Common Lisp&rsquo;s <code>funcall</code>. For readers familiar with any Lisp dialect, JavaScript&rsquo;s <code>apply</code> is similar to most Lisp&rsquo;s <code>apply</code>.</span></p>
 <p>The <code>call</code> method is invoked on a function and takes at least one argument, the object to which <code>this</code> will refer in the context of the function. Extra arguments are passed to the function.</p>
 <p>The <code>apply</code> method is invoked on a function and takes at least one argument, the object to which <code>this</code> will refer in the context of the function. The optional second argument should be an <code>Array</code>, holding arguments that will be to the function.</p>
 <pre>
@@ -527,7 +527,7 @@ println(a); &#x2F;&#x2F; 3</pre>
 println(x); &#x2F;&#x2F; 3</pre>
 <span class="to-top"><a href="#top">&uarr; To top</a></span>
 <h5 id="variable-hoisting">III.4.2. Variable hoisting</h5>
-<p>In this intermezzo, another peculiarity of JavaScript&rsquo;s scoping rules is introduced, <em>variable hoisting</em>.</p>
+<p>We shall now introduce another peculiarity of JavaScript&rsquo;s scoping rules, <em>variable hoisting</em>.</p>
 <pre>var f = function() {
     return y;
 };
@@ -818,7 +818,7 @@ Integer.parseInt(&quot;12&quot;) * 3; &#x2F;&#x2F; 36</pre>
 <p>In the example above, it indeed seems useful. This is not always the case. It&rsquo;s not always obvious when a conversion and which conversion will occur. Take the following example:</p>
 <pre>(&#39;10&#39; - 1) * 2; &#x2F;&#x2F; 18 = 9 * 2
 (&#39;10&#39; + 1) * 2; &#x2F;&#x2F; 202 = 101 * 2</pre>
-<p><code>Object</code>s and <code>Array</code>s can also cause some odd interactions:<span class="footnote">It&rsquo;s possible that the results after pressing `Evaluate&rsquo; don&rsquo;t match the expected outcome, this is due to differences in parsing and code printing.</span></p>
+<p><code>Object</code>s and <code>Array</code>s can also cause some odd interactions:<span class="footnote">It&rsquo;s possible that the results after pressing &lsquo;Evaluate&rsquo; don&rsquo;t match the expected outcome, this is due to differences in parsing and code printing.</span></p>
 <pre>([] + 1); &#x2F;&#x2F; &quot;1&quot;
 ({} + 1); &#x2F;&#x2F; 1
 ([] + []); &#x2F;&#x2F; &quot;&quot;

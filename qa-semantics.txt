@@ -46,8 +46,8 @@ A: Indeed, JavaScript is object-oriented. Typically, in object-oriented
    person.walk(); // "Do bi do ... walking, walking, walking"
    ```
 
-   This notation of objects is compact, easy to parse and parse, and has
-   become a popular general data-interchange format, called
+   This notation of objects is compact, easy to read and parse, and has become
+   a popular general data-interchange format, called
    [JSON][http://www.json.org/] (JavaScript Object Notation).
 
    JavaScript has no separate hash map type. Since objects function as hash
@@ -57,7 +57,7 @@ A: Indeed, JavaScript is object-oriented. Typically, in object-oriented
    separate `Map` type.</foot>
 
    As the keys of an object are required to be strings, any key that isn't a
-   string will first be converted to a string. which can cause some surprising
+   string will first be converted to a string, which can cause some surprising
    results. See the following example.
 
    ```JavaScript
@@ -383,7 +383,7 @@ A: Of course, OOP is broader than "everything is an object". Most definitions
    `Function`s are also `Object`s in JavaScript, they can have methods. Two of
    the available methods of `Function`s are `call` and `apply`.<foot>For
    readers familiar with Common Lisp (or a [Lisp-2][lisp2] to be more
-   precise), `call` is JavaScript's `funcall`. For readers familiar with any
+   precise), `call` is Common Lisp's `funcall`. For readers familiar with any
    Lisp dialect, JavaScript's `apply` is similar to most Lisp's
    `apply`.</foot>
 
@@ -530,8 +530,8 @@ A: Of course, OOP is broader than "everything is an object". Most definitions
 
       ### Variable hoisting ###[hoisting]
 
-      In this intermezzo, another peculiarity of JavaScript's scoping rules is
-      introduced, /variable hoisting/.
+      We shall now introduce another peculiarity of JavaScript's scoping
+      rules, /variable hoisting/.
 
       ```JavaScript
       var f = function() {
@@ -1143,7 +1143,7 @@ A: Unlike for instance Java, a language people would believe to be akin to
       ```
 
       `Object`s and `Array`s can also cause some odd interactions:<foot>It's
-      possible that the results after pressing `Evaluate' don't match the
+      possible that the results after pressing 'Evaluate' don't match the
       expected outcome, this is due to differences in parsing and code
       printing.</foot>
 
