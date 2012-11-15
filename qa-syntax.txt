@@ -1,4 +1,4 @@
-# Syntax #
+# Syntax #[syntax]
 
 Q: Could you describe JavaScript's syntax?
 
@@ -18,7 +18,7 @@ A: As JavaScript syntax is mostly borrowed from C and Java, syntax you are
 
    As JavaScript is [dynamically typed][dynamic-typing], the programmer
    doesn't have to declare the types of variables or functions. To declare a
-   new variable, prepend the `var` keyword for the identifier. A function
+   new variable, prepend the `var` keyword to the identifier. A function
    definition is started with the `function` keyword.
 
    ```JavaScript
@@ -47,7 +47,7 @@ A: As JavaScript syntax is mostly borrowed from C and Java, syntax you are
 
    ## Anonymous functions ##
 
-   As told in #[influences], thanks to Scheme JavaScript has [first-class
+   As told in #[influences], thanks to Scheme, JavaScript has [first-class
    functions][functional]. Whereas anonymous functions in Scheme are
    introduced by lambda-expressions, in JavaScript you can just omit the name
    of the function to create an anonymous function.
@@ -105,11 +105,11 @@ A: As JavaScript syntax is mostly borrowed from C and Java, syntax you are
 
    A controversial feature in JavaScript is /semicolon insertion/. In C and
    Java, each statement or expression should be terminated with a semicolon,
-   `;`. In JavaScript, terminating semicolons are optional, they will be
+   `;`. In JavaScript, terminating semicolons are optional, and will be
    inserted by the interpreter if absent. They aren't just inserted
-   willy-nilly after each line, there are rules for this, which aren't that
-   interesting. However, there are some edge cases where semicolon insertion
-   will mess up your program.
+   willy-nilly after each line, there are rules for this, which we shall not
+   cover. However, there are some edge cases where semicolon insertion will
+   mess up your program.
 
    ```JavaScript
    function f(a, b) {

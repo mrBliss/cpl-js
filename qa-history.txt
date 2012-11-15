@@ -4,13 +4,13 @@ Q: Which programming language are we talking about today?
 
 A: JavaScript, the language of the Internet.
 
-Q: Why do you call it the /language of the Internet/?
+Q: Why do you call it the 'language of the Internet'?
 
 A: JavaScript is the primary programming language than can be used in a web
    browser. Whenever a site wants some client-side interactivity, JavaScript
    is /the/ tool in the box for this task.
 
-Q: What do you mean by /client-side/?
+Q: What do you mean by 'client-side'?
 
 A: Visiting a website involves two parties (or more): the visitor, i.e. the
    client, and the visited website, i.e. the server.
@@ -67,7 +67,7 @@ A: To answer this question, we shall first tell you a bit about JavaScript's
 
    At the time, Java was the new kid on the block and was rapidly gaining in
    popularity because of Sun's successful marketing campaign. Netscape saw
-   Java as the language of the Web, but Java was deemed to complex for
+   Java as the language of the Web, but Java was deemed too complex for
    beginning programmers. Java was the Web's C++. Netscape needed a
    lightweight interpreted scripting language. If Visual Basic is C++'s easy
    alternative, Netscape wanted to develop a language that would be Java's
@@ -77,12 +77,14 @@ A: To answer this question, we shall first tell you a bit about JavaScript's
    language that would run in Netscape's browser. The catch was that he had
    only *10 days* to deliver a working prototype. Eich was instructed to make
    it similar to Java, but was prohibited from using the object-oriented
-   syntax reserved for Java. He combined the syntax from C and Java with a
-   small number of relatively simple, but powerful, language features. The
-   resulting language seems simple and easy at first sight, but the powerful
-   features, certainly when combined, allow experienced programmers to build
-   complex programs. Because of the short development time, corners were cut,
-   and consequences thereof are still present in the language.
+   syntax reserved for Java.<foot>With /object-oriented syntax/ we mean the
+   keywords like `class`, `extends`, ... More about this in #[syntax].</foot>
+   He combined the syntax from C and Java with a small number of relatively
+   simple, but powerful, language features. The resulting language seems
+   simple and easy at first sight, but the powerful features, certainly when
+   combined, allow experienced programmers to build complex programs. Because
+   of the short development time, corners were cut, and consequences thereof
+   are still present in the language.
 
    Source: #[10Days]
 

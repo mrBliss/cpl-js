@@ -50,11 +50,11 @@ A: This plethora of implementations makes it hard to discuss /the/
       not portable from machine to machine, it has to be recompiled for every
       architecture.
 
-      On the other end of the 'compilation spectrum' is /interpretation/. Code is never
-      compiled and is interpreted as-is at run-time. This means the code
-      remains portable across platforms. However, this has the disadvantage
-      that performance is much worse, because every instruction is interpreted
-      separately and no optimisations can be performed.
+      On the other end of the 'compilation spectrum' is /interpretation/. Code
+      is never compiled and is interpreted as-is at run-time. This means the
+      code remains portable across platforms. However, this has the
+      disadvantage that performance is much worse, because every instruction
+      is interpreted separately and no optimisations can be performed.
 
       At first, a JIT-compiler will just interpret or quickly compile without
       spending any time on optimising. At the same time, the JIT-compiler
@@ -92,13 +92,13 @@ A: This plethora of implementations makes it hard to discuss /the/
 
    A: A common goal of all JIT techniques is to reach or surpass the
       performance of static compilation while maintaining the advantages of
-      interpretation. JIT compilation generally out-performs code
+      interpretation. JIT compilation generally outperforms code
       interpretation by far (because of compiler-level optimisations).
       However, it may not be immediately clear how JIT compilation can be
       faster than static compilation. After all, a static compiler can analyse
       the entire program, compile and optimise it in its entirety (and has all
-      the time to do so!). However, here are some reasons a JIT compiler has
-      over a static compiler:
+      the time to do so!). However, here are some advantages a JIT compiler
+      has over a static compiler:
 
       * The JIT compiler can optimise for the targeted processor architecture
         and operating system. For example, SSE2 or another more advanced
@@ -135,7 +135,7 @@ A: A JavaScript engine comprises multiple parts, not just a 'runtime' or
      code or interprets the code.
    * An object model: in JavaScript, objects are represented as associative
      arrays/dicts. However, some engines choose to implement this differently
-     behind the scenes. For example, V8 employs an internal type system called
+     behind the scenes. For example, V8 employs an internal type system using
      /hidden classes/, see #[V8Design].
    * A run-time profiler: monitors the system being run and identifies 'hot'
      code. This is code that can/should be optimised.
@@ -172,12 +172,13 @@ A: Garbage collection is performed on objects that are no longer referenced.
    cycle are promoted. If an object is moved in a garbage collection cycle, V8
    updates all pointers to the object.
 
-   Other engines might use different strategies for garbage collection.
-   For example: JScript, the Microsoft JavaScript engine, uses a /'nongenerational mark-and-sweep garbage collector'/.
-   You can check the sources for more implementation details, but 
-   because of the plethora of different engines, we won't go too far into the details.
+   Other engines might use different strategies for garbage collection. For
+   example: JScript, Microsoft's JavaScript engine, uses a /nongenerational
+   mark-and-sweep garbage collector/. You can check the sources for more
+   implementation details, but because of the plethora of different engines,
+   we won't go too far into the details.
    
-   Source: #[V8Design], #[JScriptGC]
+   Sources: #[V8Design], #[JScriptGC]
 
 Q: Can garbage collection be forced?
 
@@ -264,12 +265,13 @@ A: Actually, in JavaScript `Object`s, `Array`s and `Number`s are all
    operations might also prove to be faster on integers than on floating point
    numbers.
 
-   Many JavaScript engines try to figure whether a numeric value will remain
-   integral or become a floating point number at some point. When the engine
-   has concluded that a number will remain integral for its lifetime, it will
-   be represented by an integer. Or V8 might try to represent the number as an
-   integer for as long as it can, eventually converting it to a floating point
-   number. V8 will for example represent most loop indices by integers.
+   Many JavaScript engines try to figure out whether a numeric value will
+   remain integral or become a floating point number at some point. When the
+   engine has concluded that a number will remain integral for its lifetime,
+   it will be represented by an integer. Or V8 might try to represent the
+   number as an integer for as long as it can, eventually converting it to a
+   floating point number. V8 will for example represent most loop indices by
+   integers.
 
 
    ### Objects ###

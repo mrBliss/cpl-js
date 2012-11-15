@@ -6,23 +6,23 @@ Q: You said that JavaScript is an object-oriented language, could you expand
 A: Indeed, JavaScript is object-oriented. Typically, in object-oriented
    languages, everything is an object (e.g. Python, Scala, Ruby, Eiffel, ...)
    In JavaScript this is not the case, there are both objects and primitives.
-   The primitives in JS are numbers, strings, booleans, and the special types
-   null and undefined. The objects include `Array`, `Function`, `Date`,
-   `RegExp`, `Error`, ... This design decision, by many people considered a
-   mistake, was carried over from Java.
+   The primitives in JS are `Number`s, `String`s, `Boolean`s, and the special
+   types `null` and `undefined`. The objects include `Array`, `Function`,
+   `Date`, `RegExp`, `Error`, ... This design decision, by many people
+   considered a mistake, was carried over from Java.
 
    ## Objects ##
 
    Objects in JavaScript are in fact containers of properties, where each
-   property has a name and a value. By assigning a function to a property's
-   value, one can add a method to the object. This demonstrates the importance
-   of the presence of first-class functions. Objects in JavaScript can be
-   compared with untyped hash maps from strings to values from any kind,
-   similar to Python's dicts, Ruby's hashes, ... The name of a property can be
-   any string, but the quotes can be dropped if the name of the property is a
-   valid JavaScript identifier. The quotes are required when the property name
-   is a reserved keyword, an empty string, or other strings not constituting
-   valid JavaScript identifiers.
+   property has a name and a value. To create a method, assign a function to a
+   property's value. This demonstrates the importance of the presence of
+   first-class functions. Objects in JavaScript can be compared with untyped
+   hash maps from strings to values from any kind, similar to Python's dicts,
+   Ruby's hashes, ... The name of a property can be any string, but the quotes
+   can be dropped if the name of the property is a valid JavaScript
+   identifier. The quotes are required when the property name is a reserved
+   keyword, an empty string, or other strings not constituting valid
+   JavaScript identifiers.
 
    ```JavaScript[person]
    var emptyObject = {};
@@ -77,8 +77,8 @@ A: Of course, OOP is broader than "everything is an object". Most definitions
    of object-oriented programming include features such as modularity,
    encapsulation, polymorphism, inheritance, ...
 
-   JavaScript has support most of them, but differs from other classical OO
-   languages in the implementation of these features. Take for instance
+   JavaScript has support for most of them, but differs from other classical
+   OO languages in the implementation of these features. Take for instance
    inheritance. Classical OO languages mostly feature a class-based
    inheritance mechanism, whereas JavaScript has prototype-based inheritance.
    JavaScript often has a different way of doing things compared to other
@@ -120,7 +120,8 @@ A: Of course, OOP is broader than "everything is an object". Most definitions
       Q: Could you show how it's done in JavaScript?
 
       A: In JavaScript, objects can be created via object literals. In this
-         case, `Object` will be their prototype.
+         case, `Object`, the top of the inheritance hierarchy, will be their
+         prototype.
 
          ```JavaScript
          var o = {foo: "bar"};
@@ -195,25 +196,26 @@ A: Of course, OOP is broader than "everything is an object". Most definitions
       A: Prototype-based programming gives the programmer more flexibility and
          freedom to define and redefine the fields and methods of objects
          dynamically. Instead of focusing on building a brittle taxonomy of
-         classes, as in class-based programming, the focus lies on making a set
-         of objects with the desired behaviour, reusing them via cloning, and
-         modifying their behaviour when it's required. When building a taxonomy,
-         it is often the case that some class at the bottom of the chain
-         inherited some unwanted fields or methods, as it is not always possible
-         to classify everything in a consistent taxonomy. Prototype-based
-         programming gives you the freedom to clone and override the fields and
-         methods of other objects at will.
+         classes as in class-based programming, the focus lies on making a set
+         of objects with the desired behaviour, reusing their behaviour via
+         cloning, and modifying their behaviour when it's required. When
+         building a taxonomy, it is often the case that some class at the
+         bottom of the hierarchy inherits some unwanted fields or methods, as
+         it is not always possible to classify everything in a consistent
+         taxonomy. Prototype-based programming gives you the freedom to clone
+         and override the fields and methods of other objects at will.
 
-         For example, you have a bunch of `Cat` objects, but you want one of the
-         cats, named Dexter, to make a different meow-sound. You can simply
-         change the `meow` method of Dexter, a single `Cat` object, without
-         affecting the others, or having to define a new subclass of `Cat`.
+         For example, you have a bunch of `Cat` objects, but you want one of
+         the cats, named Dexter, to make a different meow-sound. You can
+         simply change the `meow` method of Dexter, a single `Cat` object,
+         without affecting the others, or having to define a new subclass of
+         `Cat` just for Dexter.
 
-         Having so much control over which fields and methods to /inherit/ allows
-         the programmer to do things not possible in class-based languages
-         without language support, for instance traits can easily be emulated
-         using prototype-based programming. Even classes can be and often are
-         emulated.
+         Having so much control over which fields and methods to /inherit/
+         allows the programmer to do things not possible in class-based
+         languages without language support, for instance, traits can easily
+         be emulated using prototype-based programming. Even classes can be
+         and often are emulated.
 
          Let's show you how to emulate classes using prototypes:
 
@@ -270,29 +272,29 @@ A: Of course, OOP is broader than "everything is an object". Most definitions
          // We'll continue with the SportsCar defined above
          mixin(SportsCar, HasTires);
          // The already defined mySportsCar now has the functionality defined in
-         //  the HasTires trait
+         // the HasTires trait
          mySportsCar.puncture();
          mySportsCar.tiresOk; // false
          ```
 
-         Of course, freedom comes with a price. One of the disadvantages are the
-         slower field and method accesses/dispatches and to a lesser extend the
-         memory overhead. Objects cloned from others object don't clone the
-         fields and methods. It would be wasteful to clone this reusable data.
-         Instead, the cloned object keeps track of its prototype. Whenever an
-         inherited field or method of the new object, i.e. a field or method
-         defined in the prototype (or a prototype of the prototype), is accessed,
-         the new object delegates the call to the prototype. This delegation will
-         go on until a definition is found in one of the ancestor prototypes. The
-         longer this /chain/ of prototypes, the costlier a field access or method
-         call.
+         Of course, freedom comes with a price. One of the disadvantages are
+         the slower field and method accesses/dispatches and to a lesser
+         extent the memory overhead. When cloning an object, the fields and
+         methods aren't cloned. It would be wasteful to clone this reusable
+         data. Instead, the cloned object keeps track of its prototype.
+         Whenever an inherited field or method of the new object, i.e. a field
+         or method defined in the prototype (or a prototype of the prototype),
+         is accessed, the new object delegates the call to the prototype. This
+         delegation will go on until a definition is found in one of the
+         ancestor prototypes. The longer this /chain/ of prototypes, the
+         costlier a field access or method call.
 
          Another disadvantage is that it becomes harder to figure out which
          fields and methods an object has, and where they were defined. When
          using classes, knowing the class of an object is enough to know which
          fields and methods an object has (this, of course, includes looking
          at superclasses). A class functions as the type of the object, but in
-         JavaScript, properties can be added and removed from objects at
+         JavaScript properties can be added and removed from objects at
          run-time.
 
 
@@ -303,17 +305,17 @@ A: Of course, OOP is broader than "everything is an object". Most definitions
    * As a function
    * As a method
    * As a constructor
-   * Indirectly through `call()` or `apply()`
+   * Indirectly through `call` or `apply`
 
-   Functions can behave differently, depending on the kind of invocation. For
-   instance the value of `this`, will be different. In JavaScript, as in most
+   Functions can behave differently depending on the kind of invocation. For
+   instance, the value of `this` will be different. In JavaScript, as in most
    object-oriented languages, `this` is a special keyword inside the context
    of a function that refers the object of which the function is a method,
    i.e. the owner of the method.
 
    ### Function invocation ###
 
-   Function invocation, is the regular kind of invocation, like you would call
+   Function invocation is the regular kind of invocation, like you would call
    functions (or procedures) in C, Haskell, or Lisp, i.e. in a non-OO
    language.
 
@@ -337,7 +339,9 @@ A: Of course, OOP is broader than "everything is an object". Most definitions
    A function is considered a method when it's the property of an object. The
    big difference between function and method invocation, is that in the case
    of method invocation, `this` will refer to the object on which the method
-   is called, instead of the global object.
+   is called, instead of the global object.<foot>When evaluating the code
+   example below, the results will differ from the predicted outcome, because
+   the code example isn't executed in the global scope.</foot>
 
    ```JavaScript
    function f() {
@@ -383,9 +387,9 @@ A: Of course, OOP is broader than "everything is an object". Most definitions
    `Function`s are also `Object`s in JavaScript, they can have methods. Two of
    the available methods of `Function`s are `call` and `apply`.<foot>For
    readers familiar with Common Lisp (or a [Lisp-2][lisp2] to be more
-   precise), `call` is Common Lisp's `funcall`. For readers familiar with any
-   Lisp dialect, JavaScript's `apply` is similar to most Lisp's
-   `apply`.</foot>
+   precise), `call` is similar to Common Lisp's `funcall`. For readers
+   familiar with any Lisp dialect, JavaScript's `apply` is similar to most
+   Lisp's `apply`.</foot>
 
    [lisp2]: http://en.wikipedia.org/wiki/Lisp-1_vs._Lisp-2#The_function_namespace
 
@@ -395,8 +399,8 @@ A: Of course, OOP is broader than "everything is an object". Most definitions
 
    The `apply` method is invoked on a function and takes at least one
    argument, the object to which `this` will refer in the context of the
-   function. The optional second argument should be an `Array`, holding
-   arguments that will be to the function.
+   function. The optional second argument should be an `Array`, holding the
+   arguments that will be passed to the function.
 
    ```JavaScript
 
@@ -412,7 +416,7 @@ A: Of course, OOP is broader than "everything is an object". Most definitions
    A: A possible use case is the reuse of methods. Let's say we have an object
       (or a class) A with some methods. We also have some other, totally
       unrelated object B. There might be a method defined on A that we wish to
-      invoke on B too, instead of copying the method from object A to object
+      invoke on B too. Instead of copying the method from object A to object
       B, or making A B's prototype, we can simply invoke the method on object
       B.
 
@@ -427,7 +431,7 @@ A: Of course, OOP is broader than "everything is an object". Most definitions
       };
       // Object B. We don't want B to inherit from A. We could add the
       // `introduce`-method as a property to B, but indirect invocation is much
-      // cheaper that copying the method, and then performing a method
+      // cheaper than copying the method, and then performing a method
       // invocation.
       var car = {name: 'Mater', town: 'Radiator Springs'};
       Person.prototype.introduce.call(car);
@@ -436,10 +440,10 @@ A: Of course, OOP is broader than "everything is an object". Most definitions
    ## Encapsulation ##[encapsulation]
 
    Another example of JavaScript's /exotic/ way of doing things is
-   encapsulation. Most classical OO languages support visibility modifiers to
-   control the accessibility of fields and methods by other classes. In
-   JavaScript, there are no such modifiers, but encapsulation is still
-   achievable, via the use of closures.
+   encapsulation. Most classical OO languages support visibility modifiers
+   (`private`, `public`, ...) to control the accessibility of fields and
+   methods by other classes. In JavaScript, there are no such modifiers, but
+   encapsulation is still achievable, via the use of closures.
 
    Example:
 
@@ -473,7 +477,7 @@ A: Of course, OOP is broader than "everything is an object". Most definitions
    Q: What is a closure?
 
    A: Before explaining what a closure is, you have to know some things about
-      JavaScript's scoping rules.
+      (JavaScript's) scoping rules.
 
       ### Function & global scope ##[scope]
 
@@ -490,7 +494,8 @@ A: Of course, OOP is broader than "everything is an object". Most definitions
           // ...
       }
       System.out.println(i); // Error: i is undefined here,
-      // it is only accessible within the scope of the for-loop
+      // it is only accessible within the scope of the body
+      // of the for-loop.
 
       int a = 10;
       {
@@ -545,11 +550,12 @@ A: Of course, OOP is broader than "everything is an object". Most definitions
       In the example above, we define the function `f` which returns the value
       of the undefined variable `y` when called. A bit later in the program,
       but still in the same scope (global or function), we define the variable
-      `y`. Finally, we invoke `f`, which returns `3`. Shouldn't the definition
-      of `f` fail with an error message complaining about the undefined
-      variable `y`? What actually happens, is that all variable declarations
-      in the current scope are moved to the beginning of the scope. Only the
-      declarations, not the initialisations.
+      `y`. Finally, we invoke `f`, which returns `3`. As JavaScript is
+      executed line by line, shouldn't the definition of `f` fail with an
+      error message complaining about the undefined variable `y`? What
+      actually happens, is that all variable declarations in the current scope
+      are moved to the beginning of the scope. Only the declarations, not the
+      initialisations.
 
       What happens under the hood is the following:
 
@@ -625,8 +631,8 @@ A: Of course, OOP is broader than "everything is an object". Most definitions
       ```
 
       JavaScript is lexically scoped, as is Scheme, one of JavaScript's
-      biggest [influences][influences]. The return value of `f` in the example
-      above will be 'lexical'.
+      biggest [influences][influences]. The return value of the call to `f` in
+      the example above will be 'lexical'.
 
       ### Closures ###[closures]
 
@@ -659,7 +665,7 @@ A: Of course, OOP is broader than "everything is an object". Most definitions
       Encapsulation can be achieved by defining the variables meant to be
       private in a function (scope) A, and defining a new function B within A,
       that references these variables. The closure of function B will capture
-      these private variables. By holding onto function B, but discarding
+      these private variables. By holding on to function B, but discarding
       function (scope) A, only B will be able to access these private
       variable,<foot>Unless function B leaks them via its properties.</foot>
       effectively achieving encapsulation.
@@ -710,8 +716,8 @@ A: Of course, OOP is broader than "everything is an object". Most definitions
    Q: What are the advantages of implementing encapsulation via closures?
 
    A: Actually, one could call it /emulating/ encapsulation via closures.
-      Because of the absence of built-in encapsulation via
-      visibility-modifiers, JavaScript programmers are required to implement
+      Because of the absence of built-in encapsulation via visibility
+      modifiers, JavaScript programmers are required to implement
       encapsulation manually via closures. So one could call it a disadvantage
       of JavaScript, although some people argue against encapsulation.
 
@@ -724,7 +730,7 @@ A: Of course, OOP is broader than "everything is an object". Most definitions
 
    Polymorphism in JavaScript is achieved through inheritance or duck typing.
 
-   Example of polymorphism through inheritance:
+   An example of polymorphism through inheritance:
 
    ```JavaScript
    // Superclass Animal
@@ -794,9 +800,9 @@ A: Of course, OOP is broader than "everything is an object". Most definitions
       prototypes of objects, requiring less memory than storing a method for
       each object.
 
-      Not having to set up the inheritance relation, is one of advantages duck
-      typing. It's sufficient to add the appropriate methods to the objects
-      that will participate in this application of polymorphism.
+      Duck typing is more ad-hoc: it's sufficient to add the appropriate
+      methods to the objects that will participate in this application of
+      polymorphism. You don't have to set up the inheritance relation.
 
    Q: You mentioned that one can /override/ a method in JavaScript, is it also
       possible to /overload/ a method in JavaScript?
@@ -851,7 +857,7 @@ A: Of course, OOP is broader than "everything is an object". Most definitions
          ```
 
          Even when expecting a fixed number of arguments, the programmer can
-         benefit from access to the `arguments` object. For instance when
+         benefit from access to the `arguments` object. For instance, when
          implementing a decorator.
 
          ```JavaScript
@@ -876,7 +882,7 @@ A: Of course, OOP is broader than "everything is an object". Most definitions
          // => 3
          ```
 
-         The reason that the arguments object isn't a proper `Array´, is
+         The reason that the arguments object isn't a proper `Array`, is
          /probably/ the following:
 
          >[CMS's answer on StackOverflow][CMS-SO] The concept of the
@@ -897,8 +903,6 @@ A: Of course, OOP is broader than "everything is an object". Most definitions
       JavaScript's loose call convention, and the presence of the `arguments` object
       allows the programmer to emulate overloading by doing the resolution at
       run-time.
-
-      Example:
 
       ```Java
       void overloaded() { return "No args"; }
@@ -932,7 +936,7 @@ A: Of course, OOP is broader than "everything is an object". Most definitions
       // A number and a string
       ```
 
-      These `return`-statements could of course be replaced with different
+      In practice, these `return`-statements would be replaced with different
       blocks of code, specific for each case.
 
       Of course, doing this resolution at run-time has a negative impact on
@@ -943,7 +947,7 @@ A: Of course, OOP is broader than "everything is an object". Most definitions
    ## Modularity ##[modularity]
 
    An important cornerstone of object-oriented programming is code reuse. In
-   order to reuse code, it's helpful, or rather often, of paramount importance
+   order to reuse code, it's helpful, or rather often of paramount importance
    to organise code into modular components. We'll use the term /module/ for
    such a modular component. Such modules should provide a clear interface of
    the offered functionality, as well as the required functionality.
@@ -971,11 +975,11 @@ A: Of course, OOP is broader than "everything is an object". Most definitions
    ```
 
    This global object is the default namespace. Imagine loading some
-   third-party scripts, for example scripts that add ads to your website. They
-   will be executed in the same context as your own scripts. They can call
-   into your code, or override your functions when names conflict. Not only is
-   the global object a problem in terms of namespacing and modularisation,
-   it's also a security issue.
+   third-party scripts, for example scripts that add advertisements to your
+   website. They will be executed in the same context as your own scripts.
+   They can call into your code, or override your functions when names
+   conflict. Not only is the global object a problem in terms of namespacing
+   and modularisation, it's also a security issue.
 
    JavaScript has no concept of a module or any language features for
    namespacing. But, as we saw a couple of times already, JavaScript provides
@@ -1038,7 +1042,7 @@ A: Of course, OOP is broader than "everything is an object". Most definitions
 
    #[nodejs] employs a similar approach, albeit with less boilerplate code.
    There is a one-to-one mapping of files to modules. The code of every file
-   are executed in a separate context, preventing them from tainting the
+   is executed in a separate context, preventing the code from tainting the
    global namespace. To actually export variables or functions, they have to
    be attached to `exports`-object. The `exports`-object is a free variable
    within the context of each file. To use the functionality of another
@@ -1059,7 +1063,7 @@ A: Of course, OOP is broader than "everything is an object". Most definitions
 
 Q: What kind of typing discipline does JavaScript have?
 
-A: Unlike for instance Java, a language people would believe to be akin to
+A: Unlike for instance Java, a language people believe to be akin to
    JavaScript when comparing their names, JavaScript isn't statically typed,
    but dynamically typed.
 
@@ -1087,9 +1091,9 @@ A: Unlike for instance Java, a language people would believe to be akin to
       program is well-typed in all of the cases. For instance /casting/ in
       Java and C is a totally unsafe operation. Even Haskell, a language with
       an advanced type system, has an unsafe function that bypasses the type
-      system: `unsafePerformIO`.</foot> correct auto completion of identifiers
-      during development, ... it would be very hard to make JavaScript
-      statically typed.
+      system: `unsafePerformIO`.</foot> correct auto completion during
+      development, ... it would be very hard to make JavaScript statically
+      typed.
 
       The ability to extend (prototypes of) objects with new properties at
       run-time, the ability to change the prototype of an object at run-time,
@@ -1098,22 +1102,22 @@ A: Unlike for instance Java, a language people would believe to be akin to
       complicated, or in the case of `eval`, impossible.
 
       There is one built-in function present in JavaScript that is impossible
-      to annotate with a useful type signature, `eval`, which comes from Lisp.
-      This function takes a string and evaluates it, effectively parsing and
-      interpreting it.<foot>If someone wanted to statically compile JavaScript
-      *and* include `eval`, a JavaScript interpreter would have to be included
-      in the executable.</foot> The `eval` function is also a security risk
-      and should not be called with input from third-parties. Using `eval` in
-      a program is often frowned upon.<foot>A plausible use of `eval` is to
-      build a REPL (Read-Eval-Print-Loop).</foot>
+      to annotate with a useful type signature, `eval`, which originates from
+      Lisp. This function takes a string and evaluates it, effectively parsing
+      and interpreting it.<foot>If someone wanted to statically compile
+      JavaScript *and* include `eval`, a JavaScript interpreter would have to
+      be included in the executable.</foot> The `eval` function is also a
+      security risk and should not be called with input from third parties.
+      Using `eval` in a program is often frowned upon.<foot>A plausible use of
+      `eval` is to build a REPL (Read-Eval-Print-Loop).</foot>
 
 
    ## Weak typing ##[weak-typing]
 
    JavaScript's type system is also /weakly/ typed. The opposite of weak
-   typing is, /strong/ typing. In weakly typed programs, types can be
+   typing is /strong/ typing. In weakly typed programs, types can be
    implicitly converted to other types, whereas these conversion have to be
-   done explicitly in strongly typed language.
+   done explicitly in a strongly typed language.
 
    An example will make it much clearer:
 
@@ -1134,7 +1138,7 @@ A: Unlike for instance Java, a language people would believe to be akin to
       typed?
 
    A: In the example above, it indeed seems useful. This is not always the
-      case. It's not always obvious when a conversion and which conversion
+      case. It's not always obvious /when/ a conversion and /which/ conversion
       will occur. Take the following example:
 
       ```JavaScript
@@ -1149,12 +1153,12 @@ A: Unlike for instance Java, a language people would believe to be akin to
 
 
       ```JavaScript
-      ([] + 1); // "1"
-      ({} + 1); // 1
-      ([] + []); // ""
-      ([] + {}); // "[object Object]"
-      ({} + []); // 0
-      ({} + {}); // NaN
+      [] + 1; // "1"
+      {} + 1; // 1
+      [] + []; // ""
+      [] + {}; // "[object Object]"
+      {} + []; // 0
+      {} + {}; // NaN
       ```
 
       Source: [Gary Bernhardt's talk, "WAT"][wat]
@@ -1188,9 +1192,9 @@ A: Unlike for instance Java, a language people would believe to be akin to
      will be true.
    * If both values are numbers and have the same value, they are equal. If
      one value is `0` and the other is `-0`, they are also equal.
-   * If both values are strings and contain exactly the same 16-bit values
-     (see the sidebar in Text) in the same positions, they are equal. If the
-     strings differ in length or content, they are not equal.
+   * If both values are strings and contain exactly the same 16-bit values in
+     the same positions, they are equal. If the strings differ in length or
+     content, they are not equal.
    * If both values refer to the same object, array, or function, they are
      equal. If they refer to different objects they are not equal, even if
      both objects have identical properties.
@@ -1238,10 +1242,10 @@ A: Unlike for instance Java, a language people would believe to be akin to
 
    Most (object-oriented) languages have a special value, `null`, a.k.a. the
    /null pointer/, which is used to indicate the absence of a value. Whenever
-   a variable is expected to be a pointer or an object, i.e. has a reference
-   type, it can contain the `null` value, meaning that the variable has no
-   value. This null pointer is the cause of many errors, as the programmer
-   should verify whether a reference isn't a null pointer before using
+   a variable is expected to be a pointer or an object, i.e. a reference type,
+   it can contain the `null` value, meaning that the variable has no value.
+   This null pointer is the cause of many errors, as the programmer should
+   verify whether a reference isn't a null pointer before using
    it.<foot>C.A.R. Hoare, the inventor of the null reference, calls it his
    "billion-dollar mistake".</foot><foot>A safer alternative is a nullable
    type, like Haskell's `Maybe` type or Scala's `Option` type.</foot>
@@ -1250,15 +1254,15 @@ A: Unlike for instance Java, a language people would believe to be akin to
    problems. Of course, JavaScript can do better than this, it has two
    different special values that are essentially null pointers! The first one
    is `null`, the regular null pointer, which indicates the absence of a
-   value. `null` is a special keyword in the JavaScript. The second one is
-   `undefined` indicates that a value is not initialised, e.g. the value of
-   missing parameters, undefined methods, missing properties of an `Object`,
-   missing elements of an `Array`. In older versions of JavaScript `undefined`
-   was a global value, which could even be changed! Changing the value of the
-   global `undefined` value could break whole programs. Luckily, this mistake
-   was corrected in later versions. The type of `null` is `object`, in a way,
-   this makes sense, because `null` takes the place of an absent `object`. The
-   type of `undefined` is `undefined`.
+   value. `null` is a special keyword in JavaScript. The second one is
+   `undefined` and indicates that a value is not initialised, e.g. the value
+   of missing parameters, undefined methods, missing properties of an
+   `Object`, missing elements of an `Array`. In older versions of JavaScript
+   `undefined` was a global value, which could even be changed! Changing the
+   value of the global `undefined` value could break whole programs. Luckily,
+   this mistake was corrected in later versions. The type of `null` is
+   `object`, in a way, this makes sense, because `null` takes the place of an
+   absent `object`. The type of `undefined` is `undefined`.
 
    Q: Why make a difference between these two? When a property is `undefined`,
       isn't it the same as the absence of the value of this property?
@@ -1281,22 +1285,22 @@ A: Unlike for instance Java, a language people would believe to be akin to
    be used as conditions of an if-statement, or any other /boolean
    context/.<foot>Expressions used as operands of a boolean operator are also
    in a boolean context, e.g. `1 && true == true`.</foot> In JavaScript,
-   values of all types can, not just boolean, can be used in a boolean
-   context. All values can be converted to a boolean, depending on the
-   /truthiness/ or /falsiness/ of the value. All values are considered to be
-   /truthy/, including `Object`s, `Array`s, numbers, except for the following
-   list of values which are /falsy/:
+   values of all types, not just booleans, can be used in a boolean context.
+   All values can be converted to a boolean, depending on the /truthiness/ or
+   /falsiness/ of the value. All values are considered to be /truthy/,
+   including `Object`s, `Array`s, `Number`s, except for the following list of
+   values which are /falsy/:
 
    * `undefined`
    * `null`
    * `0`
-   * `-0`<foot>See #[numbers] for more about `Number`s. `0` is equal to `-0`!
-     To distinguish between these two values, you can use the following tests:
-     `1 / 0 == Infinity`, `1 / -0 == -Infinity`.</foot>
+   * `-0`<foot>`0` is equal to `-0`! To distinguish between these two values,
+     you can use the following tests: `1 / 0 == Infinity`, `1 / -0 ==
+     -Infinity`. Also see #[numbers].</foot>
    * `NaN`
    * `""`
 
-   The concept of truthiness and falsiness comes from Lisp-like languages.
+   The concept of truthiness and falsiness comes from Lisp.
 
    Q: Is this something one shouldn't rely on, such as these type conversions?
 
@@ -1316,11 +1320,11 @@ A: Unlike for instance Java, a language people would believe to be akin to
       g(4, 0); // -1
       ```
 
-      The programmer could have had the following behaviour in mind when
-      writing the function `g` in the example above: "when both arguments are
-      non-`null` and also not `undefined`, return the sum of them." This, of
-      course, will not function correctly as `0`, a falsy number, will fail
-      the check. You can see that it's easy to overlook this subtlety.
+      The programmer could have had the following intention when writing the
+      function `g` in the example above: "when both arguments are non-`null`
+      and also not `undefined`, return the sum of them." This, of course, will
+      not function correctly as `0`, a falsy number, will fail the check. You
+      can see that it's easy to overlook this subtlety.
 
 # Functional programming #[functional]
 
@@ -1382,7 +1386,7 @@ A: It's true that all functional languages support first-class functions, but
    ```
 
    You can still assign a new value to the property, it just won't have any
-   effect. Of course, this in now way comes close to Haskell's, Scala's or
+   effect. Of course, this in no way comes close to Haskell's, Scala's or
    Clojure's immutable data structures.
 
    In JavaScript 1.8.5, there is a new method available for `Object`s, called
@@ -1475,9 +1479,9 @@ A: It's true that all functional languages support first-class functions, but
       write programs using loops instead of recursion in JavaScript.
 
    On the last line of the example above, you can see the `map` function in
-   use: we increment each element of a list with one. You will probably have
+   use: we increment each element of an array with one. You will probably have
    noticed that declaring the anonymous function that adds `1` to a value
-   takes much space. Just to declare the simplest anonymous function, e.g. the
+   takes lots of space. Declaring the simplest anonymous function, e.g. the
    identity function, takes at least 21 characters in JavaScript:
    `function(x){return x}`, compare this with, for example, Haskell: `\x->x`,
    only 5 characters! The unwieldiness of the `function` keyword is one of
@@ -1544,8 +1548,8 @@ Q: When talking about JavaScript's dynamic nature, you said JavaScript was
    comparable to Ruby in this aspect. Does JavaScript also support monkey
    patching?
 
-A: Yes, it's also possible do monkey patching in JavaScript. In Ruby, classes
-   can be modified at run-time. As seen in #[proto], JavaScript allows
+A: Yes, it's also possible to do monkey patching in JavaScript. In Ruby,
+   classes can be modified at run-time. As seen in #[proto], JavaScript allows
    objects, and by consequence classes too,<foot>Remember that classes in
    JavaScript are emulated/implemented using objects.</foot> to be modified at
    run-time. This is just the way JavaScript works. As JavaScript is executed
@@ -1577,10 +1581,7 @@ A: Yes, it's also possible do monkey patching in JavaScript. In Ruby, classes
        if (this.length == 0)
            return newStr;
 
-       newStr += this[0].toUpperCase();
-       for (var i = 1; i < this.length; i++)
-           newStr += this[i].toLowerCase();
-
+       newStr += this[0].toUpperCase() + this.substring(1).toLowerCase();
        return newStr;
    };
    'brendan'.capitalise(); // 'Brendan'
@@ -1603,7 +1604,7 @@ A: Yes, it's also possible do monkey patching in JavaScript. In Ruby, classes
    seem to work correctly except for the last one: the `merge` function
    appears to have sneaked in the hash map we got back after merging the two
    hash maps. How did this happen? By adding the `merge` method to the
-   prototype of `Object`, the top of the inheritance chain, /every/ object
+   prototype of `Object`, the top of the inheritance hierarchy, /every/ object
    will inherit this property and thus have a `merge` property with as value
    the newly defined function. This is obviously an unintended side-effect.
 
@@ -1659,8 +1660,10 @@ A: Yes, it's also possible do monkey patching in JavaScript. In Ruby, classes
 
       Objects are the easiest way to emulate hash maps in JavaScript, but as
       soon as the prototype of `Object` is monkey patched, objects can no
-      longer be used safely as hash maps. As you saw in the example above,
-      keys with the same name as a monkey patched method will break the
+      longer be used safely as hash maps.<foot>Actually, even without monkey
+      patching objects can't be used safely as hash maps, having a key called
+      `toString` will also cause problems.</foot> As you saw in the example
+      above, keys with the same name as a monkey patched method will break the
       behaviour of the hash map and the monkey patched method.
 
    Q: Given the pitfalls just listed, is monkey patching still encouraged in
