@@ -138,8 +138,8 @@ $(document).ready(function () {
 
     // Popup footnotes
     $('span.footnote').each(function(index, elem) {
-        var link = $('<a href="#" class="footnote">[' + (index + 1)
-                     + ']</a>'),
+        var link = $('<a href="#" class="footnote">(' + (index + 1)
+                     + ')</a>'),
             $elem = $(elem);
         $elem.before(link);
         $(link).click(function(e) {
