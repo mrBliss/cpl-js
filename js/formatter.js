@@ -154,19 +154,31 @@ $(document).ready(function () {
             $elem.after(popup);
             popup.click(function(e) {
                 popup.remove();
+                if (e.target.className == 'bib') {
+                    // <span class="bib">23</span>
+                    highlightBibItem('bib-' + e.target.innerHTML);
+                } else {
+                    // the link itself
+                    var bibLink = e.target.toString()
+                            .match(/#(bib-\d+)\/?$/);
+                    if (bibLink) highlightBibItem(bibLink[1]);
+                }
             });
         });
     });
 
-    // When clicking on a link to a bibliography item, highlight the
-    // item
-    $('a.ref[href^="#bib-"]').click(function(e) {
-        var li = $('li#' + this.href.split('#')[1]);
+    function highlightBibItem(n) {
+        var li = $('li#' + n);
         // Lower the opacity
         li.css({opacity: 0.1});
         // Bring it back to normal
         li.animate({opacity: 1}, 1000);
-        // TODO doesn't work inside a footnote
+    }
+
+    // When clicking on a link to a bibliography item, highlight the
+    // item
+    $('a.ref[href^="#bib-"]').click(function(e) {
+        highlightBibItem(this.href.split('#')[1]);
     });
 
     // Equality tables
