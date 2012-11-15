@@ -144,8 +144,16 @@ $(document).ready(function () {
         $elem.before(link);
         $(link).click(function(e) {
             e.preventDefault();
-            // Don't make the popup if it's already present
-            if ($('div#footnote' + (index + 1)).length > 0) return;
+            // Close all other footnotes
+            var alreadyOpen = false;
+            $('div.footnote').each(function(_, footnote) {
+                if (footnote.id == ('footnote' + (index + 1)))
+                    alreadyOpen = true;
+                $(footnote).remove();
+            });
+            // If it was already open, and now closed, don't reopen it
+            if (alreadyOpen) return;
+            
             var popup = $('<div id="footnote' + (index + 1) + '" class="footnote">' + $elem.html() +
                           '</div>'),
                 $window = $(window);
