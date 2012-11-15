@@ -1,13 +1,13 @@
 # Compiling to JavaScript #[compiling-to-js]
 
-In the last decade the Internet has grown enormously. More and more people use
-the Internet more and more. Web 2.0<foot>Web 2.0 is the term bestowed upon the
-rise of social media and the importance of user-generated content, e.g. social
-networks, video sharing, blogs, wikis, and all kinds of web
-applications.</foot> applications have become more powerful and advanced. As
-the size of these web applications, in essence JavaScript programs, increased,
-it became more and more obvious that JavaScript isn't suited for building
-large programs, and never was intended for that purpose anyway.
+In the last decade the Internet has grown enormously. Web 2.0<foot>Web 2.0 is
+the term bestowed upon the rise of social media and the importance of
+user-generated content, e.g. social networks, video sharing, blogs, wikis, and
+all kinds of web applications.</foot> applications have become more powerful
+and advanced. As the size of these web applications, in essence JavaScript
+programs, increased, it became more and more obvious that JavaScript isn't
+suited for building large programs, and never was intended for that purpose
+anyway.
 
 Many features targeted at managing increasing complexity are absent in
 JavaScript, or have to be emulated by the programmer. We have discussed many

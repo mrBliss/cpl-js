@@ -184,22 +184,22 @@ Q: Can garbage collection be forced?
 
 A: It's not possible to explicitly force garbage collection in JavaScript.
    Some programmers try to force this anyway by the use of the `delete`
-   operator. `delete` was originally intended to remove values from a map,
-   i.e. an object. One should avoid using `delete` to try and force memory
-   deallocation. JavaScript engines tend to optimise objects behind the scenes
-   and changing the structure of an object manually can force deoptimisation
-   of an object. Another misconception among programmers is that setting an
-   object reference to `null` implies that the object is deleted from memory,
-   /nulled out/). This is not true. Only the reference is set to `null`, the
-   object still lives in memory until it is garbage collected. If the
-   reference you set to `null` was the last reference, the object will be
-   garbage collected, otherwise it will remain in memory. The only way to
-   manage memory efficiently in JavaScript is to scope your variables
-   properly. Once variables fall out of scope, they will be garbage collected.
-   So it is key to scope your variables as locally as possible. Also, try to
-   avoid global variables. They are *never* garbage collected and will exist
-   for the entire lifetime of your application, or, in case of web browsers,
-   as long as the page is open.
+   operator. `delete` was originally intended to remove values from a hash
+   map, i.e. an object. One should avoid using `delete` to try and force
+   memory deallocation. JavaScript engines tend to optimise objects behind the
+   scenes and changing the structure of an object manually can force
+   deoptimisation of an object. Another misconception among programmers is
+   that setting an object reference to `null` implies that the object is
+   deleted from memory, /nulled out/). This is not true. Only the reference is
+   set to `null`, the object still lives in memory until it is garbage
+   collected. If the reference you set to `null` was the last reference, the
+   object will be garbage collected, otherwise it will remain in memory. The
+   only way to manage memory efficiently in JavaScript is to scope your
+   variables properly. Once variables fall out of scope, they will be garbage
+   collected. So it is key to scope your variables as locally as possible.
+   Also, try to avoid global variables. They are *never* garbage collected and
+   will exist for the entire lifetime of your application, or, in case of web
+   browsers, as long as the page is open.
 
    Source: #[MemoryEfficientJS]
 
@@ -221,14 +221,15 @@ A: Actually, in JavaScript `Object`s, `Array`s and `Number`s are all
    Q: Why only one type of numbers and why floating point numbers?
 
    A: Having only one type of number, instead of a whole host of numbers of
-      different size like in C, simplifies things a bit for programmers. It's
-      also obvious to pick floating point numbers instead of integers as /the/
-      type, as floating point numbers are a superset of integral numbers.
+      different size like in C, simplifies things a bit for programmers (and
+      implementers). It's also obvious to pick floating point numbers instead
+      of integers as /the/ type, as floating point numbers are a superset of
+      integral numbers.
 
       A possible explanation for this choice is that Brendan Eich, the creator
       of JavaScript, as he had only limited time to define and implement
       JavaScript, opted for just one kind of numbers because he was short on
-      time. However, as of yet, integers haven't been added in a later
+      time. However, as of yet, integers still haven't been added in a later
       JavaScript standard.
 
    Luckily, the standard prescribes that positive and negative integers whose
@@ -257,8 +258,8 @@ A: Actually, in JavaScript `Object`s, `Array`s and `Number`s are all
       programmers can do calculations with a safe heart, as long as they stay
       within these bounds. As integers and longs have often respectively
       2<sup>31</sup>~-~1 and 2<sup>63</sup>~-~1 as maximum magnitudes,
-      JavaScript has correct integral numbers up to a magnitude that lies
-      between the common long's and integer's magnitude.
+      JavaScript has integral numbers allowing correct calculations up to a
+      magnitude that lies between the common long's and integer's magnitude.
 
    It seems rather wasteful to reserve 64 bits for all numbers, however small
    they might turn out to be, like the majority of loop indexes. Some
@@ -268,7 +269,7 @@ A: Actually, in JavaScript `Object`s, `Array`s and `Number`s are all
    Many JavaScript engines try to figure out whether a numeric value will
    remain integral or become a floating point number at some point. When the
    engine has concluded that a number will remain integral for its lifetime,
-   it will be represented by an integer. Or V8 might try to represent the
+   it will be represented by an integer. Or, V8 might try to represent the
    number as an integer for as long as it can, eventually converting it to a
    floating point number. V8 will for example represent most loop indices by
    integers.
@@ -302,7 +303,7 @@ A: Actually, in JavaScript `Object`s, `Array`s and `Number`s are all
    a.foo = 3;
    a.foo; // 3
    a['foo']; // 3
-   // Without apparent effects on the array
+   // Without apparent effects on the contents of the array
    a; // [1, 2, 3]
    a.length; // 3
    a[0]; // 1
@@ -323,10 +324,11 @@ A: Actually, in JavaScript `Object`s, `Array`s and `Number`s are all
    In most languages array accesses can be performed in constant time. Let's
    compare an array lookup in JavaScript with an array lookup in the
    C~programming language. Array accesses in other languages are often
-   implemented similar to C. In C, accessing an element `x` in array `a` at
-   index `i` is equivalent to accessing a memory location of which the address
-   is determined by adding `i` to `a`, which is actually a pointer. On most
-   computer architectures, this can be achieved with one instruction.
+   implemented similarly to the way they are implemented in C. In C, accessing
+   an element `x` in array `a` at index `i` is equivalent to accessing a
+   memory location of which the address is determined by adding `i` to `a`,
+   which is actually a pointer. On most computer architectures, this can be
+   achieved with one instruction.
 
    In JavaScript we have to convert the index to a string, and then perform a
    lookup in a hash map. This clearly takes a lot more than one instruction!
@@ -356,16 +358,16 @@ A: Actually, in JavaScript `Object`s, `Array`s and `Number`s are all
 
       Let's have a look at some performance benchmarks. Keep in mind that it's
       very difficult to benchmark programming languages. These benchmarks are
-      often unfair as the program used in the benchmark will differ from
-      language to language in the degree of optimisation. Programs written for
-      a benchmark are seldomly written in idiomatic style, and will be
-      optimised much more than real world programs. Benchmarks rarely are an
-      accurate yardstick to measure performance of a programming language for
-      real word programs. But they can give you an idea of the raw speed a
-      programming language can achieve when properly optimised.<foot>Keep in
-      mind that making a programming language or a program faster is the same
-      as decreasing the number of instructions to be executed to accomplish
-      the same results.</foot>
+      often unfair as the program used in the benchmark will differ in the
+      degree of optimisation from language to language. Programs written for a
+      benchmark are seldomly written in idiomatic style, and will be optimised
+      much more than real world programs. Benchmarks rarely are an accurate
+      yardstick to measure performance of a programming language for real word
+      programs. But they can give you an idea of the raw speed a programming
+      language can achieve when properly optimised.<foot>Keep in mind that
+      making a programming language or a program faster is the same as
+      decreasing the number of instructions to be executed to accomplish the
+      same results.</foot>
 
       <html><img src="img/alioth.png" alt="benchmark" title="Benchmark results" width="400" height="300" /></html>
 
@@ -410,8 +412,9 @@ A: Being intended as a quick and easy scripting language for a web browser,
    handled asynchronously. They are all put together in a single queue and are
    handled sequentially. A callback can be bound to an event. A callback is a
    function/closure passed as an argument that will be invoked whenever the
-   associated event is triggered, see #[callback-hell]. This is another area
-   where the presence of first-class functions in JavaScript comes in handy.
+   associated event is triggered, also see #[callback-hell]. This is another
+   area where the presence of first-class functions in JavaScript comes in
+   handy.
 
    ### Node.js ##[nodejs]
 
@@ -419,8 +422,8 @@ A: Being intended as a quick and easy scripting language for a web browser,
    server-side version of JavaScript.<foot>With Node.js you can run JavaScript
    programs outside the web browser, like regular programs.</foot> He combined
    Google's V8 JavaScript engine with a self-written C~library libuv that
-   implements non-blocking I/O, based on events. Node.js is intended to write
-   scalable Internet applications, primarily web servers which are
+   implements non-blocking I/O, based on events. Node.js is intended for
+   scalable Internet applications, primarily web servers, which are
    particularly event-driven.
 
    The premise of Node.js is that by performing all I/O operations
@@ -428,8 +431,8 @@ A: Being intended as a quick and easy scripting language for a web browser,
    Node.js programs are single-threaded. The program thread will continuously
    process incoming events that are triggered by completed I/O operations or
    incoming requests. Because of the minimal amount of computation, these
-   events can be handled very quickly, allowing a larger number of concurrent
-   operations, as most time is spent waiting on the I/O anyway.
+   events can be handled very quickly, allowing a larger number of
+   'concurrent' operations, as most time is spent waiting on the I/O anyway.
 
    Q: Does the event-driven model scale well?
 
@@ -443,7 +446,7 @@ A: Being intended as a quick and easy scripting language for a web browser,
       interpreter lock.</foot>
 
       The event-driven model is still suitable for event-driven programs with
-      non-blocking I/O, such as web servers, the application Node.js's was
+      non-blocking I/O, such as web servers, the application Node.js was
       originally intended for.
 
    ### Callback hell ###[callback-hell]
@@ -454,7 +457,7 @@ A: Being intended as a quick and easy scripting language for a web browser,
    refer to results of previous instructions. Asynchronous operations are
    performed in the background while the program continues execution. It's
    obvious that the next statement in the program cannot simply use the result
-   of previously started asynchronous I/O operations, as they are performed in
+   of a previously started asynchronous I/O operation, as it is performed in
    the background. To use such a result, we would have to wait for the
    asynchronous I/O operation to complete, which essentially makes the program
    blocking, i.e. synchronous again.

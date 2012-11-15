@@ -23,7 +23,7 @@ h4{padding:0.5em 1em 0.3em 1.3em;font-size:1.5em;border-bottom:1px dotted #22252
 h5{font-size:1.2em;font-style:italic;margin-bottom:0.3em;}
 h6{font-size:1.1em;margin-bottom:0.3em;}
 h4+div.question,h5+div.question,h6+div.question,div.editor+div.question{margin-top:1em;}
-strong{color:#222525;}
+strong{color:#222525;line-height:1em;}
 img{margin-top:2em;}
 sup{font-size:0.8em;line-height:0.5em;}
 a.ref,em{font-style:italic;}
