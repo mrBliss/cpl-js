@@ -149,7 +149,7 @@ $(document).ready(function () {
             var popup = $('<div id="footnote' + (index + 1) + '" class="footnote">' + $elem.html() +
                           '</div>'),
                 $window = $(window);
-            popup.css({left: Math.max(20, e.pageX - $window.width() * 0.2) + 'px',
+            popup.css({left: Math.max(20, e.pageX - $window.width() * 0.3) + 'px',
                        top: (e.pageY + 10) + 'px'});
             $elem.after(popup);
             popup.click(function(e) {
