@@ -1,6 +1,5 @@
 $(document).ready(function () {
 
-    // TODO snippets relying on previous definitions don't work
     function evalJS(sourceCode, depends) {
         /*
          Why not just eval(sourceCode)? Because sourceCode can be a

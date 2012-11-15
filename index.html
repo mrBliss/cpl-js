@@ -818,7 +818,7 @@ Integer.parseInt(&quot;12&quot;) * 3; &#x2F;&#x2F; 36</pre>
 <p>In the example above, it indeed seems useful. This is not always the case. It&rsquo;s not always obvious when a conversion and which conversion will occur. Take the following example:</p>
 <pre>(&#39;10&#39; - 1) * 2; &#x2F;&#x2F; 18 = 9 * 2
 (&#39;10&#39; + 1) * 2; &#x2F;&#x2F; 202 = 101 * 2</pre>
-<p><code>Object</code>s and <code>Array</code>s can also cause some odd interactions:<span class="footnote">It&rsquo;s possible that the results after pressing `Evaluate&rsquo; don&rsquo;t match the expected outcome, this is because of the parser and code printer.</span></p>
+<p><code>Object</code>s and <code>Array</code>s can also cause some odd interactions:<span class="footnote">It&rsquo;s possible that the results after pressing `Evaluate&rsquo; don&rsquo;t match the expected outcome, this is due to differences in parsing and code printing.</span></p>
 <pre>([] + 1); &#x2F;&#x2F; &quot;1&quot;
 ({} + 1); &#x2F;&#x2F; 1
 ([] + []); &#x2F;&#x2F; &quot;&quot;
@@ -827,7 +827,6 @@ Integer.parseInt(&quot;12&quot;) * 3; &#x2F;&#x2F; 36</pre>
 ({} + {}); &#x2F;&#x2F; NaN</pre>
 <p>Source: <a href="https://www.destroyallsoftware.com/talks/wat" target="_blank">Gary Bernhardt&rsquo;s talk, &ldquo;WAT&rdquo;</a></p>
 
-<p>TODO ^^ doesn&rsquo;t work properly in the browser</p>
 <p>This is the downside of these conversions, you have to know when they will occur and which conversion will occur for which types. Looking at the examples, you will probably agree that these rules aren&rsquo;t really intuitive.</p>
 </div>
 <span class="to-top"><a href="#top">&uarr; To top</a></span>

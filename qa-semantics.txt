@@ -1144,7 +1144,8 @@ A: Unlike for instance Java, a language people would believe to be akin to
 
       `Object`s and `Array`s can also cause some odd interactions:<foot>It's
       possible that the results after pressing `Evaluate' don't match the
-      expected outcome, this is because of the parser and code printer.</foot>
+      expected outcome, this is due to differences in parsing and code
+      printing.</foot>
 
 
       ```JavaScript
@@ -1159,8 +1160,6 @@ A: Unlike for instance Java, a language people would believe to be akin to
       Source: [Gary Bernhardt's talk, "WAT"][wat]
 
       [wat]: https://www.destroyallsoftware.com/talks/wat
-
-      TODO ^^ doesn't work properly in the browser
 
       This is the downside of these conversions, you have to know when they
       will occur and which conversion will occur for which types. Looking at
