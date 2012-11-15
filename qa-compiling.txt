@@ -1,13 +1,13 @@
 # Compiling to JavaScript #[compiling-to-js]
 
 In the last decade the Internet has grown enormously. More and more people use
-the Internet more and more. Web 2.0<foot>Web 2.0 stands for the rise of social
-media and the importance of user-generated content, e.g. social networks,
-video sharing, blogs, wikis, and all kinds of web applications.</foot>
-applications have become more powerful and advanced. As the size of these web
-applications, in essence JavaScript programs, increased, it became more and
-more obvious that JavaScript isn't suited for building large programs, and
-never was intended for that purpose anyway.
+the Internet more and more. Web 2.0<foot>Web 2.0 is the term bestowed upon the
+rise of social media and the importance of user-generated content, e.g. social
+networks, video sharing, blogs, wikis, and all kinds of web
+applications.</foot> applications have become more powerful and advanced. As
+the size of these web applications, in essence JavaScript programs, increased,
+it became more and more obvious that JavaScript isn't suited for building
+large programs, and never was intended for that purpose anyway.
 
 Many features targeted at managing increasing complexity are absent in
 JavaScript, or have to be emulated by the programmer. We have discussed many
@@ -18,31 +18,31 @@ Thankfully, JavaScript is equipped with enough powerful building blocks
 (first-class functions, closures, prototype-based programming) to emulate many
 of the desired features, but the emulation requires lots of boilerplate code.
 The solution people have come up with for this problem is to create new
-languages that compile to JavaScript. Initially it will sound odd, to
-/compile/ to a high-level language. But in this case it actually makes sense.
+languages that compile to JavaScript. Initially it will sound odd, to /compile
+to a high-level language/. But in this case it actually makes sense.
 JavaScript is already supported by (virtually) every browser, and it would be
 an insurmountable obstacle to create a new language supported by all browser
-vendors.<foot>Standards compliance of the JavaScript, HTML and CSS is already
-a problem in the browser landscape.</foot> The current JavaScript engines are
+vendors.<foot>Standards compliance of JavaScript, HTML and CSS is already a
+problem in the browser landscape.</foot> The current JavaScript engines are
 plenty fast.
 
 JavaScript has become the /assembly language of the web/.<foot>Some people
 argue that /VM/ (Virtual Machine) would be more accurate.</foot>
 
-Here follows a selection of existing languages, in no particular order, that
-compile to JavaScript:
+Here follows a selection of interesting languages, in no particular order,
+that compile to JavaScript:
 
 * [Google Web Toolkit][GWT] compiles Java to JavaScript.
 * [CoffeeScript][CS] is a layer of syntactic sugar over JavaScript inspired by
   Ruby, Python and Haskell. Of all the languages compiling to JavaScript,
   CoffeeScript is probably the most popular.
-* [LiveScript][LS] ([already mentioned][func-libs]) is a descendant of
-  LiveScript with an emphasis on functional programming.<foot>Indeed,
-  LiveScript briefly was the [official name][naming-history] of JavaScript in
-  1995.</foot>
-* [ClojureScript][CLJS], a variant of Clojure, originally targeted at the JVM.
-* [Elm][Elm], a type inferenced language intended for Functional Reactive
-  Programming.
+* [LiveScript][LS] is a descendant of CoffeeScript with an emphasis on
+  functional programming.<foot>Indeed, LiveScript briefly was the [official
+  name][naming-history] of JavaScript in 1995.</foot>
+* [ClojureScript][CLJS], a variant of Clojure, which was originally targeted
+  at the JVM.
+* [Elm][Elm], a type inferenced language intended for [Functional Reactive
+  Programming][FRP].
 * [Haxe][Haxe], a high-level multiplatform language. Other than to JavaScript,
   Haxe can also be compiled to Flash, PHP, ...
 * [Objective-J][ObjJ] is to JavaScript as Objective-C is to C. Objective-J is
@@ -51,19 +51,20 @@ compile to JavaScript:
   HTML, code-injection attacks, ... is enforced by the type checker.
 * [Opa][Opa] is a language and multi-tiered (server-side, client-side, and
   database) framework for writing secure and scalable web applications.
-* [Dart][Dart] is Google's try to develop a more Java-like for the web with
-  support for classes, modules, and optional typing.
+* [Dart][Dart] is Google's attempt to develop a more Java-like language for
+  the web with support for classes, modules, and optional typing.
 * [TypeScript][TS] is Microsoft's answer to Dart.
 
-Besides the languages above there exist ports of C#, F#, Objective-C,
-ActionScript, Ruby, Python, OCaml, SML, Haskell, Smalltalk, C<foot>Via
+Besides the languages above, there exist ports of Haskell, F#, Objective-C,
+ActionScript, Ruby, Python, OCaml, SML, C#, Smalltalk, C<foot>Via
 [Emscripten][Ems], a LLVM bitcode to JavaScript compiler. Many [existing
 programs][EmsProgs] written in C have been ported to the browser through the
-use of this compiler, e.g. SQLite, OpenJPEG.</foot>, Basic, Io, Logo, Tcl, and
-Erlang to JavaScript. There are especially many Lisp dialects that can be
-compiled to JavaScript or are created on top of JavaScript, demonstrating the
-similarity of the two languages. For a more comprehensive list see [List of
-languages that compile to JS][langsToJs] and [altJS][altJS].
+use of this compiler, e.g. SQLite, OpenJPEG, even a PDF viewer.</foot>, Basic,
+Io, Logo, Tcl, and Erlang to JavaScript. There are especially many Lisp
+dialects that can be compiled to JavaScript or are created from scratch on top
+of JavaScript, which demonstrates the similarity of the two languages. For a
+more comprehensive list see [List of languages that compile to JS][langsToJs]
+and [altJS][altJS].
 
 [GWT]: https://developers.google.com/web-toolkit/
 [CS]: http://coffeescript.org/
@@ -78,6 +79,7 @@ languages that compile to JS][langsToJs] and [altJS][altJS].
 [TS]: http://www.typescriptlang.org/
 [Ems]: https://github.com/kripken/emscripten
 [EmsProgs]: https://github.com/kripken/emscripten/wiki
+[FRP]: http://en.wikipedia.org/wiki/Functional_reactive_programming
 
 [langsToJs]: https://github.com/jashkenas/coffee-script/wiki/List-of-languages-that-compile-to-JS
 [altJS]: http://altjs.org/
