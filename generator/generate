@@ -1,4 +1,5 @@
 #!/bin/bash
+JS_COMPRESSION_OPTS="dead-code=false,unsafe=false,unused=false"
 
 check_lessc() {
     if type lessc &> /dev/null; then
@@ -12,7 +13,35 @@ check_lessc() {
     fi
 }
 
+check_uglifyjs2() {
+    if [ ! -f node_modules/.bin/uglifyjs2 ]; then
+        echo "Installing uglify-js2"
+        npm install uglify-js2
+    fi
+    UGLIFYJS2=node_modules/.bin/uglifyjs2
+}
+
+
+check_uglifycss() {
+    if [ ! -f node_modules/.bin/uglifycss ]; then
+        echo "Installing uglifycss"
+        npm install uglifycss
+    fi
+    UGLIFYCSS=node_modules/.bin/uglifycss
+}
+
 node lib/main.js
+echo "Generated HTML"
+
 check_lessc
-$LESSC -x ../styles.less > ../styles.css
+$LESSC -x ../css/styles.less > ../css/styles.css
 echo "Generated styles.css"
+
+check_uglifycss
+$UGLIFYCSS ../css/{styles,keys,codemirror}.css > ../styles.css
+rm ../css/styles.css
+echo "Compressed CSS"
+
+check_uglifyjs2
+$UGLIFYJS2 ../js/{codemirror,javascript,clike,scheme,parse-js,process,formatter}.js -o ../scripts.js -c $JS_COMPRESSION_OPTS
+echo "Compressed JS"

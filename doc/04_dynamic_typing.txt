@@ -1,0 +1,266 @@
+# Dynamic typing #[dynamic-typing]
+
+Q: What kind of typing discipline does JavaScript have?
+
+A: Unlike for instance Java, a language people believe to be akin to
+   JavaScript when comparing their names, JavaScript isn't statically typed,
+   but dynamically typed.
+
+   The types of /variables/ aren't known at /compile/-time, but the types of
+   the /values/ are known at /run/-time. Programmers don't have to annotate
+   functions and variables with types like in statically typed
+   programs.<foot>In statically typed languages with /type inference/, e.g.
+   ML, Haskell, ... it is also not required to declare the types.</foot>
+
+   Q: Why did JavaScript's creator choose to make JavaScript dynamically
+      typed?
+
+   A: As mentioned before, JavaScript's creator, Brendan Eich, based
+      JavaScript on Scheme, which is a dynamically typed language.
+
+      JavaScript was intended to be a quick and easy scripting language.
+      Advocates of dynamic typing suggest that programmer productivity is
+      increased, at least for small to medium size programs, when the
+      programmer doesn't have to figure out the types when writing the
+      program.
+
+      Even though static typing has many advantages, like better
+      documentation, the elimination of type errors at run-time,<foot>Most
+      (static) type systems are actually unsound and cannot guarantee a
+      program is well-typed in all of the cases. For instance /casting/ in
+      Java and C is a totally unsafe operation. Even Haskell, a language with
+      an advanced type system, has an unsafe function that bypasses the type
+      system: `unsafePerformIO`.</foot> correct auto completion during
+      development, ... it would be very hard to make JavaScript statically
+      typed.
+
+      The ability to extend (prototypes of) objects with new properties at
+      run-time, the ability to change the prototype of an object at run-time,
+      the way the `arguments`-object works, or even the `eval` function (see
+      the next paragraph) will make a static type system for JavaScript very
+      complicated, or in the case of `eval`, impossible.
+
+      There is one built-in function present in JavaScript that is impossible
+      to annotate with a useful type signature, `eval`, which originates from
+      Lisp. This function takes a string and evaluates it, effectively parsing
+      and interpreting it.<foot>If someone wanted to statically compile
+      JavaScript *and* include `eval`, a JavaScript interpreter would have to
+      be included in the executable.</foot> The `eval` function is also a
+      security risk and should not be called with input from third parties.
+      Using `eval` in a program is often frowned upon.<foot>A plausible use of
+      `eval` is to build a REPL (Read-Eval-Print-Loop).</foot>
+
+
+   ## Weak typing ##[weak-typing]
+
+   JavaScript's type system is also /weakly/ typed. The opposite of weak
+   typing is /strong/ typing. In weakly typed programs, types can be
+   implicitly converted to other types, whereas these conversion have to be
+   done explicitly in a strongly typed language.
+
+   An example will make it much clearer:
+
+   ```JavaScript
+   "12" * 3; // 36
+   ```
+
+   ```Java
+   "12" * 3; // Type Error
+   Integer.parseInt("12") * 3; // 36
+   ```
+
+   In the JavaScript example, `12`, a string, is implicitly converted to a
+   number to be able to multiply it with `3`. In strongly typed languages,
+   such as Java, the conversion of string to number has to be done explicitly.
+
+   Q: This looks like a useful feature to me, why aren't most languages weakly
+      typed?
+
+   A: In the example above, it indeed seems useful. This is not always the
+      case. It's not always obvious /when/ a conversion and /which/ conversion
+      will occur. Take the following example:
+
+      ```JavaScript
+      ('10' - 1) * 2; // 18 = 9 * 2
+      ('10' + 1) * 2; // 202 = 101 * 2
+      ```
+
+      `Object`s and `Array`s can also cause some odd interactions:<foot>It's
+      possible that the results after pressing 'Evaluate' don't match the
+      expected outcome, this is due to differences in parsing and code
+      printing.</foot>
+
+
+      ```JavaScript
+      [] + 1; // "1"
+      {} + 1; // 1
+      [] + []; // ""
+      [] + {}; // "[object Object]"
+      {} + []; // 0
+      {} + {}; // NaN
+      ```
+
+      Source: [Gary Bernhardt's talk, "WAT"][wat]
+
+      [wat]: https://www.destroyallsoftware.com/talks/wat
+
+      This is the downside of these conversions, you have to know when they
+      will occur and which conversion will occur for which types. Looking at
+      the examples, you will probably agree that these rules aren't really
+      intuitive.
+
+
+   ## Equality ##
+
+   Like most programming languages, JavaScript has a `==` operator to check
+   whether two values are equal, its inverse, `!=` is also present. JavaScript
+   also has another operator that checks whether two values are equal, `===`,
+   and of course, its inverse, `!==`. The latter operator, `===`, is also
+   called the /strict/ equality or /identity/ operator. The two operators
+   define /equality/ in a different manner.
+
+   The strict equality operator, `===`, compares two values as follows:
+
+   * If the two values have different types, they are not equal.
+   * If both values are `null` or both values are `undefined`, they are equal.
+   * If both values are the boolean value `true` or both are the boolean value
+     `false`, they are equal.
+   * If one or both values is `NaN`, they are not equal. The `NaN` value is never
+     equal to any other value, including itself! To check whether a value `x` is
+     `NaN`, use `x !== x`. `NaN` is the only value of `x` for which this expression
+     will be true.
+   * If both values are numbers and have the same value, they are equal. If
+     one value is `0` and the other is `-0`, they are also equal.
+   * If both values are strings and contain exactly the same 16-bit values in
+     the same positions, they are equal. If the strings differ in length or
+     content, they are not equal.
+   * If both values refer to the same object, array, or function, they are
+     equal. If they refer to different objects they are not equal, even if
+     both objects have identical properties.
+
+   The (non-strict) equality operator, `==`, compares two values as follows:
+
+   * If the two values have the same type, test them for strict equality as
+     described above. If they are strictly equal, they are equal. If they are
+     not strictly equal, they are not equal.
+   * If the two values do not have the same type, the `==` operator may still
+     consider them equal. Use the following rules and type conversions to
+     check for equality:
+     * If one value is `null` and the other is `undefined`, they are equal.
+     * If one value is a number and the other is a string, convert the string
+       to a number and try the comparison again, using the converted value.
+     * If either value is `true`, convert it to `1` and try the comparison again.
+       If either value is `false`, convert it to `0` and try the comparison again.
+     * If one value is an object and the other is a number or string, convert
+       the object to a primitive. An object is converted to a primitive value
+       by either its `toString()` method or its `valueOf()` method. The
+       built-in classes of core JavaScript attempt `valueOf()` conversion
+       before `toString()` conversion, except for the `Date` class, which
+       performs `toString()` conversion.
+     * Any other combinations of values are not equal.
+
+   Source: #[Flanagan]
+
+   The following table illustrates the rules of the strict equality operator,
+   `===`.
+
+   <html><table class="comparisons" id="strict-equality-table"></table></html>
+
+
+   And the following table illustrates the rules of the non-strict equality
+   operator, `==`.
+
+   <html><table class="comparisons" id="equality-table"></table></html>
+
+   Tables adapted from [dorey's JavaScript-Equality-Table][githubEqTable].
+
+   [githubEqTable]: https://github.com/dorey/JavaScript-Equality-Table
+
+
+   ## `undefined` & `null` ##[undefined-null]
+
+   Most (object-oriented) languages have a special value, `null`, a.k.a. the
+   /null pointer/, which is used to indicate the absence of a value. Whenever
+   a variable is expected to be a pointer or an object, i.e. a reference type,
+   it can contain the `null` value, meaning that the variable has no value.
+   This null pointer is the cause of many errors, as the programmer should
+   verify whether a reference isn't a null pointer before using
+   it.<foot>C.A.R. Hoare, the inventor of the null reference, calls it his
+   "billion-dollar mistake".</foot><foot>A safer alternative is a nullable
+   type, like Haskell's `Maybe` type or Scala's `Option` type.</foot>
+
+   Allowing null pointers in a language is commonly regarded as a source of
+   problems. Of course, JavaScript can do better than this, it has two
+   different special values that are essentially null pointers! The first one
+   is `null`, the regular null pointer, which indicates the absence of a
+   value. `null` is a special keyword in JavaScript. The second one is
+   `undefined` and indicates that a value is not initialised, e.g. the value
+   of missing parameters, undefined methods, missing properties of an
+   `Object`, missing elements of an `Array`. In older versions of JavaScript
+   `undefined` was a global value, which could even be changed! Changing the
+   value of the global `undefined` value could break whole programs. Luckily,
+   this mistake was corrected in later versions. The type of `null` is
+   `object`, in a way, this makes sense, because `null` takes the place of an
+   absent `object`. The type of `undefined` is `undefined`.
+
+   Q: Why make a difference between these two? When a property is `undefined`,
+      isn't it the same as the absence of the value of this property?
+
+   A: It's hard to conceive of a convincing argument for a separation between
+      the two. Here's the one Douglas Crockford makes in #[Crockford]:
+
+      >[Douglas Crockford][Crockford] You might consider `undefined` to
+       represent a system-level, unexpected, or error-like absence of value
+       and `null` to represent program-level, normal, or expected absence of
+       value. If you need to assign one of these values to a variable or
+       property or pass one of these values to a function, `null` is almost
+       always the right choice.
+
+
+   ## Truthiness and falsiness ##
+
+   JavaScript has a `boolean` type of which there exist two values, `true` and
+   `false`. These two values, or expressions that evaluate to one of them can
+   be used as conditions of an if-statement, or any other /boolean
+   context/.<foot>Expressions used as operands of a boolean operator are also
+   in a boolean context, e.g. `1 && true == true`.</foot> In JavaScript,
+   values of all types, not just booleans, can be used in a boolean context.
+   All values can be converted to a boolean, depending on the /truthiness/ or
+   /falsiness/ of the value. All values are considered to be /truthy/,
+   including `Object`s, `Array`s, `Number`s, except for the following list of
+   values which are /falsy/:
+
+   * `undefined`
+   * `null`
+   * `0`
+   * `-0`<foot>`0` is equal to `-0`! To distinguish between these two values,
+     you can use the following tests: `1 / 0 == Infinity`, `1 / -0 ==
+     -Infinity`. Also see #[numbers].</foot>
+   * `NaN`
+   * `""`
+
+   The concept of truthiness and falsiness comes from Lisp.
+
+   Q: Is this something one shouldn't rely on, such as these type conversions?
+
+   A: This actually proves to be useful in most cases. With one check, you can
+      quickly cover the most common edge cases. If you're working with strings
+      or numbers, you still have to pay attention to `0` and `""`, see the
+      following example:
+
+      ```JavaScript
+      function g(x, y) {
+          if (x && y)
+              return x + y;
+          else
+              return -1;
+      }
+      g(4, 5); // 9
+      g(4, 0); // -1
+      ```
+
+      The programmer could have had the following intention when writing the
+      function `g` in the example above: "when both arguments are non-`null`
+      and also not `undefined`, return the sum of them." This, of course, will
+      not function correctly as `0`, a falsy number, will fail the check. You
+      can see that it's easy to overlook this subtlety.

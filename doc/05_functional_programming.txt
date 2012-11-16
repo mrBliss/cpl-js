@@ -1,0 +1,214 @@
+# Functional programming #[functional]
+
+Q: You mentioned that JavaScript has first-class functions, does this mean
+   that JavaScript is a functional language?
+
+A: It's true that all functional languages support first-class functions, but
+   this alone doesn't make a language functional. Functional programming
+   consists of more than just first-class functions, sometimes it's more about
+   what you /can't/ do<foot>In Haskell, for example, you can't just change the
+   value of a variable.</foot>, or in some cases, what the default
+   is.<foot>Immutable data structures are the default in Scala, but mutable
+   ones are also available.</foot>
+
+   An important tenet of functional programming is the avoidance or isolation
+   of side-effects. All forms of state are side-effects. In JavaScript, pretty
+   much every accessible variable can be modified, effectively making the
+   whole environment /stateful/. It's very common to define and change global
+   variables, even by [accident][variables-functions]. The properties of
+   objects are mutable by default, including the methods and the prototype.
+   Just like Ruby, JavaScript is a very dynamic language, offering the
+   programmer nearly maximum flexibility, at the cost of the omnipresent
+   fragility of state.
+
+   ## Immutability ##
+
+   An important tool to minimise the presence of state in a program is the use
+   of immutable data structures, instead of mutable ones, which are inherently
+   stateful. Rather than modifying the data structure in-place, a new copy of
+   the data structure is made with the desired modifications.<foot>Copying the
+   whole data structure for every change is of course costly. Luckily,
+   efficient immutable data structures exist, for example the /hash array
+   mapped trie/, invented by the late Phill Bagwell. See #[Okasaki], for more
+   such data structures.</foot>
+
+   It might come as a surprise, but in JavaScript, properties can be made
+   immutable. As you will see, this requires a lot more effort. This clearly
+   indicates the language designer's intention, to discourage users from using
+   the feature.
+
+   Q: How do you mean, "This clearly indicates the language designer's
+      intention, to discourage users from using the feature"?
+
+   A: When doing something in a particular way requires more code than in the
+      default way, and thus more effort, programmers will not be inclined to
+      make the extra effort, and will quickly fall back to the default way.
+
+
+   Here's how to make a property immutable:
+
+   ```JavaScript
+    var obj = {x: 1};
+    // Make obj's x property immutable
+    Object.defineProperty(obj, 'x', {
+        writable: false
+    });
+    obj.x = 3;
+    obj.x; // 1
+   ```
+
+   You can still assign a new value to the property, it just won't have any
+   effect. Of course, this in no way comes close to Haskell's, Scala's or
+   Clojure's immutable data structures.
+
+   In JavaScript 1.8.5, there is a new method available for `Object`s, called
+   `freeze`, which effectively makes an object immutable.
+
+
+   ## Higher-order functions, recursion & lists ##
+
+   If there even was an accepted definition of functional programming,
+   JavaScript probably wouldn't satisfy the requirements, but this won't
+   prevent programmers from writing JavaScript programs in a functional style.
+   JavaScript is in fact a multi-paradigm language, that supports
+   object-oriented, functional, and imperative styles. Thanks to Scheme's
+   influence, JavaScript is equipped with first-class functions, which allow
+   the programmer to write some of the typical higher-order functions that are
+   almost invariably present in a functional language.
+
+   Disclaimer: the following functions are in no way optimised or robust
+   enough for general use, they just serve to illustrate programming in a
+   functional style.
+
+   Let's start off with some primitives, they should be familiar to
+   programmers that have dabbled in Lisp or Haskell.
+
+   ```JavaScript[func-primitives]
+   // Make a list with x as head and xs as tail
+   var cons = function(x, xs) {
+       // Make a copy of xs
+       var xs2 = xs.slice(0);
+       xs2.unshift(x);
+       return xs2;
+   };
+   // Return the first element of xs
+   var head = function(xs) {
+       return xs[0];
+   };
+   // Return all but the first element of xs
+   var tail = function(xs) {
+       return xs.slice(1);
+   };
+   // Return true when xs is an empty list
+   var isEmpty = function(xs) {
+       return xs.length == 0;
+   };
+   ```
+
+   Using these primitives, we can easily define our first /higher-order
+   function/. A higher-order function is a function that takes a function as
+   an argument, or returns a function. The function defined below, `map` takes
+   two arguments: a function `f` and an array `xs`. `map` will apply `f` to
+   every element in `xs` and return a new array containing the return values
+   of these applications.
+
+   ```JavaScript[map][func-primitives]
+   var map = function(f, xs) {
+       if (isEmpty(xs))
+           return [];
+       else
+           return cons(f(head(xs)), map(f, tail(xs)));
+   };
+   map(function(x) { return x + 1; }, [1, 2, 3]); // [2, 3, 4]
+   ```
+
+   The `map` function is defined recursively. Functional programmers prefer
+   recursion to iteration, mostly because iteration involves loop indexes, or
+   some other form of state, but elegance also plays a role.
+
+   >[L. Peter Deutsch] To iterate is human, to recurse divine.
+
+   Q: Doesn't recursion lead to stack overflow errors when it goes on for too
+      long?
+
+   A: That's true, recursion comes at a cost, namely the stack space that is
+      consumed by the recursive function calls. When passed a very large list,
+      the `map` function will exhaust the stack and cause a stack overflow
+      error. The solution for this problem is /tail call optimisation/. When a
+      language, or rather a language implementation, supports tail call
+      optimisation, function calls in tail position<foot>A statement or
+      expression is in tail position when it's the last thing to be executed
+      or evaluated before the function returns.</foot> are eliminated and
+      replaced by jumps to the function, effectively transforming tail
+      recursive programs<foot>The example above is actually not /tail/
+      recursive, but could be made tail recursive, e.g. by the use of an
+      accumulator.</foot> into equivalent programs that use loops. Although
+      the Scheme<foot>Remember that Scheme was one of the main influences on
+      JavaScript.</foot> standards require implementations to support tail
+      call optimization, JavaScript standards don't require it.
+
+      Because of this lack of tail call optimisation, it's recommended to
+      write programs using loops instead of recursion in JavaScript.
+
+   On the last line of the example above, you can see the `map` function in
+   use: we increment each element of an array with one. You will probably have
+   noticed that declaring the anonymous function that adds `1` to a value
+   takes lots of space. Declaring the simplest anonymous function, e.g. the
+   identity function, takes at least 21 characters in JavaScript:
+   `function(x){return x}`, compare this with, for example, Haskell: `\x->x`,
+   only 5 characters! The unwieldiness of the `function` keyword is one of
+   JavaScript's warts when it comes to writing programs using higher-order
+   functions.
+
+   Version 1.6 of JavaScript provides a built-in `map` function declared on
+   the prototype of `Array`:
+
+   ```JavaScript
+   [1, 2, 3].map(function(x) { return x + 1; }); // [2, 3, 4]
+   ```
+
+   In addition to `map`, `forEach`, `every`, `some`, and `filter` are also
+   available. In even more recent versions of JavaScript, `reduce` and
+   `reduceRight` are available. These will ring a bell with programmers with
+   Haskell or Clojure experience. This demonstrates that functional
+   programming, albeit in limited form, is slowly creeping into mainstream
+   languages.
+
+   Let's look at another example, the `partial` function. Invoking `partial`
+   on a function `f` with a number of arguments will return a new function,
+   let's call this function `g`. When `g` is invoked, the following things
+   will happen: the original arguments are concatenated with the new
+   arguments, and `f` is invoked with the concatenated arguments. Three
+   elements come together in this example: prototypes, the `arguments` object
+   and higher-order functions.
+
+   ```JavaScript
+   Function.prototype.partial = function() {
+       var args = Array.prototype.slice.call(arguments);
+       // Capture this into f, so we can refer to it in the nested function
+       // definition, wherein this refers to the defined function.
+       var f = this;
+       return function () {
+           var innerArgs = Array.prototype.slice.call(arguments);
+           return f.apply(this, args.concat(innerArgs));
+       };
+   };
+   function add(x, y) { return x + y; };
+   var inc = add.partial(1);
+   inc(2); // 3
+   ```
+
+   The example was taken from #[FuncProgJS].
+
+   ## Libraries ##[func-libs]
+
+   As demonstrated in the previous section, programming in a functional style
+   is certainly possible in JavaScript. Numerous programmers have discovered
+   this and have even made libraries providing functions that promote
+   programming in a functional style. Here are some interesting ones:
+
+   * [Underscore.js][http://underscorejs.org]
+   * [Functional JavaScript][http://osteele.com/sources/javascript/functional/]
+   * [prelude.ls][http://gkz.github.com/prelude-ls/]<foot>This library is
+     actually written in LiveScript, a functional language that compiles to
+     JavaScript, more about such languages in #[compiling-to-js]</foot>

@@ -5,7 +5,7 @@ var parser = require('./parser.js'),
     fs = require('fs');
 
 function processPage(name, tableOfContents, tocLevels, references, links) {
-    var contents = fs.readFileSync('../' + name + '.txt', 'utf8');
+    var contents = fs.readFileSync('../doc/' + name, 'utf8');
     var parsed = parser.parse(parser.Page, contents);
     if (parsed) {
         var ast = parsed.ast;
@@ -30,9 +30,7 @@ function fillInRefs(page, references, bibIndex, links) {
 }
 
 
-var pagesNames = ['preface', 'qa-history', 'qa-syntax',
-                  'qa-semantics', 'qa-pragmatics', 'qa-compiling',
-                  'closing-thoughts'],
+var pagesNames = fs.readdirSync('../doc').sort(),
     tableOfContents = {},
     tocLevels = refs.emptyTocLevels(),
     references = {},

@@ -6,23 +6,18 @@
 @border: #CCCCCC;
 @codeBg: darken(@bg, 1%);
 
-.serif {
+.serif() {
     font-family: "Crimson Text", Georgia, serif;
 }
-.sans {
+.sans() {
     font-family: "Quattrocento Sans", Helvetica, Arial, sans-serif;
 }
-// For code blocks
-.monospace1 {
-    font-family: "Inconsolata", Monaco, Consolas, monospace;
-}
-// For inline code
-.monospace2 {
+.monospace() {
     font-family: Consolas, Menlo, Monaco, "Liberation Mono", Courier, monospace;
 }
 
 body {
-    .serif;
+    .serif();
     font-size: 110%;
     line-height: 1.25em;
     color: @text;
@@ -225,14 +220,11 @@ p, ul {
 }
 
 
-pre, div.editor, div.CodeMirror {
-    .monospace1;
-}
-code {
-    .monospace2;
+pre, div.editor, div.CodeMirror, code {
+    .monospace();
 }
 div.editor ul.tabs {
-    .sans;
+    .sans();
     clear: left;
 }
 code {
@@ -252,7 +244,6 @@ pre {
     font-size: 0.8em;
     border-left: 1em solid darken(@border, 10%);
     background: @codeBg;
-    background: url("img/billie_holiday.png") repeat;
     margin: 2em;
     padding: 0.8em;
     &:hover {
@@ -429,7 +420,7 @@ div#bibliography {
     transform: rotate(@deg);
 }
 table.comparisons {
-    .sans;
+    .sans();
     font-size: 0.8em;
     border-spacing: 0;
     margin: -1em auto 3em auto;
