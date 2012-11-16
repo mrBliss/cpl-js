@@ -30,18 +30,29 @@ check_uglifycss() {
     UGLIFYCSS=node_modules/.bin/uglifycss
 }
 
-node lib/main.js
-echo "Generated HTML"
+# I should do this with a Makefile
 
-check_lessc
-$LESSC -x ../css/styles.less > ../css/styles.css
-echo "Generated styles.css"
+if [ ! -f ../index.html -o ../bibliography.js -nt ../index.html ] || test `find ../doc/ -name '*.txt' -newer ../index.html`; then
+    node lib/main.js
+    echo "Generated HTML"
+fi
 
-check_uglifycss
-$UGLIFYCSS ../css/{styles,keys,codemirror}.css > ../styles.css
-rm ../css/styles.css
-echo "Compressed CSS"
+if [ ! -f ../styles.css -o ! -f ../css/styles.css -o ../css/styles.less -nt ../styles.css ]; then
+    check_lessc
+    $LESSC -x ../css/styles.less > ../css/styles.css
+    echo "Generated styles.css"
+fi
 
-check_uglifyjs2
-$UGLIFYJS2 ../js/{codemirror,javascript,clike,scheme,parse-js,process,formatter}.js -o ../scripts.js -c $JS_COMPRESSION_OPTS
-echo "Compressed JS"
+if [ ! -f ../styles.css ] || test `find ../css/ -name '*.css' -newer ../styles.css`; then
+    check_uglifycss
+    $UGLIFYCSS ../css/{styles,keys,codemirror}.css > ../styles.css
+    echo "Compressed CSS"
+fi
+
+if [ ! -f ../scripts.js ] || test `find ../js/ -name '*.js' -newer ../scripts.js`; then
+    check_uglifyjs2
+    $UGLIFYJS2 ../js/{codemirror,javascript,clike,scheme,parse-js,process,formatter}.js -o ../scripts.js -c $JS_COMPRESSION_OPTS
+    echo "Compressed JS"
+fi
+
+echo "DONE"
