@@ -157,7 +157,7 @@ Paragraph.prototype.toHTML = function() {
 Title.prototype.toHTML = function() {
     var hLevel = this.level + 2,
         scroller = '<span class="to-top">'
-            + '<a href="#top">&uarr; To top</a></span>\n';
+            + '<a href="#top">&uarr; To top</a></span>';
 
     return scroller + '<h' + hLevel +' id="' + this.anchor()
         + '">' + (this.unnumbered ? '' : this.number + ' ') +
@@ -198,9 +198,9 @@ ListItem.prototype.toHTML = function() {
 };
 
 List.prototype.toHTML = function() {
-    return '<ul>\n' + this.items.map(function(item) {
+    return '<ul>' + this.items.map(function(item) {
         return item.toHTML();
-    }).join('\n') + '\n</ul>';
+    }).join('') + '</ul>';
 };
 
 LinkDef.prototype.toHTML = function() {
@@ -234,20 +234,20 @@ Question.prototype.toHTML = function() {
 };
 
 Answer.prototype.toHTML = function() {
-    return '<div class="answer">\n'
+    return '<div class="answer">'
         + this.contents.map(function(elem) {
             return elem.toHTML();
-        }).join('\n') + '</div>';
+        }).join('') + '</div>';
 };
 
 QA.prototype.toHTML = function() {
-    return this.question.toHTML() + '\n' + this.answer.toHTML();
+    return this.question.toHTML() + this.answer.toHTML();
 };
 
 Page.prototype.toHTML = function() {
     return this.contents.map(function(elem) {
         return elem.toHTML();
-    }).join('\n');
+    }).join('');
 };
 
 // Transformer
