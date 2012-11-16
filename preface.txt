@@ -15,7 +15,7 @@ conventional shortcuts like <kbd>ctrl</kbd> + <kbd>z</kbd> for undo,
 
 Although JavaScript is a small language, you can do a lot of things with it,
 certainly when combining the small number of powerful features, without even
-touching on the vast ecosystem. Browser-specific parts (the DOM, events,
-etc.), popular frameworks (jQuery, Prototype.js, etc.), community practices
-(testing, code minimisation, etc.), and many other interesting topics aren't
-covered.
+touching on the vast ecosystem. Browser-specific parts (HTML5, the DOM,
+events, etc.), popular frameworks (jQuery, Prototype.js, etc.), community
+practices (testing, code minimisation, etc.), and many other interesting
+topics aren't covered.
