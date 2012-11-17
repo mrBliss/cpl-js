@@ -32,7 +32,7 @@ check_uglifycss() {
 
 # I should do this with a Makefile
 
-if [ ! -f ../index.html -o ../bibliography.js -nt ../index.html ] || test `find ../doc/ -name '*.txt' -newer ../index.html`; then
+if [ ! -f ../index.html -o ../bibliography.js -nt ../index.html -o $(find ../doc/ -name '*.txt' -newer ../index.html | wc -l) -gt 0 ]; then
     node lib/main.js
     echo "Generated HTML"
 fi
@@ -43,13 +43,13 @@ if [ ! -f ../styles.css -o ! -f ../css/styles.css -o ../css/styles.less -nt ../s
     echo "Generated styles.css"
 fi
 
-if [ ! -f ../styles.css ] || test `find ../css/ -name '*.css' -newer ../styles.css`; then
+if [ ! -f ../styles.css -o $(find ../css/ -name '*.css' -newer ../styles.css | wc -l) -gt 0 ]; then
     check_uglifycss
     $UGLIFYCSS ../css/{styles,keys,codemirror}.css > ../styles.css
     echo "Compressed CSS"
 fi
 
-if [ ! -f ../scripts.js ] || test `find ../js/ -name '*.js' -newer ../scripts.js`; then
+if [ ! -f ../scripts.js -o $(find ../js/ -name '*.js' -newer ../scripts.js | wc -l) -gt 0 ]; then
     check_uglifyjs2
     $UGLIFYJS2 ../js/{codemirror,javascript,clike,scheme,parse-js,process,formatter}.js -o ../scripts.js -c $JS_COMPRESSION_OPTS
     echo "Compressed JS"
