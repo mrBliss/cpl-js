@@ -4,7 +4,7 @@ var parser = require('./parser.js'),
     bib = require('./bibliography.js'),
     fs = require('fs');
 
-function processPage(name, tableOfContents, tocLevels, references, links) {
+function processChapter(name, tableOfContents, tocLevels, references, links) {
     var contents = fs.readFileSync('../doc/' + name, 'utf8');
     var parsed = parser.parse(parser.Page, contents);
     if (parsed) {
@@ -20,9 +20,9 @@ function processPage(name, tableOfContents, tocLevels, references, links) {
         return '';
     }
 }
-function fillInRefs(page, references, bibIndex, links) {
+function fillInRefs(chapter, references, bibIndex, links) {
     // Fill in the references
-    var withRefs = page.transform(refs.fillInReferences(references, bibIndex));
+    var withRefs = chapter.transform(refs.fillInReferences(references, bibIndex));
     // Fill in the links
     var withLinks = withRefs.transform(refs.fillInLinks(links, references));
     // Fill in the block quotes
@@ -30,7 +30,7 @@ function fillInRefs(page, references, bibIndex, links) {
 }
 
 
-var pagesNames = fs.readdirSync('../doc').sort(),
+var chaptersNames = fs.readdirSync('../doc').sort(),
     tableOfContents = {},
     tocLevels = refs.emptyTocLevels(),
     references = {},
@@ -38,17 +38,22 @@ var pagesNames = fs.readdirSync('../doc').sort(),
     bibliography = bib.makeBibliography(),
     bibIndex = bib.makeBibIndex(bibliography),
     template = fs.readFileSync('../template.html', 'utf8'),
-    pages = pagesNames.map(function(page) {
-        return processPage(page, tableOfContents, tocLevels,
+    chapters = chaptersNames.map(function(chapter) {
+        return processChapter(chapter, tableOfContents, tocLevels,
                            references, links);
         });
 
-pages.forEach(function(page) {
-    fillInRefs(page, references, bibIndex, links);
+chapters.forEach(function(chapter) {
+    fillInRefs(chapter, references, bibIndex, links);
 });
 
-var html = pages.map(function(page) {
-    return page.toHTML();
+var html = chapters.map(function(chapter, index) {
+    if (index == 0) {
+        return chapter.toHTML();
+    } else {
+        return '<div class="chapter" id="chapter-' + index + '">' +
+            chapter.toHTML() + '</div>';
+    }
 });
 
 fs.writeFile('../index.html', template

@@ -85,7 +85,7 @@ $(document).ready(function () {
             return 'javascript';
         }
     }
-    $('pre').each(function(index, pre) {
+    var editors = $('pre').map(function(index, pre) {
         var id = 'editor' + index;
         var codeMirror = CodeMirror(function(editor) {
             var $pre = $(pre),
@@ -134,6 +134,7 @@ $(document).ready(function () {
             }
         });
         fixEncoding(codeMirror);
+        return codeMirror;
     });
 
     // Popup footnotes
@@ -153,7 +154,7 @@ $(document).ready(function () {
             });
             // If it was already open, and now closed, don't reopen it
             if (alreadyOpen) return;
-            
+
             var popup = $('<div id="footnote' + (index + 1) + '" class="footnote">' + $elem.html() +
                           '</div>'),
                 $window = $(window);
@@ -187,6 +188,13 @@ $(document).ready(function () {
     // item
     $('a.ref[href^="#bib-"]').click(function(e) {
         highlightBibItem(this.href.split('#')[1]);
+    });
+
+    // Scroll smoothly to the top
+    $('a[href="#top"]').click(function(e) {
+        e.preventDefault();
+        $('html, body').animate({scrollTop: $('#top').offset().top},
+                                'slow');
     });
 
     // Equality tables
@@ -251,4 +259,33 @@ $(document).ready(function () {
 
     makeEqualityTable('===', $('table#strict-equality-table'));
     makeEqualityTable('==', $('table#equality-table'));
+
+
+    // Lazy loading of chapters
+    var pageDelay = 1000,
+        $chapters = $('div.chapter'),
+        loading = $('<div id="loading">Loading chapters '
+                    + '(<span id="loaded">1</span>/' +
+                    ($chapters.length - 1) + ')</div>');
+    loading.css({right: '2em', top: '2em'});
+    $('body').after(loading);
+    var loaded = $('span#loaded');
+    $chapters.each(function(index, chapter) {
+        if (index > 0) {
+            setTimeout(function() {
+                $(chapter).show();
+                loaded.html(index);
+                if (index == $chapters.length - 1) {
+                    editors.each(function(index, editor) {
+                        editor.refresh();
+                    });
+                    setTimeout(function() {
+                        loading.remove();
+                    }, pageDelay);
+                }
+            }, (index + 1) * pageDelay);
+        }
+    });
+
+
 });

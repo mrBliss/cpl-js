@@ -156,12 +156,16 @@ Paragraph.prototype.toHTML = function() {
 
 Title.prototype.toHTML = function() {
     var hLevel = this.level + 2,
-        scroller = '<span class="to-top">'
-            + '<a href="#top">&uarr; To top</a></span>';
-
-    return scroller + '<h' + hLevel +' id="' + this.anchor()
-        + '">' + (this.unnumbered ? '' : this.number + ' ') +
-        this.text + '</h' + hLevel + '>';
+        hElem = '<h' + hLevel +' id="' + this.anchor()
+            + '">' + (this.unnumbered ? '' : this.number + ' ') +
+            this.text + '</h' + hLevel + '>';
+    if (this.level > 1) {
+        return '<span class="to-top">'
+            + '<a href="#top">&uarr; To top</a></span>'
+            + hElem;
+    } else {
+        return hElem;
+    }
 };
 
 // Source: https://github.com/janl/mustache.js
