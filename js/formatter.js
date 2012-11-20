@@ -4,13 +4,14 @@ $(document).ready(function () {
         /*
          Why not just eval(sourceCode)? Because sourceCode can be a
          string containing multiple expressions and/or statements, but
-         eval will only return the final return value. In order to not
-         lose the other return values, we have to do a lot more work.
+         eval will only return the final return value. In order to
+         retain the other return values, we have to do a lot more
+         work.
 
-         First we parse the JavaScript sourceCode to get an AST. Next
+         First, we parse the JavaScript sourceCode to get an AST. Next
          we convert every top-level AST node back to a string
          representation, i.e. source code. Instead of one big string
-         containig all expressions and/or statements, we now have an
+         containing all expressions and/or statements, we now have an
          array of expressions and/or statements. Finally, we evaluate
          every string and collect the results, so we can show all
          return values. These results are then concatenated into a big
@@ -68,9 +69,10 @@ $(document).ready(function () {
             return '// Invalid input: ' + err.message + '\n';
         };
     }
+    // Work around for a bug (?) in CodeMirror
     function fixEncoding(cm, text) {
         text = text || cm.getValue();
-        var decoded = $('<div/>').html(text).text();
+        var decoded = $('<div/>').html(text).text(); // unescape HTML entities
         cm.setValue(decoded);
     }
     function modeName(className) {
@@ -85,6 +87,7 @@ $(document).ready(function () {
             return 'javascript';
         }
     }
+    // Convert the pre elements in editors
     var editors = $('pre').map(function(index, pre) {
         var id = 'editor' + index;
         var codeMirror = CodeMirror(function(editor) {
@@ -106,7 +109,6 @@ $(document).ready(function () {
             $pre.replaceWith($div);
             // Store the initial contents of the pre, so we can later reset
             $div.data('initial', pre.innerHTML);
-            // $('a.ref[href^="#bib-"]')
             $('a[href="#eval"]', $tabs).click(function(event) {
                 event.preventDefault();
                 var val = codeMirror.getValue();
@@ -180,6 +182,7 @@ $(document).ready(function () {
         var li = $('li#' + n);
         // Lower the opacity
         li.css({opacity: 0.1});
+        // Display an arrow next to it
         var $bibMarker = $('<span id="bib-marker">&rarr;</span>');
         $('body').append($bibMarker);
         $bibMarker.css({position: 'absolute',
