@@ -1,5 +1,11 @@
 #!/bin/bash
+
 JS_COMPRESSION_OPTS="dead-code=false,unsafe=false,unused=false"
+
+# Output files
+HTML_OUTPUT="../index.html"
+CSS_OUTPUT="../styles.css"
+JS_OUTPUT="../scripts.js"
 
 check_lessc() {
     if type lessc &> /dev/null; then
@@ -30,28 +36,28 @@ check_uglifycss() {
     UGLIFYCSS=node_modules/.bin/uglifycss
 }
 
-# I should do this with a Makefile
+# I should've done this with a Makefile
 
-if [ ! -f ../index.html -o ../bibliography.js -nt ../index.html -o $(find ../doc/ -name '*.txt' -newer ../index.html | wc -l) -gt 0 ]; then
+if [ ! -f "$HTML_OUTPUT" -o ../bibliography.js -nt "$HTML_OUTPUT" -o $(find ../doc/ -name '*.txt' -newer "$HTML_OUTPUT"  2>/dev/null | wc -l) -gt 0 ]; then
     node lib/main.js
     echo "Generated HTML"
 fi
 
-if [ ! -f ../styles.css -o ! -f ../css/styles.css -o ../css/styles.less -nt ../styles.css ]; then
+if [ ! -f "$CSS_OUTPUT" -o ! -f ../css/styles.css -o ../css/styles.less -nt "$CSS_OUTPUT" ]; then
     check_lessc
     $LESSC -x ../css/styles.less > ../css/styles.css
     echo "Generated styles.css"
 fi
 
-if [ ! -f ../styles.css -o $(find ../css/ -name '*.css' -newer ../styles.css | wc -l) -gt 0 ]; then
+if [ ! -f "$CSS_OUTPUT" -o $(find ../css/ -name '*.css' -newer "$CSS_OUTPUT" 2>/dev/null | wc -l) -gt 0 ]; then
     check_uglifycss
-    $UGLIFYCSS ../css/{styles,keys,codemirror}.css > ../styles.css
+    $UGLIFYCSS ../css/{styles,keys,codemirror}.css > "$CSS_OUTPUT"
     echo "Compressed CSS"
 fi
 
-if [ ! -f ../scripts.js -o $(find ../js/ -name '*.js' -newer ../scripts.js | wc -l) -gt 0 ]; then
+if [ ! -f "$JS_OUTPUT" -o $(find ../js/ -name '*.js' -newer "$JS_OUTPUT"  2>/dev/null | wc -l) -gt 0 ]; then
     check_uglifyjs2
-    $UGLIFYJS2 ../js/{codemirror,javascript,clike,scheme,parse-js,process,formatter}.js -o ../scripts.js -c $JS_COMPRESSION_OPTS
+    $UGLIFYJS2 ../js/{codemirror,javascript,clike,scheme,parse-js,process,formatter}.js -o "$JS_OUTPUT" -c $JS_COMPRESSION_OPTS
     echo "Compressed JS"
 fi
 

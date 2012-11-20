@@ -128,7 +128,10 @@ exports.makeBibliography = function() {
     var entries;
     eval(fs.readFileSync('../bibliography.js',
                                         'utf8'));
+    // First items with an author, sorted on the author's last name,
+    // sort the other items on their title.
     return entries.sort(function(a, b) {
+        // Wow, this is ugly
         if (a.authors && b.authors) {
             return (a.authors < b.authors)
                 ? -1

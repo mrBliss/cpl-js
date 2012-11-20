@@ -4,13 +4,14 @@ $(document).ready(function () {
         /*
          Why not just eval(sourceCode)? Because sourceCode can be a
          string containing multiple expressions and/or statements, but
-         eval will only return the final return value. In order to not
-         lose the other return values, we have to do a lot more work.
+         eval will only return the final return value. In order to
+         retain the other return values, we have to do a lot more
+         work.
 
-         First we parse the JavaScript sourceCode to get an AST. Next
+         First, we parse the JavaScript sourceCode to get an AST. Next
          we convert every top-level AST node back to a string
          representation, i.e. source code. Instead of one big string
-         containig all expressions and/or statements, we now have an
+         containing all expressions and/or statements, we now have an
          array of expressions and/or statements. Finally, we evaluate
          every string and collect the results, so we can show all
          return values. These results are then concatenated into a big
@@ -68,9 +69,10 @@ $(document).ready(function () {
             return '// Invalid input: ' + err.message + '\n';
         };
     }
+    // Work around for a bug (?) in CodeMirror
     function fixEncoding(cm, text) {
         text = text || cm.getValue();
-        var decoded = $('<div/>').html(text).text();
+        var decoded = $('<div/>').html(text).text(); // unescape HTML entities
         cm.setValue(decoded);
     }
     function modeName(className) {
@@ -85,6 +87,7 @@ $(document).ready(function () {
             return 'javascript';
         }
     }
+    // Convert the pre elements in editors
     var editors = $('pre').map(function(index, pre) {
         var id = 'editor' + index;
         var codeMirror = CodeMirror(function(editor) {
@@ -106,7 +109,6 @@ $(document).ready(function () {
             $pre.replaceWith($div);
             // Store the initial contents of the pre, so we can later reset
             $div.data('initial', pre.innerHTML);
-            // $('a.ref[href^="#bib-"]')
             $('a[href="#eval"]', $tabs).click(function(event) {
                 event.preventDefault();
                 var val = codeMirror.getValue();
@@ -180,8 +182,19 @@ $(document).ready(function () {
         var li = $('li#' + n);
         // Lower the opacity
         li.css({opacity: 0.1});
+        // Display an arrow next to it
+        var $bibMarker = $('<span id="bib-marker">&rarr;</span>');
+        $('body').append($bibMarker);
+        $bibMarker.css({position: 'absolute',
+                        top: li.offset().top + 'px',
+                        left: (li.offset().left - $bibMarker.width()) / 2 + 'px',
+                        fontSize: '1.5em'});
         // Bring it back to normal
-        li.animate({opacity: 1}, 1000);
+        li.animate({opacity: 1}, 1000, function() {
+            $bibMarker.fadeOut(500, function() {
+                $bibMarker.remove();
+            });
+        });
     }
 
     // When clicking on a link to a bibliography item, highlight the
@@ -259,33 +272,4 @@ $(document).ready(function () {
 
     makeEqualityTable('===', $('table#strict-equality-table'));
     makeEqualityTable('==', $('table#equality-table'));
-
-
-    // Lazy loading of chapters
-    var pageDelay = 1000,
-        $chapters = $('div.chapter'),
-        loading = $('<div id="loading">Loading chapters '
-                    + '(<span id="loaded">1</span>/' +
-                    ($chapters.length - 1) + ')</div>');
-    loading.css({right: '2em', top: '2em'});
-    $('body').after(loading);
-    var loaded = $('span#loaded');
-    $chapters.each(function(index, chapter) {
-        if (index > 0) {
-            setTimeout(function() {
-                $(chapter).show();
-                loaded.html(index);
-                if (index == $chapters.length - 1) {
-                    editors.each(function(index, editor) {
-                        editor.refresh();
-                    });
-                    setTimeout(function() {
-                        loading.remove();
-                    }, pageDelay);
-                }
-            }, (index + 1) * pageDelay);
-        }
-    });
-
-
 });

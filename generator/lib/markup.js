@@ -53,11 +53,11 @@ exports.markup = function(s) {
         .replace(/'/g, '&rsquo;')
         .replace(/"\b/g, '&ldquo;')
         .replace(/"/g, '&rdquo;')
-    // fix
+    // a fix
         .replace(/&lsquo;([0-9]0s)/, '&rsquo;$1')
-    // fix
+    // a fix
         .replace(/<code>&rdquo;&rdquo;<\/code>/g, '<code>""</code>')
-    // fix
+    // a fix
         .replace(/<code>&rsquo;&rsquo;<\/code>/g, "<code>''</code>")
         .replace(/\.{3}/g, '&hellip;')
         .replace(/~/g, '&nbsp;')

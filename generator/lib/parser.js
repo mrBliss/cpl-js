@@ -1,6 +1,3 @@
-// token, ch, range, whitespace, action, join_action, negate, end_p,
-// nothing_p, sequence, wsequence, choice, butnot, difference, xor,
-// repeat0, repeat1, optional,
 var jp = require('./jsparse.js'),
     ch = jp.ch, action = jp.action, join_action = jp.join_action,
     seq = jp.sequence, token = jp.token, but = jp.negate,
@@ -9,20 +6,26 @@ var jp = require('./jsparse.js'),
     not = jp.not, ps = jp.ps,
     el = require('./elements.js');
 
-
+// Expects p to return an array of strings and joins the strings
+// together.
 function joined(p) {
     return join_action(p, '');
 }
+// Matches p and returns null.
 function ignored(p) {
     return action(p, function() {
         return null;
     });
 }
+// Returns the length of the string matched by p.
 function count(p) {
     return action(p, function(xs) {
         return xs.length;
     });
 }
+// Matches startStr (a string), then parser p, then endStr (also a
+// string), returns the result of p. The parser p should not match
+// endStr.
 function between(startStr, p, endStr) {
     return action(seq(token(startStr), p, token(endStr)),
                   function(arr) {
@@ -30,13 +33,15 @@ function between(startStr, p, endStr) {
                   });
 }
 
-// Expects the parser to return a string
+// Expects the parser to return a string and returns the parsed string
+// with all whitespace removed from the left side.
 function trimLeft(p) {
     return action(p, function(s) {
         return s.replace(/^ +/, '');
     });
 }
-// Expects the parser to return a string
+// Expects the parser to return a string and returns the parsed string
+// with all whitespace removed from the right side.
 function trimRight(p) {
     return action(p, function(s) {
         return s.replace(/ +$/, '');
@@ -48,6 +53,8 @@ function ws(p) {
         return x[1];
     });
 }
+// Matches zero or more spaces, and then p. Returns an array of the
+// number of spaces and the result of p.
 function indented(p) {
     return action(
         seq(rep0(ch(' ')), p),
@@ -224,7 +231,6 @@ var Page = action(
             return x !== null;
         }));
     });
-
 
 
 function parse(parser, str) {
