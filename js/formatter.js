@@ -259,33 +259,4 @@ $(document).ready(function () {
 
     makeEqualityTable('===', $('table#strict-equality-table'));
     makeEqualityTable('==', $('table#equality-table'));
-
-
-    // Lazy loading of chapters
-    var pageDelay = 1000,
-        $chapters = $('div.chapter'),
-        loading = $('<div id="loading">Loading chapters '
-                    + '(<span id="loaded">1</span>/' +
-                    ($chapters.length - 1) + ')</div>');
-    loading.css({right: '2em', top: '2em'});
-    $('body').after(loading);
-    var loaded = $('span#loaded');
-    $chapters.each(function(index, chapter) {
-        if (index > 0) {
-            setTimeout(function() {
-                $(chapter).show();
-                loaded.html(index);
-                if (index == $chapters.length - 1) {
-                    editors.each(function(index, editor) {
-                        editor.refresh();
-                    });
-                    setTimeout(function() {
-                        loading.remove();
-                    }, pageDelay);
-                }
-            }, (index + 1) * pageDelay);
-        }
-    });
-
-
 });
