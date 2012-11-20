@@ -78,6 +78,7 @@ exports.tocToHTML = function(toc) {
 
 exports.labelCollector = function(refs, links) {
     return function(elem) {
+        // Duck typing in action
         if (elem.label) {
             if (elem.url) {
                 // LinkDef
