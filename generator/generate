@@ -30,7 +30,7 @@ check_uglifycss() {
     UGLIFYCSS=node_modules/.bin/uglifycss
 }
 
-# I should do this with a Makefile
+# I should've done this with a Makefile
 
 if [ ! -f ../index.html -o ../bibliography.js -nt ../index.html -o $(find ../doc/ -name '*.txt' -newer ../index.html | wc -l) -gt 0 ]; then
     node lib/main.js
@@ -43,7 +43,7 @@ if [ ! -f ../styles.css -o ! -f ../css/styles.css -o ../css/styles.less -nt ../s
     echo "Generated styles.css"
 fi
 
-if [ ! -f ../styles.css -o $(find ../css/ -name '*.css' -newer ../styles.css | wc -l) -gt 0 ]; then
+if [ ! -f ../styles.css -o $(find ../css/ -name '*.css' -newer ../styles.css 2>/dev/null | wc -l) -gt 0 ]; then
     check_uglifycss
     $UGLIFYCSS ../css/{styles,keys,codemirror}.css > ../styles.css
     echo "Compressed CSS"
