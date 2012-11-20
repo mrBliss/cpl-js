@@ -180,8 +180,18 @@ $(document).ready(function () {
         var li = $('li#' + n);
         // Lower the opacity
         li.css({opacity: 0.1});
+        var $bibMarker = $('<span id="bib-marker">&rarr;</span>');
+        $('body').append($bibMarker);
+        $bibMarker.css({position: 'absolute',
+                        top: li.offset().top + 'px',
+                        left: (li.offset().left - $bibMarker.width()) / 2 + 'px',
+                        fontSize: '1.5em'});
         // Bring it back to normal
-        li.animate({opacity: 1}, 1000);
+        li.animate({opacity: 1}, 1000, function() {
+            $bibMarker.fadeOut(500, function() {
+                $bibMarker.remove();
+            });
+        });
     }
 
     // When clicking on a link to a bibliography item, highlight the
