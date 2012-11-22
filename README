@@ -1,0 +1,35 @@
+  o-----------------------------o
+  |      _____ ______ _         |
+  |     /  __ \| ___ \ |        |
+  |     | /  \/| |_/ / |        |
+  |     | |    |  __/| |        |
+  |     | \__/\| |   | |____    |
+  |      \____/\_|   \_____/    |
+  |                             |
+  |       ASSIGNMENT 1:         |
+  |         JavaScript          |
+  |                             |
+  |        Glenn Croes          |
+  |     Philippe De Croock      |
+  |       Thomas Winant         |
+  |                             |
+  o-----------------------------o
+
+
+You can read our socratic discussion in index.html.
+
+
+Directory structure:
+
+.
+├── doc              | Contains the original text
+├── generator        | A JavaScript program that generates the HTML etc.
+├── css              | The source CSS and less files
+├── js               | The source JavaScript code
+├── img              | The images of the web page
+├── bibliography.js  | The source file of the bibliography
+├── template.html    | The template on which index.html is based
+├── index.html       | The actual page you should read
+├── styles.css       | The concatenated and minimised CSS
+├── scripts.js       | The concatenated and minimised JavaScript
+└── README           | This file
