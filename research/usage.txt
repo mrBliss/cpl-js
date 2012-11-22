@@ -1,6 +1,0 @@
-* Usage - What is the language specifically designed for? How is it used in
-  practice? What are the specific language constructs designed and used for?
-
-http://dev.opera.com/articles/view/javascript-uses/
-
-JSON subset: http://www.json.org/
